@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/main_home"
+        android:icon="@drawable/main_home_nor"
+        android:title="首页"
+        app:showAsAction="ifRoom"
+        android:orderInCategory="0"/>
+    <item
+        android:id="@+id/main_invest"
+        android:icon="@drawable/main_school_nor"
+        android:title="投资"
+        app:showAsAction="ifRoom"
+        android:orderInCategory="1"/>
+    <item
+        android:id="@+id/main_user"
+        android:icon="@drawable/main_user_nor"
+        android:title="我的"
+        app:showAsAction="ifRoom"
+        android:orderInCategory="2"/>
+
+</menu>

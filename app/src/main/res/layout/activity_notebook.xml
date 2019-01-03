@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+             android:fitsSystemWindows="true">
+
+
+    <!-- LinearLayout达不到预期效果  -->
+    <RelativeLayout
+        android:id="@+id/realtive_notebook"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <EditText
+            android:id="@+id/edt_content_notebook"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:padding="15dp"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_notebook"
+            android:layout_width="match_parent"
+           android:layout_height="match_parent"
+            android:layout_below="@id/edt_content_notebook"
+            />
+
+    </RelativeLayout>
+    <!--backgroundTint 底色,点击颜色
+    app:elevation="6dp"//显示的阴影大小
+    app:pressedTranslationZ="12dp"//点击时的阴影大小-->
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_add_notebook"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:src="@android:drawable/ic_input_add" />
+
+</FrameLayout>

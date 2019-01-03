@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.hxzk_bj_demo.widget.WidgetDrawerLayout
+    android:id="@+id/drawerlayout_main"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:toolbar="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.hxzk_bj_demo.ui.activity.MainActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- android:fitsSystemWindows="true"
+   属性让布局不延伸到状态栏-->
+        <!--
+            除了代码设置也可以自定义 xmlns:app="http://schemas.android.com/apk/res-auto"
+            toolbar:logo="@mipmap/ic_launcher"
+            toolbar:title="Title"
+            toolbar:subtitle="Sub Title"-->
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/vp_main"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_gravity="bottom"
+            android:background="@color/colorPrimary" />
+        <!--
+        底部导航栏高度默认是 56dp。
+        菜单元素只能是 1~5 个。如果个数多于5个，则会报错，建议3-5个最佳
+        icon 的选中颜色默认是 @color/colorPrimary。当然你也可以使用 app:itemIconTint=””
+        菜单元素文字的默认颜色是 @color/colorPrimary。你可以使用 app:itemTextColor=””
+        底部导航栏背景颜色默认是当前样式的背景色，你可以使用 app:itemBackground=””-->
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/bav_main"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_gravity="bottom"
+            app:itemIconTint="@drawable/bottom_navigation_selector"
+            app:itemTextColor="@drawable/bottom_navigation_selector"
+            app:menu="@menu/bottom_menu"
+            />
+    </LinearLayout>
+
+    <!-- 抽屉
+    android:layout_gravity="left"属性表示该View是左边的滑出菜单
+    app:headerLayout="@layout/header_layout"表示引用一个头布局文件
+    .app:menu="@menu/main"表示引用一个menu作为下面的点击项
+    1.app:itemBackground="@color/colorAccent"设置每一个item的背景颜色
+    2.app:itemTextColor=""设置item的背景颜色
+    insetForeground 取消标题栏阴影-->
+    <android.support.design.widget.NavigationView
+        android:id="@+id/navigationview_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="left"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/header_layout"
+        app:insetForeground="@android:color/transparent"
+        app:menu="@menu/menu_vavigationview">
+    </android.support.design.widget.NavigationView>
+</com.hxzk_bj_demo.widget.WidgetDrawerLayout>

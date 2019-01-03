@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:id="@+id/dividerOne">
+        <item
+            android:id="@+id/theme"
+            android:icon="@mipmap/ic_launcher"
+            android:title="更改主题"/>
+    <item
+        android:id="@+id/favorite"
+        android:icon="@mipmap/ic_launcher"
+        android:title="收藏"/>
+    <item
+        android:id="@+id/notebook"
+        android:icon="@mipmap/ic_launcher"
+        android:title="记事本"/>
+    </group>
+    <group android:id="@+id/dividerTwo">
+    <item
+        android:id="@+id/photo"
+        android:icon="@mipmap/ic_launcher"
+        android:title="相册"/>
+    <item
+        android:id="@+id/settting"
+        android:icon="@mipmap/ic_launcher"
+        android:title="@string/changelanguage"/>
+    </group>
+    <item
+        android:id="@+id/loginout"
+        android:icon="@mipmap/ic_launcher"
+        android:title="退出登录"/>
+</menu>

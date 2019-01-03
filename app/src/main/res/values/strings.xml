@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">随意</string>
+
+
+    <string name="changelanguage">中英文切换</string>
+
+
+    <string name="empty_network_error">网络错误，点击重试！</string>
+    <string name="empty_no_data">没有请求到数据，点击重试...</string>
+
+
+    <string name="transition_wechat_img">transition_wechat_img</string>
+
+
+    <string name="wechat_select">微信精选</string>
+    <string name="load_more_error">加载更多数据失败！</string>
+
+
+    <string name="encode_qrcode">生成二维码</string>
+    <string name="dencode_qrcode">扫描二维码</string>
+    <string name="code_text">请输入生成二维码的文本信息</string>
+    <string name="qrcodetext">这里显示扫描结果</string>
+    
+    <!--=====================================登录界面字符=============================-->
+    <string name="login_otherwaylogin">试试临时登录?</string>
+</resources>

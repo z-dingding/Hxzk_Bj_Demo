@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    //values-v19 创建相应的主题4.4才会有个属性:windowTranslucentStatus,windowTranslucentNavigation
+    <style name="TranslucentTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowTranslucentStatus">true</item> //可以拉升到顶部状态栏，并且定义顶部状态栏透明
+        <item name="android:windowTranslucentNavigation">false</item>//虚拟键透明，这个虚拟键就是返回和菜单键,true会保留actionBar,title,虚拟键的空间
+    </style>
+
+</resources>

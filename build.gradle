@@ -1,0 +1,60 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+
+    repositories {
+        google()
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.1.4'
+        //Butterknife插件依赖
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+    }
+}
+
+
+
+allprojects {
+    repositories {
+
+        google()
+        jcenter()
+        mavenCentral()
+        //BRVAH 框架引入
+        maven { url "https://jitpack.io" }
+        //Banner
+        maven { url "https://www.jitpack.io" }
+
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+
+dependencies {
+}
+
+//Android 统一版本号管理
+ext {
+    //编译版本号
+    globalCompileSdkVersion = 28
+    //编译工具版本
+    globalBuildToolVersion = "28.0.2"
+    //当前sdk版本号
+    globalTargetSdkVersion = 28
+    //最低sdk版本号
+    globalMinSdkVersion = 19
+    //v7等常用Library的版本
+    supportLibraryVersion = "28.0.0"
+
+    androidDependencies = [
+            design   : "com.android.support:design:${supportLibraryVersion}",
+            appcompat: "com.android.support:appcompat-v7:${supportLibraryVersion}",
+            glide    : "com.github.bumptech.glide:glide:3.7.0"
+
+    ]
+
+}

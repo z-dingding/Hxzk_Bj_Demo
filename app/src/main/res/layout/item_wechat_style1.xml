@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content">
+
+   <!-- 请检查一下item的布局最外层的Layout是不是layout_height设置了match_parent.
+   设置match_height会导致,有10条数据，只显示1条-->
+
+
+    <com.hxzk_bj_demo.widget.FourThreeImageView
+        android:id="@+id/img_wechat_style"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:src="@drawable/bg2"
+        android:transitionName="@string/transition_wechat_img"
+        android:scaleType="centerCrop"/>
+
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_gravity="bottom"
+    android:background="@color/bg_text_wechat_item">
+
+    <TextView
+        android:id="@+id/title_wechat_style1"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:paddingBottom="10dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="10dp"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+       />
+
+    <ImageView
+        android:id="@+id/img_collection_invest"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginRight="10dp"
+        android:layout_gravity="center"
+        android:src="@android:drawable/ic_input_add"/>
+
+</LinearLayout>
+
+
+
+
+</FrameLayout>

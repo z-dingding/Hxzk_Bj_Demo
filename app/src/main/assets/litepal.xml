@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<!--<dbname>用于设定数据库的名字，<version>用于设定数据库的版本号，<list>用于设定所有的映射模型-->
+
+<litepal>
+    <dbname value="collection" ></dbname>
+
+    <version value="1" ></version>
+
+   <!-- 如果你想删除某一张表的话，操作也很简单，在litepal.xml中的映射列表中将相应的类删除，表自然也就不存在了-->
+    <list>
+        <mapping class="com.hxzk_bj_demo.javabean.CollectionBean"></mapping>
+        <mapping class="com.hxzk_bj_demo.javabean.NoteBookBean"></mapping>
+
+    </list>
+</litepal>

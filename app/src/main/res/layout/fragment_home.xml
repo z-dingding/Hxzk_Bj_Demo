@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linear_root_home"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <!--clipChildren : 是否限制子View在其范围内，当我们将其值设置为false后那么在子控件的高度高于父控件时也会完全显示,而不会被压缩，-->
+    <!--(上面中间的按钮超过上面的阴影线，依旧可以正常显示），默认的时候是true，-->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipChildren="false">
+        <com.wenld.wenldbanner.AutoTurnViewPager
+            android:id="@+id/autoTurnViewPager"
+            android:layout_width="@dimen/dp_250"
+            android:clipToPadding="false"
+            android:clipChildren="false"
+            android:layout_height="@dimen/dp_180"
+            android:layout_gravity="center"
+            />
+
+        <com.wenld.wenldbanner.DefaultPageIndicator
+            android:id="@+id/defaultPageIndicator"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:background="#35000000"
+            android:layout_gravity="bottom"
+            android:layout_height="@dimen/dp_40"/>
+    </FrameLayout>
+
+
+
+
+</LinearLayout>

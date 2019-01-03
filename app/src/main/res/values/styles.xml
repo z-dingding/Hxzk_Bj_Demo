@@ -1,0 +1,87 @@
+<resources>
+
+
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar"></style>
+    <style name="TranslucentTheme" parent="AppTheme">
+        <!--colorPrimary:这个属性是你的导航栏的属性颜色,应用的主要色调，actionBar默认使用该颜色，Toolbar导航栏的底色;
+        colorPrimaryDark：这个属性则是你的—通知栏的颜色,状态栏默认使用该颜色
+        colorAccent—控件选中后颜色-->
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+
+    <!-- ProgressBar 样式 -->
+    <style name="mProgress_circle">
+        <item name="android:indeterminateDrawable">@drawable/xdg_progressbar_circle</item>
+        <item name="android:minWidth">25dp</item>
+        <item name="android:minHeight">25dp</item>
+        <item name="android:maxWidth">60dp</item>
+        <item name="android:maxHeight">60dp</item>
+    </style>
+
+
+
+    <style name="Dialog_image" parent="android:style/Theme.Dialog">
+        <!-- 背景颜色及透明程度 -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!-- 是否有标题 -->
+        <item name="android:windowNoTitle">true</item>
+        <!-- 是否浮现在activity之上 -->
+        <item name="android:windowIsFloating">true</item>
+        <!-- 是否模糊 -->
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+
+    <!-- toolbar弹出菜单样式,设置在toolbar之下-->
+    <style name="ToolbarPopupTheme" parent="@style/ThemeOverlay.AppCompat.Light"><!-- light会使字体为黑，背景为白色 -->
+        <item name="actionOverflowMenuStyle">@style/OverflowMenuStyle
+        </item> <!--新增一个item，用于控制menu-->
+    </style>
+    <style name="OverflowMenuStyle" parent="Widget.AppCompat.Light.PopupMenu.Overflow">
+        <item name="overlapAnchor">false</item>  <!--把该属性改为false即可使menu位置位于toolbar之下-->
+    </style>
+
+
+
+    <!-- 启动页的样式，解决白屏使用且实现app秒开(并不是真正的秒开，只是显示效果)-->
+    <style name="welcometheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:background">@drawable/whitescreen</item>
+    </style>
+
+
+
+
+
+
+
+    <!--&lt;!&ndash;夜间模式   Theme.AppCompat.NoActionBar&ndash;&gt;-->
+    <!--<style name="AppTheme_Night" parent="AppTheme_Night_Base" />-->
+    <!--<style name="AppTheme_Night_Base" parent="@style/Theme.AppCompat.NoActionBar">-->
+        <!--&lt;!&ndash; Customize your theme here. &ndash;&gt;-->
+        <!--<item name="colorPrimaryDark">@color/colorPrimaryDark_Night</item>-->
+        <!--<item name="colorAccent">@color/colorAccent_Night</item>-->
+        <!--<item name="colorPrimary">@color/colorPrimary_Night</item>-->
+        <!--<item name="search_icon">@mipmap/ic_search_black_36dp</item>-->
+    <!--</style>-->
+
+    <!--&lt;!&ndash;日间模式 &ndash;&gt;-->
+    <!--<style name="AppTheme_Light" parent="AppTheme_Light.Base" />-->
+
+    <!--<style name="AppTheme_Light.Base" parent="@style/Theme.AppCompat.Light.NoActionBar">-->
+        <!--<item name="colorPrimary">@color/colorPrimary_Light</item> &lt;!&ndash; 导航栏 &ndash;&gt;-->
+        <!--<item name="colorPrimaryDark">@color/colorPrimaryDark_Light</item>&lt;!&ndash; 状态栏 &ndash;&gt;-->
+        <!--<item name="colorAccent">@color/colorAccent_Light</item>-->
+        <!--<item name="search_icon">@mipmap/ic_search_white_36dp</item>-->
+    <!--</style>-->
+
+
+
+
+
+</resources>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:gravity="center">
+<!--    <android.support.design.widget.TabLayout
+        app:tabIndicatorColor="@color/red"
+        app:tabSelectedTextColor="@color/green"
+        android:id="@+id/fm_general_tablyout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/fm_general_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/fm_general_tablyout" />-->
+
+    <TextView
+        android:id="@+id/tv_prompt"
+        android:text="这是我的"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
+</LinearLayout>
