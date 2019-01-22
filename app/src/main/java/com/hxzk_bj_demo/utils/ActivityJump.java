@@ -31,7 +31,7 @@ public class ActivityJump {
 	 * */
 	public static void NormalJump(Context mContext, Class<?> cls) {
 		//如果当前activity是栈顶则不添加
-		if (! ((Activity) mContext).equals(getScreenManager().topActivity())) {
+		if (!((Activity) mContext).equals(getScreenManager().topActivity())) {
 			getScreenManager().pushActivity((Activity)mContext);
 		}
 		Intent intent = new Intent(mContext, cls);

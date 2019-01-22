@@ -3,16 +3,21 @@ package com.hxzk_bj_demo.ui.adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
-import android.support.v4.util.LruCache;
-import android.support.v4.view.PagerAdapter;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.hxzk_bj_demo.R;
+
+import androidx.collection.LruCache;
+import androidx.viewpager.widget.PagerAdapter;
 
 /**
  * Created by ${赵江涛} on 2018-1-11.
@@ -55,7 +60,15 @@ public class PagerAdapterBanner extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_vp_home,container,false);
         ImageView imageView = (ImageView) view.findViewById(R.id.iv_item_vp_home);
-        Glide.with(mContext).load(imgUrl[position]).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher_round).into(imageView);
+
+
+        //升级到4.8版本之后的新写法
+        RequestOptions requestOptions = new RequestOptions()
+                .placeholder(R.mipmap.ic_launcher)
+                .error(R.drawable.errorview)
+                .fallback(new ColorDrawable(Color.RED));
+
+        Glide.with(mContext).load(imgUrl[position]).apply(requestOptions).into(imageView);
         container.addView(view);
         return view;
     }

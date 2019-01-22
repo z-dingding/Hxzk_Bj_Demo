@@ -1,8 +1,10 @@
 package com.hxzk_bj_demo.widget;
 
 import android.content.Context;
-import android.support.v4.widget.DrawerLayout;
+
 import android.util.AttributeSet;
+
+import androidx.drawerlayout.widget.DrawerLayout;
 
 /**
  * Created by ${赵江涛} on 2017-12-28.

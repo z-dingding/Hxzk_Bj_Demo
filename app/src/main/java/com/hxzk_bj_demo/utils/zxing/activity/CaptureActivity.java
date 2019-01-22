@@ -17,8 +17,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Vibrator;
 import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -51,6 +50,9 @@ import com.hxzk_bj_demo.utils.zxing.view.ViewfinderView;
 import java.io.IOException;
 import java.util.Hashtable;
 import java.util.Vector;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 
 /**

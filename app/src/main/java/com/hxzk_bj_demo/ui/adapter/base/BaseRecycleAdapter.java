@@ -1,7 +1,7 @@
 package com.hxzk_bj_demo.ui.adapter.base;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
+
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -11,6 +11,8 @@ import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
 import org.litepal.crud.DataSupport;
 
 import java.util.List;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by leeandy007 on 2017/6/15.

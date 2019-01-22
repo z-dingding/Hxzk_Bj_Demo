@@ -1,25 +1,15 @@
 package com.hxzk_bj_demo.ui.activity;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
-import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.StyleSpan;
@@ -27,8 +17,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
-import android.widget.Toast;
-
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.common.MyApplication;
 import com.hxzk_bj_demo.mvp.view.NoteBookActivity;
@@ -42,15 +32,15 @@ import com.hxzk_bj_demo.utils.LanguageUtil;
 import com.hxzk_bj_demo.utils.LogUtil;
 import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
 import com.tbruyelle.rxpermissions2.RxPermissions;
-
-
 import java.util.ArrayList;
 import java.util.List;
-
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
-
 import static com.hxzk_bj_demo.R.id.vp_main;
 
 
@@ -94,7 +84,7 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
     }
 
 
-    @SuppressLint("ResourceType")
+
     @Override
     protected void initView() {
         super.initView();
@@ -320,7 +310,7 @@ class MyClickableSpan extends ClickableSpan{
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        public boolean onNavigationItemSelected( MenuItem item) {
             //item.getOrder()对应menu里的orderInCategory属性值
                     vp_Main.setCurrentItem(item.getOrder());
             return true;
@@ -400,9 +390,9 @@ class MyClickableSpan extends ClickableSpan{
         /**
          * 处理二维码扫描结果
          */
-//        if (requestCode == REQUEST_CODE) {
-//          homeFrag.onActivityResult(requestCode,resultCode,data);
-//        }
+        if (requestCode == REQUEST_CODE) {
+          homeFrag.onActivityResult(requestCode,resultCode,data);
+        }
 
     }
 }

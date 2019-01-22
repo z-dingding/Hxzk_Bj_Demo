@@ -1,26 +1,28 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-
     repositories {
         google()
-        jcenter()
         mavenCentral()
+        jcenter()
     }
+
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.4'
+        classpath 'com.android.tools.build:gradle:3.2.1'
         //Butterknife插件依赖
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+        classpath 'com.jakewharton:butterknife-gradle-plugin:10.0.0'
+
     }
+
 }
 
 
 
 allprojects {
     repositories {
-
         google()
-        jcenter()
         mavenCentral()
+        jcenter()
+
         //BRVAH 框架引入
         maven { url "https://jitpack.io" }
         //Banner
@@ -34,8 +36,7 @@ task clean(type: Delete) {
 }
 
 
-dependencies {
-}
+
 
 //Android 统一版本号管理
 ext {

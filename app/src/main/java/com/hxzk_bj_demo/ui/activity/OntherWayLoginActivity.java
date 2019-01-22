@@ -2,24 +2,19 @@ package com.hxzk_bj_demo.ui.activity;
 
 import android.app.Notification;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Intent;
+import android.content.Context;
 import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
 import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.ui.activity.base.BaseBussActivity;
 import com.hxzk_bj_demo.utils.ActivityJump;
 import com.hxzk_bj_demo.utils.CountDownTimerUtil;
 import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
-
 import java.util.Random;
-
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -103,7 +98,7 @@ public class OntherWayLoginActivity extends BaseBussActivity {
     public void sendNotify(String verificationCode){
         // 创建通知栏管理工具
         NotificationManager barmanage = (NotificationManager)this 
-                .getSystemService(OntherWayLoginActivity.this.NOTIFICATION_SERVICE);
+                .getSystemService(NOTIFICATION_SERVICE);
         // 实例化通知栏构造器
         Notification.Builder builder = new Notification.Builder(
                 OntherWayLoginActivity.this);

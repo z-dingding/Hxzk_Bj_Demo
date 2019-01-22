@@ -4,9 +4,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Rect;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,6 +17,10 @@ import android.widget.TextView;
 
 import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.ui.adapter.CollectionAdapter;
+
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by tangyangkai on 16/6/12.
@@ -192,6 +194,7 @@ public class CustomRecyclerView extends RecyclerView {
      * 主要功能是计算拖动的位移量、更新背景、设置要显示的屏
      * true说明滚动尚未完成，false说明滚动已经完成。
      */
+    @Override
     public void computeScroll() {
         if (mScroller.computeScrollOffset()) {
             itemLayout.scrollTo(mScroller.getCurrX(), mScroller.getCurrY());

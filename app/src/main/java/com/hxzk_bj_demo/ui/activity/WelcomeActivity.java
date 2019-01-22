@@ -5,19 +5,18 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
-
 import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.utils.ActivityJump;
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * Created by Ding on 2017/12/24
  * 作用：欢迎界面
  */
 
-public class WelcomeActivity extends AppCompatActivity{
+public class WelcomeActivity extends AppCompatActivity {
 
     public static final String  sConstant ="cons";
     @Override

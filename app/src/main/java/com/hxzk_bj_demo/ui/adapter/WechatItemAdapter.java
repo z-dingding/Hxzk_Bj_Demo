@@ -1,9 +1,13 @@
 package com.hxzk_bj_demo.ui.adapter;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.hxzk_bj_demo.R;
@@ -63,25 +67,35 @@ public class WechatItemAdapter extends BaseQuickAdapter<InversBean.DataBean, Bas
                     if(helper.getPosition() % 2 == 0){//求余的结果,随机选择图片
                         item.setUrlPath("https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=4254193034,1760695166&fm=27&gp=0.jpg");
 
-                        Glide.with(mContext.getApplicationContext())
-                                .load(item.getUrlPath()) //加载图片的地址
+
+                        //升级到4.8版本之后的新写法
+                        RequestOptions requestOptions = new RequestOptions()
                                 .placeholder(R.drawable.lodingview)
                                 .error(R.drawable.errorview)
-                                //在此处设置了图片的大小
                                 .override(mImgWidth / 2, mImgWidth / 2)
-                                .crossFade(1000)//淡入淡出动画
+                                .fallback(new ColorDrawable(Color.RED));
+
+                        Glide.with(mContext.getApplicationContext())
+                                .load(item.getUrlPath()) //加载图片的地址
+                                .apply(requestOptions)
+                                //淡入淡出动画
+                                .transition(DrawableTransitionOptions.withCrossFade())
                                 .into((ImageView) helper.getView(R.id.img_wechat_style));
 
                     }else{
                         item.setUrlPath("https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1905162638,2896429914&fm=27&gp=0.jpg");
+                        //升级到4.8版本之后的新写法
+                        RequestOptions requestOptions = new RequestOptions()
+                                .placeholder(R.drawable.lodingview)
+                                .error(R.drawable.errorview)
+                                .override(mImgWidth / 2, mImgWidth / 2)
+                                .fallback(new ColorDrawable(Color.RED));
 
                         Glide.with(mContext.getApplicationContext())
                                 .load(item.getUrlPath())
-                                .placeholder(R.drawable.lodingview)
-                                .error(R.drawable.errorview)
-                                //在此处设置了图片的大小
-                                .override(mImgWidth / 2, mImgWidth / 2)
-                                .crossFade(1000)//淡入淡出动画
+                                .apply(requestOptions)
+                                //淡入淡出动画
+                                .transition(DrawableTransitionOptions.withCrossFade())
                                 .into((ImageView) helper.getView(R.id.img_wechat_style));
                     }
                 }

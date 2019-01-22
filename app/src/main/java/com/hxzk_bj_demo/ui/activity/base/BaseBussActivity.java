@@ -4,21 +4,23 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.support.design.widget.AppBarLayout;
-import android.support.v7.widget.Toolbar;
+
 import android.view.Menu;
 import android.view.MenuItem;
 
 import android.widget.Toast;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.common.MyApplication;
 import com.hxzk_bj_demo.utils.ActivityJump;
+import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
 import com.hxzk_bj_demo.utils.zxing.activity.CaptureActivity;
 import com.hxzk_bj_demo.widget.XDialog;
 
 import java.lang.reflect.Method;
+
+import androidx.appcompat.widget.Toolbar;
 
 
 /**
@@ -29,6 +31,8 @@ import java.lang.reflect.Method;
 public class BaseBussActivity extends BaseActivity {
 
     private static final String TAG = "BaseBussActivity";
+
+    public static final int REQUEST_CODE=0x1111;
 
     public Toolbar mToolbar;
 
@@ -209,25 +213,21 @@ public class BaseBussActivity extends BaseActivity {
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        String msg = "";
         switch (item.getItemId()) {
             case R.id.action_notifications:
-                msg += "点击了通知";
                 break;
             case R.id.toolbar_search:
-                msg += "点击了搜索";
+
                 break;
             case R.id.toolbar_qrcode:
-//                Intent intent = new Intent(_context, CaptureActivity.class);
-//                startActivityForResult(intent, REQUEST_CODE);
+                Intent intent = new Intent(_context, CaptureActivity.class);
+                startActivityForResult(intent,REQUEST_CODE);
                 break;
             case android.R.id.home:
-                msg += "home";
+
                 finishActivity();
                 break;
-        }
-        if (!msg.equals("")) {
-            Toast.makeText(_context, msg, Toast.LENGTH_SHORT).show();
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -247,8 +247,6 @@ public class BaseBussActivity extends BaseActivity {
     public void finishActivity() {
         ActivityJump.Back(this);
         animBack();
-
-
     }
 
     /**
@@ -281,8 +279,5 @@ public class BaseBussActivity extends BaseActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finishActivity();
-        animBack();
     }
-
-
 }

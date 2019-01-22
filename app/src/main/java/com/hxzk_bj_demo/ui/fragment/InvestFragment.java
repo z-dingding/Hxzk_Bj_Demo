@@ -1,26 +1,22 @@
 package com.hxzk_bj_demo.ui.fragment;
 
-import android.annotation.SuppressLint;
+
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.widget.NestedScrollView;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.chad.library.adapter.base.loadmore.LoadMoreView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.common.Const;
 import com.hxzk_bj_demo.javabean.CollectionBean;
@@ -29,8 +25,6 @@ import com.hxzk_bj_demo.network.HttpRequest;
 import com.hxzk_bj_demo.ui.adapter.WechatItemAdapter;
 import com.hxzk_bj_demo.ui.fragment.base.BaseFragment;
 import com.hxzk_bj_demo.utils.CalendarUtil;
-import com.hxzk_bj_demo.utils.LazyLoadFragment;
-import com.hxzk_bj_demo.utils.LogUtil;
 import com.hxzk_bj_demo.utils.PixelUtil;
 import com.hxzk_bj_demo.utils.SPUtils;
 import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
@@ -38,17 +32,17 @@ import com.wenld.wenldbanner.DefaultPageIndicator;
 import com.wenld.wenldbanner.WenldBanner;
 import com.wenld.wenldbanner.helper.Holder;
 import com.wenld.wenldbanner.helper.ViewHolder;
-
 import org.litepal.crud.DataSupport;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import butterknife.BindView;
+import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
@@ -194,10 +188,18 @@ public class InvestFragment extends BaseFragment implements SwipeRefreshLayout.O
                         @Override
                         public void run() {
                             try {
-                                final Bitmap myBitmap = Glide.with(context)
-                                        .load(data)
-                                        .asBitmap() //必须
+
+                                //升级到4.8版本之后的新写法
+                                RequestOptions requestOptions = new RequestOptions()
+                                        .placeholder(R.mipmap.ic_launcher)
+                                        .error(R.drawable.errorview)
                                         .centerCrop()
+                                        .fallback(new ColorDrawable(Color.RED));
+
+                                final Bitmap myBitmap = Glide.with(context)
+                                        .asBitmap() //升级到4.8必须放到这个位置
+                                        .load(data)
+                                        .apply(requestOptions)
                                         .into(500, 500)
                                         .get();
                                 if(myBitmap != null){

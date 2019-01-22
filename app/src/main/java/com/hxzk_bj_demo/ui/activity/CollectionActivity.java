@@ -1,19 +1,14 @@
 package com.hxzk_bj_demo.ui.activity;
-
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-
 import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.javabean.CollectionBean;
 import com.hxzk_bj_demo.ui.activity.base.BaseBussActivity;
 import com.hxzk_bj_demo.ui.adapter.CollectionAdapter;
 import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
 import com.hxzk_bj_demo.widget.CustomRecyclerView;
-
 import org.litepal.crud.DataSupport;
-
 import java.util.List;
-
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import butterknife.BindView;
 
 /**
@@ -54,7 +49,7 @@ public class CollectionActivity extends BaseBussActivity implements CustomRecycl
         if(mData.size() != 0){
             //给recyclerview填充数据
             CollectionAdapter mAdapter =new CollectionAdapter(CollectionActivity.this,mData);
-            LinearLayoutManager manager =new LinearLayoutManager(CollectionActivity.this,LinearLayoutManager.VERTICAL,false);
+           LinearLayoutManager manager =new LinearLayoutManager(CollectionActivity.this,LinearLayoutManager.VERTICAL,false);
             mRecyclerCollect.addItemDecoration(new DividerItemDecoration(CollectionActivity.this, DividerItemDecoration.VERTICAL));
             mRecyclerCollect.setLayoutManager(manager);
             mRecyclerCollect.setAdapter(mAdapter);

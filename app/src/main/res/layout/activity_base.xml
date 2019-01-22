@@ -15,13 +15,13 @@
         android:focusableInTouchMode="true"
         android:id="@+id/linearLayout" />
 
-    <android.support.design.widget.AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbarlayout_base"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true">
       <!--  ?attr/这种样式允许你使用当前theme中任意的attribute-->
-        <android.support.v7.widget.Toolbar
+        <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar_main"
             android:background="@color/colorPrimary"
             toolbar:popupTheme="@style/ToolbarPopupTheme"
@@ -30,8 +30,8 @@
             android:paddingTop="@dimen/padding_top"
             android:gravity="center_horizontal"
            >
-        </android.support.v7.widget.Toolbar>
-    </android.support.design.widget.AppBarLayout>
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
         android:id="@+id/layout_contentview_base"

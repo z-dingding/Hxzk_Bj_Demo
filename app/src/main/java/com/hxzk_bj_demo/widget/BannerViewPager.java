@@ -1,9 +1,11 @@
 package com.hxzk_bj_demo.widget;
 
 import android.content.Context;
-import android.support.v4.view.ViewPager;
+
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+
+import androidx.viewpager.widget.ViewPager;
 
 /**
  * Created by ${赵江涛} on 2018-1-11.

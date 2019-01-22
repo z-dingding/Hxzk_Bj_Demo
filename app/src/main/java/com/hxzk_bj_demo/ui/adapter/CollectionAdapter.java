@@ -1,7 +1,9 @@
 package com.hxzk_bj_demo.ui.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
+
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.request.RequestOptions;
 import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.javabean.CollectionBean;
 import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
@@ -18,6 +22,8 @@ import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by ${赵江涛} on 2018-1-25.
@@ -51,13 +57,20 @@ public class CollectionAdapter extends RecyclerView.Adapter {
         MyViewHolder viewHolder = (MyViewHolder) holder;
         CollectionBean collectionBean =lists.get(position);
 
-        Glide.with(context.getApplicationContext())
-                .load(lists.get(position).getImgUrl()) //加载图片的地址
+        //升级到4.8版本之后的新写法
+        RequestOptions requestOptions = new RequestOptions()
                 .placeholder(R.mipmap.ic_launcher)
                 .error(R.drawable.errorview)
-                //在此处设置了图片的大小
-                .crossFade(1000)//淡入淡出动画
-                .into(viewHolder.imgPhoto);
+                .error(new ColorDrawable(Color.BLUE))
+                .fallback(new ColorDrawable(Color.RED));
+
+
+        Glide.with(context.getApplicationContext())
+                .load(lists.get(position).getImgUrl()) //加载图片的地址
+               .apply(requestOptions)
+                //淡入淡出动画
+                .transition(DrawableTransitionOptions.withCrossFade())
+               .into(viewHolder.imgPhoto);
         viewHolder.tvName.setText(collectionBean.getEntName());
         viewHolder.tvTime.setText(collectionBean.getTiem());
         viewHolder.tvAddress.setText(collectionBean.getEntAddress());

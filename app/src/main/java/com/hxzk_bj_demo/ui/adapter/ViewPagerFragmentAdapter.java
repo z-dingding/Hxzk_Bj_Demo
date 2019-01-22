@@ -1,10 +1,12 @@
 package com.hxzk_bj_demo.ui.adapter;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+
 
 import java.util.ArrayList;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 
 /**
  * Created by Ding on 2017/5/25.

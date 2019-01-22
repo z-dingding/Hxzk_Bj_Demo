@@ -2,20 +2,19 @@ package com.hxzk_bj_demo.utils;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import java.util.List;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
 
 /**
  * 作者：created by ${zjt} on 2018/10/12
  * 描述:
  */
-public abstract class LazyLoadFragment extends android.support.v4.app.Fragment {
+public abstract class LazyLoadFragment extends Fragment {
 
 
     /**当前Fragment是否首次可见，默认是首次可见**/
@@ -135,7 +134,7 @@ public abstract class LazyLoadFragment extends android.support.v4.app.Fragment {
      */
     private void dispatchChildFragmentVisibleState(boolean visible) {
         FragmentManager childFragmentManager = getChildFragmentManager();
-        @SuppressLint("RestrictedApi") List<android.support.v4.app.Fragment> fragments = childFragmentManager.getFragments();
+        @SuppressLint("RestrictedApi") List<Fragment> fragments = childFragmentManager.getFragments();
         if(fragments != null){
             if (!fragments.isEmpty()) {
                 for (Fragment child : fragments) {

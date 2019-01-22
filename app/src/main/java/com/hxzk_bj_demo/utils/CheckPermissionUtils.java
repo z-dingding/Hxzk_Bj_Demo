@@ -3,10 +3,12 @@ package com.hxzk_bj_demo.utils;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.support.v4.content.ContextCompat;
+
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.core.content.ContextCompat;
 
 /**
  * Created by Apple on 2016/12/3.

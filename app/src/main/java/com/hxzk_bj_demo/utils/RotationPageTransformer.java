@@ -1,14 +1,15 @@
 package com.hxzk_bj_demo.utils;
 
-import android.support.v4.view.ViewPager.PageTransformer;
 import android.view.View;
+
+import androidx.viewpager.widget.ViewPager;
 
 /**
  * Created by ${赵江涛} on 2018-1-11.
  * 作用:实现3D动画效果的动画
  */
 
-public class RotationPageTransformer implements PageTransformer {
+public class RotationPageTransformer implements ViewPager.PageTransformer {
 
     private static final float MIN_SCALE=0.85f;
 

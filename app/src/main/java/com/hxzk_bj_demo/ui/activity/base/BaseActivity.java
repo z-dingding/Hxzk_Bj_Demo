@@ -6,20 +6,20 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.common.MyApplication;
 import com.hxzk_bj_demo.utils.ActivityJump;
 import com.hxzk_bj_demo.utils.LanguageUtil;
 import com.hxzk_bj_demo.utils.LogUtil;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import butterknife.ButterKnife;
 
 /**
@@ -30,7 +30,7 @@ import butterknife.ButterKnife;
 public abstract class BaseActivity extends AppCompatActivity {
     private static final String TAG = "BaseActivity";
 
-    protected  Activity _context;
+    protected  static Activity _context;
     AppBarLayout mAppBarLayout ;
 
 
@@ -48,8 +48,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         //将当前界面子类的Activity添加到栈中
         ActivityJump.AddToTack(this);
         //打印当前活动的activity
-       // LogUtil.e(TAG, "{当前活动的activity}"+getClass().getSimpleName());
-        //栈中的activity
+        LogUtil.e(TAG, "{当前活动的activity}"+getClass().getSimpleName());
+        //打印栈中的activity
         ActivityJump.LogAllActivityNames();
         //竖屏
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);

@@ -1,22 +1,19 @@
 package com.hxzk_bj_demo.mvp.view;
 
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
-
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.mvp.presenter.NoteBookPresenter;
 import com.hxzk_bj_demo.mvp.presenter.NoteBookPresenterCompl;
 import com.hxzk_bj_demo.ui.activity.base.BaseBussActivity;
 import com.hxzk_bj_demo.ui.adapter.NotesViewHolder;
-
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -93,10 +90,12 @@ public class NoteBookActivity extends BaseBussActivity implements NoteBookView {
     }
 
 
+
     @Override
     public void showSnackBar(String msg) {
         //参数一与toast有所不同
-        Snackbar.make(mRealtive_Notebook, msg, Toast.LENGTH_SHORT).show();
+        //Snackbar.make(mRealtive_Notebook, msg,Toast.LENGTH_LONG).show();
+
     }
 
 

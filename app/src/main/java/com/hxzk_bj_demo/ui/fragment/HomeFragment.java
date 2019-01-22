@@ -1,31 +1,29 @@
 package com.hxzk_bj_demo.ui.fragment;
 
-import android.annotation.SuppressLint;
+
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-
 import com.bumptech.glide.Glide;
 import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.other.ZoomOutPageTransformer;
-import com.hxzk_bj_demo.ui.activity.WelcomeActivity;
 import com.hxzk_bj_demo.ui.fragment.base.BaseFragment;
+import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
 import com.wenld.wenldbanner.AutoTurnViewPager;
 import com.wenld.wenldbanner.DefaultPageIndicator;
 import com.wenld.wenldbanner.helper.Holder;
 import com.wenld.wenldbanner.helper.UIContact;
 import com.wenld.wenldbanner.helper.ViewHolder;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
 import butterknife.BindView;
 
 
@@ -111,9 +109,9 @@ public class HomeFragment extends BaseFragment {
                         public void run() {
                             try {
                                 final Bitmap myBitmap = Glide.with(context)
+                                      //  .centerCrop()
+                                        .asBitmap() //必须
                                        .load(data)
-                                       .asBitmap() //必须
-                                       .centerCrop()
                                       .into(500, 500)
                                        .get();
                                 if(myBitmap != null){
@@ -162,6 +160,18 @@ public class HomeFragment extends BaseFragment {
 
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (null != data) {
+            Bundle bundle = data.getExtras();
+            if (bundle == null) {
+                return;
+            }
+            String scanResult = bundle.getString("qr_scan_result");
+            ToastCustomUtil.showLongToast("扫码结果是:" + scanResult);
+        }
+    }
 }
 
 

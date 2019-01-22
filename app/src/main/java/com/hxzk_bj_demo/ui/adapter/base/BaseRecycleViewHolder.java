@@ -1,8 +1,9 @@
 package com.hxzk_bj_demo.ui.adapter.base;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by leeandy007 on 2017/6/15.
