@@ -5,21 +5,21 @@
         <item
             android:id="@+id/theme"
             android:icon="@mipmap/ic_launcher"
-            android:title="更改主题"/>
+            android:title="@string/theme"/>
     <item
         android:id="@+id/favorite"
         android:icon="@mipmap/ic_launcher"
-        android:title="收藏"/>
+        android:title="@string/favorite"/>
     <item
         android:id="@+id/notebook"
         android:icon="@mipmap/ic_launcher"
-        android:title="记事本"/>
+        android:title="@string/notebook"/>
     </group>
     <group android:id="@+id/dividerTwo">
     <item
         android:id="@+id/photo"
         android:icon="@mipmap/ic_launcher"
-        android:title="相册"/>
+        android:title="@string/photo"/>
     <item
         android:id="@+id/settting"
         android:icon="@mipmap/ic_launcher"
@@ -28,5 +28,5 @@
     <item
         android:id="@+id/loginout"
         android:icon="@mipmap/ic_launcher"
-        android:title="退出登录"/>
+        android:title="@string/loginout"/>
 </menu>

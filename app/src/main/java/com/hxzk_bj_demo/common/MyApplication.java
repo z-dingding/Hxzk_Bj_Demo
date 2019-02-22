@@ -1,20 +1,33 @@
 package com.hxzk_bj_demo.common;
 
+import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
 
 import com.franmontiel.persistentcookiejar.ClearableCookieJar;
 import com.franmontiel.persistentcookiejar.PersistentCookieJar;
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
+import com.hxzk_bj_demo.ui.activity.MainActivity;
+import com.hxzk_bj_demo.utils.LanguageUtil;
 import com.hxzk_bj_demo.utils.SPUtils;
 import com.squareup.leakcanary.LeakCanary;
 
 
 import org.litepal.LitePalApplication;
 
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
+import androidx.appcompat.app.AppCompatDelegate;
+import butterknife.internal.Utils;
 import okhttp3.OkHttpClient;
+
+import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO;
+import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES;
+import static com.hxzk_bj_demo.utils.LanguageUtil.getAppLocale;
+import static com.hxzk_bj_demo.utils.LanguageUtil.isSameWithSetting;
+import static com.hxzk_bj_demo.utils.LanguageUtil.setLocale;
 
 /**
  * Created by ${赵江涛} on 2017-12-21.
@@ -57,7 +70,74 @@ public class MyApplication extends LitePalApplication {
         httpClientBuilder.cookieJar(cookieJar);
 
 
+        //每次程序启动重新设置上次保存的theme
+        if(getAppTheme()){
+            //设置为夜间模式，可直接调用
+            AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES);
+        }else{
+            //设置为白天模式
+            AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_NO);
+        }
+
+//        String lan = LanguageUtil.getAppLanguage(getAppContext());
+//        if(lan.equals("zh") || !lan.equals("en") ){
+//            setLocale(appContext,Locale.SIMPLIFIED_CHINESE);
+//        }else if(lan.equals("en") || !lan.equals("zh")){
+//            setLocale(appContext,Locale.US);
+//        }
+        //注册Activity生命周期监听回调
+        registerActivityLifecycleCallbacks(callbacks);
+
     }
+
+    ActivityLifecycleCallbacks callbacks = new ActivityLifecycleCallbacks() {
+        @Override
+        public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+
+            if (!isSameWithSetting(activity)) {
+                String lan = LanguageUtil.getAppLanguage(activity);
+                if(lan.equals("zh") || !lan.equals("en") ){
+                    setLocale(appContext,Locale.SIMPLIFIED_CHINESE);
+                }else if(lan.equals("en") || !lan.equals("zh")){
+                    setLocale(appContext,Locale.US);
+                }
+            }
+
+        }
+
+        @Override
+        public void onActivityStarted(Activity activity) {
+
+        }
+
+        @Override
+        public void onActivityResumed(Activity activity) {
+
+        }
+
+        @Override
+        public void onActivityPaused(Activity activity) {
+
+        }
+
+        @Override
+        public void onActivityStopped(Activity activity) {
+
+        }
+
+        @Override
+        public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+
+        }
+
+        @Override
+        public void onActivityDestroyed(Activity activity) {
+
+        }
+
+        //其他生命周期重载方法。
+    };
+
 
     /**
      * 获取全局的上下文对象

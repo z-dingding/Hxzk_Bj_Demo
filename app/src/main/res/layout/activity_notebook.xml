@@ -19,7 +19,7 @@
             android:layout_height="60dp"
             android:padding="15dp"/>
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_notebook"
             android:layout_width="match_parent"
            android:layout_height="match_parent"
@@ -30,7 +30,7 @@
     <!--backgroundTint 底色,点击颜色
     app:elevation="6dp"//显示的阴影大小
     app:pressedTranslationZ="12dp"//点击时的阴影大小-->
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add_notebook"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

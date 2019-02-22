@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
+        <!--无标题-->
+        <item name="windowNoTitle">true</item>
+        <!--隐藏原来的ActionBar，为了在本project中使用ToolBar-->
+        <item name="windowActionBar">false</item>
+
+    </style>
+    <style name="TranslucentTheme" parent="AppTheme">
+        <!--colorPrimary:这个属性是你的导航栏的属性颜色,应用的主要色调，actionBar默认使用该颜色，
+        Toolbar导航栏的底色;
+        colorPrimaryDark：这个属性则是你的—通知栏的颜色,状态栏默认使用该颜色;
+        colorAccent—控件选中后颜色-->
+      <!-- 注意采用DayNight这种默认的主题,其那我们自己定义的就是无效的-->
+        <item name="colorPrimary">@color/colorPrimary_Night</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark_Night</item>
+        <item name="colorAccent">@color/colorAccent_Night</item>
+    </style>
+
+
+
+</resources>

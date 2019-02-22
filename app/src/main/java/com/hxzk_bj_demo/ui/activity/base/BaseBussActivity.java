@@ -65,12 +65,6 @@ public class BaseBussActivity extends BaseActivity {
             }
         }
 
-//        if(MyApplication.getAppTheme()){
-//            mToolbar.setBackgroundColor(R.color.colorPrimary_Night);
-//        }else{
-//            mToolbar.setBackgroundColor(R.color.colorPrimary_Light);
-//        }
-
     }
 
 

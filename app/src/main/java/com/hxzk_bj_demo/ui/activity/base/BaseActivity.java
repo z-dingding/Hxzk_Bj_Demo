@@ -14,13 +14,18 @@ import android.widget.LinearLayout;
 import com.google.android.material.appbar.AppBarLayout;
 import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.common.MyApplication;
+import com.hxzk_bj_demo.ui.activity.MainActivity;
 import com.hxzk_bj_demo.utils.ActivityJump;
 import com.hxzk_bj_demo.utils.LanguageUtil;
 import com.hxzk_bj_demo.utils.LogUtil;
 
+import java.util.Locale;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import butterknife.ButterKnife;
+
+import static com.hxzk_bj_demo.utils.LanguageUtil.setLocale;
 
 /**
  * Created by Ding on 2017/12/24
@@ -39,11 +44,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        if(MyApplication.getAppTheme()){
-//            setTheme(R.style.AppTheme_Night);
-//        }else{
-//            setTheme(R.style.AppTheme_Light);
-//        }
+
 
         //将当前界面子类的Activity添加到栈中
         ActivityJump.AddToTack(this);
@@ -53,6 +54,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         ActivityJump.LogAllActivityNames();
         //竖屏
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+
 
         setContentView(R.layout.activity_base);
         layout_ContentView_Base= (LinearLayout) findViewById(R.id.layout_contentview_base);
@@ -64,6 +67,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             //addStatusBarView();
             //绑定Butterknife
             ButterKnife.bind(this);
+
             initView();
             initEvent();
             initData();

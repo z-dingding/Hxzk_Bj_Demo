@@ -1,7 +1,11 @@
 package com.hxzk_bj_demo.ui.activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -13,6 +17,7 @@ import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.StyleSpan;
+import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -34,14 +39,22 @@ import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
+import butterknife.internal.Utils;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
+
+import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO;
+import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES;
 import static com.hxzk_bj_demo.R.id.vp_main;
+import static com.hxzk_bj_demo.utils.LanguageUtil.saveLanguageSetting;
+import static com.hxzk_bj_demo.utils.LanguageUtil.setLocale;
 
 
 //注意因为BaseFragmeng中定义了FragmentCallBack接口MainActiviyz中用到了Fragment所以要实现，否则报未知错误
@@ -88,16 +101,10 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
     @Override
     protected void initView() {
         super.initView();
-//        if(MyApplication.getAppTheme()){
-//            bav_Main.setBackgroundColor(R.color.colorPrimary_Night);
-//        }else{
-//            bav_Main.setBackgroundColor(R.color.colorPrimary_Light);
-//        }
-
 
         //初始化DrawerLayout
         mDrawer= (DrawerLayout) findViewById(R.id.drawerlayout_main);
-        initToolbar(R.drawable.back, "首页");
+        initToolbar(R.drawable.back, getResources().getString(R.string.home));
         //让图片显示本来颜色
         navigationview_Main.setItemIconTintList(null);
 
@@ -150,14 +157,17 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
                 switch (item.getItemId()) {
                     case R.id.theme:
                         boolean boolTheme= MyApplication.getAppTheme();
-                        LogUtil.e(TAG,"{boolTheme==}"+boolTheme);
-
                         //false为白天true为黑夜
                         if(boolTheme){
                             MyApplication.setAppTheme(false);
-
+                            //设置为白天模式
+                            getDelegate().setLocalNightMode(MODE_NIGHT_NO);
+                            recreate();
                         }else{
                             MyApplication.setAppTheme(true);
+                            //设置为夜间模式，可直接调用
+                            getDelegate().setLocalNightMode(MODE_NIGHT_YES);
+                            recreate();
                         }
                        MainActivity.this.recreate();
 
@@ -177,16 +187,21 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
                         break;
 
                     case R.id.settting:
-                        LanguageUtil.set(true,MainActivity.this);
-
+                        String lan = LanguageUtil.getAppLanguage(MainActivity.this);
+                        if(lan.equals("zh") || !lan.equals("en") ){
+                            setLocale(MainActivity.this,Locale.SIMPLIFIED_CHINESE);
+                        }else if(lan.equals("en") || !lan.equals("zh")){
+                            setLocale(MainActivity.this,Locale.US);
+                        }
                         break;
-
                 }
                 return true;
             }
         });
         MultPermission();
     }
+
+
 
 
 
@@ -235,9 +250,6 @@ class MyClickableSpan extends ClickableSpan{
     @Override
     protected void initData() {
         super.initData();
-//        homeFrag = new HomeFragment(_context, R.layout.fragment_home);
-//        investFrag = new InvestFragment(_context, R.layout.fragment_invest);
-//        userFrag = new UserFragment(_context, R.layout.fragment_user);
         homeFrag=HomeFragment.getInstance(HomeFragment.class,null);
         investFrag=InvestFragment.getInstance(HomeFragment.class,null);
         userFrag=UserFragment.getInstance(HomeFragment.class,null);
@@ -265,6 +277,7 @@ class MyClickableSpan extends ClickableSpan{
 
         }
 
+        @SuppressLint("ResourceType")
         @Override
         public void onPageSelected(int position) {
             if (menuItem != null) {
@@ -274,14 +287,14 @@ class MyClickableSpan extends ClickableSpan{
             }
             switch (position){
                 case 0:
-                    mToolbar.setTitle("首页");
+                    mToolbar.setTitle(getResources().getString(R.string.home));
                     fragmentFlag=0;
                     isShowMenu = true;
                     getWindow().invalidatePanelMenu(Window.FEATURE_OPTIONS_PANEL);
                     invalidateOptionsMenu();
                     break;
                   case 1:
-                      mToolbar.setTitle("投资");
+                      mToolbar.setTitle(getResources().getString(R.string.investment));
                       fragmentFlag=1;
                       isShowMenu = true;
                       getWindow().invalidatePanelMenu(Window.FEATURE_OPTIONS_PANEL);
@@ -289,7 +302,7 @@ class MyClickableSpan extends ClickableSpan{
                 break;
 
                   case 2:
-                      mToolbar.setTitle("我的");
+                      mToolbar.setTitle(getResources().getString(R.string.mine));
                       fragmentFlag=2;
                       isShowMenu = false;
                      getWindow().invalidatePanelMenu(Window.FEATURE_OPTIONS_PANEL);

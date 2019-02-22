@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">random</string>
+
+
+
+    <!--====================================请求网络相关字符=============================-->
+    <string name="empty_network_error">Network error, click retry!</string>
+    <string name="empty_no_data">No data requested, click retry...</string>
+    <string name="load_more_error">Failed to load more data!</string>
+
+
+    <!--====================================二维码相关字符=============================-->
+    <string name="encode_qrcode">Generate the qr code</string>
+    <string name="dencode_qrcode">Scan the qr code</string>
+    <string name="code_text">Please enter the text information to generate the qr code</string>
+    <string name="qrcodetext">The scan results are shown here</string>
+
+
+    <!--=====================================底部导航栏字符=============================-->
+    <string name="home">home</string>
+    <string name="investment">investment</string>
+    <string name="mine">mine</string>
+
+
+    <!--=====================================登录界面字符=============================-->
+    <string name="login_otherwaylogin">Try temporary login?</string>
+
+
+    <!--=====================================左侧滑菜单字符=============================-->
+    <string name="theme">change theme</string>
+    <string name="favorite">collection</string>
+    <string name="notebook">notebook</string>
+    <string name="photo">photo album</string>
+    <string name="changelanguage">Switch between Chinese and English</string>
+    <string name="loginout">loginout</string>
+</resources>

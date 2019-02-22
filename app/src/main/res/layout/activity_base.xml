@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <!-- 使状态栏和标题栏分离,不让布局延伸到状态栏 fitsSystemWindows-->
-
+    android:fitsSystemWindows="true"
     <!-- 当之有一个EditText或者AutoCompleteTextView的时候，进入画面时是默认得到焦点的。 要想去除焦点，可以在auto之前加一个0像素的layout，并设置他先得到焦点。-->
     <LinearLayout
         android:orientation="horizontal"
@@ -19,16 +19,17 @@
         android:id="@+id/appbarlayout_base"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true">
+      >
       <!--  ?attr/这种样式允许你使用当前theme中任意的attribute-->
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar_main"
-            android:background="@color/colorPrimary"
+            android:background="?attr/colorPrimary"
             toolbar:popupTheme="@style/ToolbarPopupTheme"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/padding_top"
             android:gravity="center_horizontal"
+
            >
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>

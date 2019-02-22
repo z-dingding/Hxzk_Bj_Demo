@@ -58,7 +58,7 @@ transitionName :共享元素,activity跳转时用的
     android:id="@+id/img_wechat_style"
     android:layout_width="0dp"
     android:layout_weight="1"
-    android:transitionName="@string/transition_wechat_img"
+    android:transitionName="微信精选"
     android:layout_height="wrap_content"
     android:src="@drawable/morenimg"
     android:scaleType="centerCrop"/>

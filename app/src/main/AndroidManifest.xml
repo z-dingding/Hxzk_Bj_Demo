@@ -7,6 +7,8 @@
     <!-- ======================授权访问网络（HttpUtil）========================== -->
     <!-- 允许一个程序访问精良位置(如GPS)  -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!--访问CellID或WiFi,只要当前设备可以接收到基站的服务信号，便可获得位置信息。-->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <!-- 访问电话状态 -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <!-- ======================授权访问网络（MyWebView）========================== -->
@@ -61,20 +63,28 @@
             </intent-filter>
         </activity>
         <!--  登录界面  -->
-        <activity android:name=".ui.activity.LoginActivity"/>
+        <activity android:name=".ui.activity.LoginActivity"
+            android:configChanges="locale"/>
         <!--  主页面  -->
         <activity android:name=".ui.activity.MainActivity"
+            android:configChanges="locale"
                  ></activity>
         <!-- 收藏界面 -->
-        <activity android:name=".ui.activity.CollectionActivity"/>
+        <activity android:name=".ui.activity.CollectionActivity"
+            android:configChanges="locale"/>
         <!-- 笔记本 -->
-        <activity android:name=".mvp.view.NoteBookActivity"/>
+        <activity android:name=".mvp.view.NoteBookActivity"
+            android:configChanges="locale"/>
         <!-- 二维码界面     android:theme="@style/TranslucentTheme"-->
         <activity android:name=".utils.zxing.activity.CaptureActivity"
+            android:configChanges="locale"
             android:screenOrientation="portrait"
             />
         <!-- 其他方式登录 -->
-        <activity android:name=".ui.activity.OntherWayLoginActivity"/>
+        <activity android:name=".ui.activity.OntherWayLoginActivity"
+            android:configChanges="locale"/>
     </application>
+
+
 
 </manifest>
