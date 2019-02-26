@@ -8,13 +8,9 @@ import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import android.widget.Toast;
-
 import com.google.android.material.appbar.AppBarLayout;
 import com.hxzk_bj_demo.R;
-import com.hxzk_bj_demo.common.MyApplication;
-import com.hxzk_bj_demo.utils.ActivityJump;
-import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
+import com.hxzk_bj_demo.utils.activity.ActivityJump;
 import com.hxzk_bj_demo.utils.zxing.activity.CaptureActivity;
 import com.hxzk_bj_demo.widget.XDialog;
 

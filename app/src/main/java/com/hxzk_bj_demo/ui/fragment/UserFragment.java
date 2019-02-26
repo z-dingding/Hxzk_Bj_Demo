@@ -22,8 +22,6 @@ import java.util.ArrayList;
 
 public  class UserFragment extends BaseFragment {
 
-
-
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_user;

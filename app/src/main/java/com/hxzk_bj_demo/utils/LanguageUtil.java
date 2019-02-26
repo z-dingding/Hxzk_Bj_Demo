@@ -19,13 +19,17 @@ import static com.hxzk_bj_demo.common.Const.KEY_APP_LANGUAGE;
 
 /**
  * Created by ${赵江涛} on 2018-2-24.
- * 作用:
+ * 作用:中英文切换工具类
  */
 
 public class LanguageUtil {
 
 
-
+    /**
+     * 判断当前语言是否和设置的语种一致
+     * @param context
+     * @return
+     */
     public static boolean isSameWithSetting(Context context) {
         String lang = context.getResources().getConfiguration().locale.getLanguage();
         return lang.equals(getAppLanguage(context));
@@ -38,7 +42,6 @@ public class LanguageUtil {
      * @param myLocale
      */
     public static void setLocale(Context context,Locale myLocale){
-       String lang=myLocale.getLanguage();
         //获得res资源对象
         Resources res = context.getResources();
         // 获得屏幕参数：主要是分辨率，像素等。
@@ -53,8 +56,12 @@ public class LanguageUtil {
         }
         res.updateConfiguration(conf, dm);
         saveLanguageSetting(context,myLocale);
+            if(context instanceof Activity){
+                ((Activity)context).recreate();
+          }
 
-        ((Activity)context).recreate();
+          //切换完成之后重新保存语言状态
+        saveLanguageSetting(context,myLocale);
     }
 
 
@@ -67,8 +74,10 @@ public class LanguageUtil {
         SPUtils.put(context,KEY_APP_LANGUAGE,locale.getLanguage());
     }
 
+
+
     /**
-     * 获取当前系统所使用的语言，中文和英文
+     * 获取保存的语言，中文或英文
      * @param context
      * @return
      */
@@ -77,7 +86,11 @@ public class LanguageUtil {
     }
 
 
-
+    /**
+     * 根据当前保存的语言种类返回对应Locale对象
+     * @param context
+     * @return
+     */
     public static Locale getAppLocale(Context context){
         Locale locale = null;
         String lang = (String)SPUtils.get(context,KEY_APP_LANGUAGE,Locale.getDefault().getLanguage());
@@ -88,7 +101,7 @@ public class LanguageUtil {
         }else if(lang.equals(Locale.US.getLanguage())){
             locale =Locale.US;
         }
-      
+
         return locale;
     }
 

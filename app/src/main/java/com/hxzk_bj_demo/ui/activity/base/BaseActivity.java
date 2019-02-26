@@ -13,19 +13,12 @@ import android.widget.LinearLayout;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.hxzk_bj_demo.R;
-import com.hxzk_bj_demo.common.MyApplication;
-import com.hxzk_bj_demo.ui.activity.MainActivity;
-import com.hxzk_bj_demo.utils.ActivityJump;
-import com.hxzk_bj_demo.utils.LanguageUtil;
+import com.hxzk_bj_demo.utils.activity.ActivityJump;
 import com.hxzk_bj_demo.utils.LogUtil;
-
-import java.util.Locale;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import butterknife.ButterKnife;
-
-import static com.hxzk_bj_demo.utils.LanguageUtil.setLocale;
 
 /**
  * Created by Ding on 2017/12/24
@@ -56,13 +49,13 @@ public abstract class BaseActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
 
-
         setContentView(R.layout.activity_base);
         layout_ContentView_Base= (LinearLayout) findViewById(R.id.layout_contentview_base);
         mAppBarLayout = (AppBarLayout) findViewById(R.id.appbarlayout_base);
         if(setLayoutId() != 0){
             View contentView = LayoutInflater.from(this).inflate(setLayoutId(),null);
             layout_ContentView_Base.addView(contentView);
+
             //状态栏着色
             //addStatusBarView();
             //绑定Butterknife
@@ -73,6 +66,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             initData();
         }
     }
+
 
 
     //创建view添加到状态栏

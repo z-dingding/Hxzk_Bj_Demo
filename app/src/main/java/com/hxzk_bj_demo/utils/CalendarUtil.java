@@ -19,8 +19,9 @@ public class CalendarUtil {
     public static CalendarUtil getInstance(){
         if(mCalendarUtil == null){
             synchronized (CalendarUtil.class){
-                mCalendarUtil =new CalendarUtil();
-
+                if(mCalendarUtil == null){
+                    mCalendarUtil =new CalendarUtil();
+                }
             }
         }
         return mCalendarUtil;

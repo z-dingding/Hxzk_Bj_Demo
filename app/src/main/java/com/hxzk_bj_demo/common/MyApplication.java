@@ -9,6 +9,7 @@ import com.franmontiel.persistentcookiejar.PersistentCookieJar;
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
 import com.hxzk_bj_demo.ui.activity.MainActivity;
+import com.hxzk_bj_demo.ui.activity.WelcomeActivity;
 import com.hxzk_bj_demo.utils.LanguageUtil;
 import com.hxzk_bj_demo.utils.SPUtils;
 import com.squareup.leakcanary.LeakCanary;
@@ -79,14 +80,9 @@ public class MyApplication extends LitePalApplication {
             AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_NO);
         }
 
-//        String lan = LanguageUtil.getAppLanguage(getAppContext());
-//        if(lan.equals("zh") || !lan.equals("en") ){
-//            setLocale(appContext,Locale.SIMPLIFIED_CHINESE);
-//        }else if(lan.equals("en") || !lan.equals("zh")){
-//            setLocale(appContext,Locale.US);
-//        }
-        //注册Activity生命周期监听回调
-        registerActivityLifecycleCallbacks(callbacks);
+
+   //注册Activity生命周期监听回调
+   registerActivityLifecycleCallbacks(callbacks);
 
     }
 
@@ -94,12 +90,12 @@ public class MyApplication extends LitePalApplication {
         @Override
         public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
 
-            if (!isSameWithSetting(activity)) {
+            if (!isSameWithSetting(activity) &&  !(activity instanceof WelcomeActivity)) {
                 String lan = LanguageUtil.getAppLanguage(activity);
                 if(lan.equals("zh") || !lan.equals("en") ){
-                    setLocale(appContext,Locale.SIMPLIFIED_CHINESE);
+                    setLocale(activity,Locale.SIMPLIFIED_CHINESE);
                 }else if(lan.equals("en") || !lan.equals("zh")){
-                    setLocale(appContext,Locale.US);
+                    setLocale(activity,Locale.US);
                 }
             }
 

@@ -12,7 +12,7 @@ import androidx.fragment.app.FragmentManager;
 
 /**
  * 作者：created by ${zjt} on 2018/10/12
- * 描述:
+ * 描述:懒加载
  */
 public abstract class LazyLoadFragment extends Fragment {
 

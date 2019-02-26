@@ -16,6 +16,7 @@ import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.util.DisplayMetrics;
 import android.view.MenuItem;
@@ -189,9 +190,10 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
                     case R.id.settting:
                         String lan = LanguageUtil.getAppLanguage(MainActivity.this);
                         if(lan.equals("zh") || !lan.equals("en") ){
-                            setLocale(MainActivity.this,Locale.SIMPLIFIED_CHINESE);
-                        }else if(lan.equals("en") || !lan.equals("zh")){
                             setLocale(MainActivity.this,Locale.US);
+
+                        }else if(lan.equals("en") || !lan.equals("zh")){
+                            setLocale(MainActivity.this,Locale.SIMPLIFIED_CHINESE);
                         }
                         break;
                 }
@@ -209,16 +211,52 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
      * 点击跳转用户详细信息
      */
     private void UserInforLink() {
-        SpannableString  mSpannableString  =new SpannableString("欢迎赵涛涛今日签到") ;
-        //加粗字体
-        StyleSpan mStyleSpan =new StyleSpan(Typeface.BOLD_ITALIC);
-        mSpannableString.setSpan(new MyClickableSpan("传递的内容"),2,5, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-        mSpannableString.setSpan(mStyleSpan,2,5, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-        //使用ClickableSpan的文本如果想真正实现点击作用，必须为TextView设置setMovementMethod方法
-        tv_userInfo_hvfromvn.setMovementMethod(LinkMovementMethod.getInstance());
-        //点击是的背景色。
-        tv_userInfo_hvfromvn.setHighlightColor(Color.parseColor("#36969696"));
-        tv_userInfo_hvfromvn.setText(mSpannableString);
+
+        //先判断中英文
+         if(getResources().getConfiguration().locale.getLanguage().equals("en")){ //英文
+             SpannableString  mSpannableString  =new SpannableString(getString(R.string.sideslip_welcom)) ;
+             //加粗字体
+             StyleSpan mStyleSpan =new StyleSpan(Typeface.BOLD_ITALIC);
+             mSpannableString.setSpan(mStyleSpan,8,20, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+             //加点击事件
+             //使用ClickableSpan的文本如果想真正实现点击作用，必须为TextView设置setMovementMethod方法
+             mSpannableString.setSpan(new MyClickableSpan(""),8,20, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+              //加前背景色
+             ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(Color.GREEN);
+             mSpannableString.setSpan(foregroundColorSpan, 8, 20, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+
+             tv_userInfo_hvfromvn.setMovementMethod(LinkMovementMethod.getInstance());
+             tv_userInfo_hvfromvn.setText(mSpannableString);
+
+         }else{//中文
+             SpannableString  mSpannableString  =new SpannableString(getString(R.string.sideslip_welcom)) ;
+             //加粗字体
+             StyleSpan mStyleSpan =new StyleSpan(Typeface.BOLD_ITALIC);
+             mSpannableString.setSpan(mStyleSpan,2,5, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+             //设置点击事件
+             //使用ClickableSpan的文本如果想真正实现点击作用，必须为TextView设置setMovementMethod方法
+             mSpannableString.setSpan(new MyClickableSpan(""),2,5, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+             //加前背景色
+             ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(Color.GREEN);
+             mSpannableString.setSpan(foregroundColorSpan, 2, 5, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+
+             tv_userInfo_hvfromvn.setMovementMethod(LinkMovementMethod.getInstance());
+             tv_userInfo_hvfromvn.setText(mSpannableString);
+         }
+
+
+//        int uiMode = getResources().getConfiguration().uiMode;
+//        int dayNightUiMode = uiMode & Configuration.UI_MODE_NIGHT_MASK;
+//        if(dayNightUiMode == Configuration.UI_MODE_NIGHT_NO){//亮色主题
+//            tv_userInfo_hvfromvn.setHighlightColor(Color.parseColor("#36969696"));
+//        }else if(dayNightUiMode == Configuration.UI_MODE_NIGHT_YES){//暗色主题
+//            tv_userInfo_hvfromvn.setHighlightColor(Color.parseColor("#87CEFA"));
+//       }
+        // else {
+//            tv_userInfo_hvfromvn.setBackgroundColor(Color.parseColor("#87CEFA"));
+//        }
+
+
     }
 class MyClickableSpan extends ClickableSpan{
 
@@ -260,8 +298,6 @@ class MyClickableSpan extends ClickableSpan{
         adapter = new FragmentAdapter(getSupportFragmentManager(), _context, list);
         vp_Main.setAdapter(adapter);
         //vp_Main.setOffscreenPageLimit(3);
-
-
     }
 
 

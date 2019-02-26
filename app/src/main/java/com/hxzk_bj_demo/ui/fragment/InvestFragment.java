@@ -113,15 +113,12 @@ public class InvestFragment extends BaseFragment implements SwipeRefreshLayout.O
 //                mRefreshMark = true; //是否再刷新的标识
 //                mPageMark = 1;
 //                requestData();
-
-
                 if (mWechatItemAdapter != null && mWechatItemAdapter.getData() != null && mWechatItemAdapter.getData().size() > 0) {
                     mRecyclerInvest.scrollToPosition(0);
                     ToastCustomUtil.showShortToast("已经返回列表顶部");
                 }
             }
         });
-
     }
 
 

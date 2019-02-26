@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import com.hxzk_bj_demo.R;
-import com.hxzk_bj_demo.utils.ActivityJump;
+import com.hxzk_bj_demo.utils.activity.ActivityJump;
 import androidx.appcompat.app.AppCompatActivity;
 
 /**

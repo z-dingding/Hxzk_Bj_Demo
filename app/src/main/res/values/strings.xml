@@ -23,10 +23,16 @@
 
 
     <!--=====================================登录界面字符=============================-->
+
+    <string name="login">登录</string>
+    <string name="login_account_prompt">请输入账号</string>
+    <string name="login_pasword_prompt">请输入密码</string>
     <string name="login_otherwaylogin">试试临时登录?</string>
 
 
     <!--=====================================左侧滑菜单字符=============================-->
+    <string name="sideslip_welcom">欢迎赵涛涛今日签到</string>
+
     <string name="theme">更改主题</string>
     <string name="favorite">收藏</string>
     <string name="notebook">记事本</string>

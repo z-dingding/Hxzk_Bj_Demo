@@ -23,10 +23,14 @@
 
 
     <!--=====================================登录界面字符=============================-->
+    <string name="login">login</string>
+    <string name="login_account_prompt">please enter the account</string>
+    <string name="login_pasword_prompt">please enter the password</string>
     <string name="login_otherwaylogin">Try temporary login?</string>
 
 
     <!--=====================================左侧滑菜单字符=============================-->
+    <string name="sideslip_welcom">Welcome zhao taotao to sign in today</string>
     <string name="theme">change theme</string>
     <string name="favorite">collection</string>
     <string name="notebook">notebook</string>

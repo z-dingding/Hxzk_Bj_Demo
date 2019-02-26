@@ -3,6 +3,7 @@ package com.hxzk_bj_demo.ui.activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -14,8 +15,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hxzk_bj_demo.R;
+import com.hxzk_bj_demo.common.Const;
 import com.hxzk_bj_demo.ui.activity.base.BaseBussActivity;
 import com.hxzk_bj_demo.utils.KeyBoardHelperUtil;
+import com.hxzk_bj_demo.utils.SPUtils;
 import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
 
 import butterknife.BindView;
@@ -59,11 +62,22 @@ public class LoginActivity extends BaseBussActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        String account= (String) SPUtils.get(LoginActivity.this,Const.KEY_LOGIN_ACCOUNT,"account");
+        String pwd= (String) SPUtils.get(LoginActivity.this,Const.KEY_LOGIN_PWD,"pwd");
+        if(!TextUtils.isEmpty(account) && !TextUtils.isEmpty(pwd)){
+            edt_Account_Login.setText(account);
+            edt_Pwd_Login.setText(pwd);
+        }
+    }
+
+    @Override
     protected void initView() {
         super.initView();
 
 
-        initToolbar(R.drawable.back, "登录");
+        initToolbar(R.drawable.back, getResources().getString(R.string.login));
         //为 Activity 指定 windowSoftInputMode
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         layoutContent = findViewById(R.id.layout_content);
@@ -136,6 +150,8 @@ public class LoginActivity extends BaseBussActivity {
             case R.id.btn_loginin_login:
                 mshowDialog(LoginActivity.this);
                 if(edt_Account_Login.getText().toString().equals("xzt") &&edt_Pwd_Login.getText().toString().equals("xzt")){
+                    SPUtils.put(LoginActivity.this, Const.KEY_LOGIN_ACCOUNT,edt_Account_Login.getText().toString());
+                    SPUtils.put(LoginActivity.this,Const.KEY_LOGIN_PWD,edt_Pwd_Login.getText().toString());
                     edt_Pwd_Login.setText("111111111111111111111111");
                     btn_Loginin_Login.postDelayed(new Runnable() {
                         @Override

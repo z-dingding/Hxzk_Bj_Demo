@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight">
         <!--无标题-->
         <item name="windowNoTitle">true</item>
         <!--隐藏原来的ActionBar，为了在本project中使用ToolBar-->

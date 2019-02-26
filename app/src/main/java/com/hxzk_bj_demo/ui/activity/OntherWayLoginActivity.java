@@ -2,7 +2,6 @@ package com.hxzk_bj_demo.ui.activity;
 
 import android.app.Notification;
 import android.app.NotificationManager;
-import android.content.Context;
 import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
@@ -10,7 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.ui.activity.base.BaseBussActivity;
-import com.hxzk_bj_demo.utils.ActivityJump;
+import com.hxzk_bj_demo.utils.activity.ActivityJump;
 import com.hxzk_bj_demo.utils.CountDownTimerUtil;
 import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
 import java.util.Random;
