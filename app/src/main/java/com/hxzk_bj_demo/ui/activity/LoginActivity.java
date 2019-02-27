@@ -16,14 +16,21 @@ import android.widget.TextView;
 
 import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.common.Const;
+import com.hxzk_bj_demo.javabean.LoginBean;
+import com.hxzk_bj_demo.network.HttpRequest;
 import com.hxzk_bj_demo.ui.activity.base.BaseBussActivity;
 import com.hxzk_bj_demo.utils.KeyBoardHelperUtil;
+import com.hxzk_bj_demo.utils.Md5Utils;
 import com.hxzk_bj_demo.utils.SPUtils;
 import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.Observable;
+import rx.Observer;
+import rx.Subscriber;
+import rx.Subscription;
 
 /**
  * Created by ${赵江涛} on 2017-12-26.
@@ -51,8 +58,13 @@ public class LoginActivity extends BaseBussActivity {
     private View layoutBottom;
     private View layoutContent;
 
+    //账号
+    String account;
+    //密码
+    String pwd;
 
-
+    /**Subscription 用于取消或添加订阅*/
+    private Subscription mSubscription;
 
     @Override
     protected int setLayoutId() {
@@ -64,8 +76,8 @@ public class LoginActivity extends BaseBussActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        String account= (String) SPUtils.get(LoginActivity.this,Const.KEY_LOGIN_ACCOUNT,"account");
-        String pwd= (String) SPUtils.get(LoginActivity.this,Const.KEY_LOGIN_PWD,"pwd");
+         account= (String) SPUtils.get(LoginActivity.this,Const.KEY_LOGIN_ACCOUNT,"");
+         pwd= (String) SPUtils.get(LoginActivity.this,Const.KEY_LOGIN_PWD,"");
         if(!TextUtils.isEmpty(account) && !TextUtils.isEmpty(pwd)){
             edt_Account_Login.setText(account);
             edt_Pwd_Login.setText(pwd);
@@ -137,6 +149,7 @@ public class LoginActivity extends BaseBussActivity {
     @Override
     protected void initData() {
         super.initData();
+
     }
 
 
@@ -149,17 +162,41 @@ public class LoginActivity extends BaseBussActivity {
                 break;
             case R.id.btn_loginin_login:
                 mshowDialog(LoginActivity.this);
-                if(edt_Account_Login.getText().toString().equals("xzt") &&edt_Pwd_Login.getText().toString().equals("xzt")){
-                    SPUtils.put(LoginActivity.this, Const.KEY_LOGIN_ACCOUNT,edt_Account_Login.getText().toString());
-                    SPUtils.put(LoginActivity.this,Const.KEY_LOGIN_PWD,edt_Pwd_Login.getText().toString());
-                    edt_Pwd_Login.setText("111111111111111111111111");
-                    btn_Loginin_Login.postDelayed(new Runnable() {
+                account=edt_Account_Login.getText().toString();
+                 pwd=edt_Pwd_Login.getText().toString();
+                if(!TextUtils.isEmpty(account) && !TextUtils.isEmpty(pwd)){
+                    SPUtils.put(LoginActivity.this, Const.KEY_LOGIN_ACCOUNT,account);
+                    SPUtils.put(LoginActivity.this,Const.KEY_LOGIN_PWD,pwd);
+                    //edt_Pwd_Login.setText("111111111111111111111111");
+
+                    //每次开始新的请求前,先取消上一次请求的订阅关系，避免内存泄漏
+                    HttpRequest.getInstance().unsubscribe();
+                    Subscriber<LoginBean> subscriber =new  Subscriber<LoginBean>(){
+
                         @Override
-                        public void run() {
+                        public void onCompleted() {
                             mdismissDialog();
-                            jumpFinishCurrentActivity(LoginActivity.this,MainActivity.class);
                         }
-                    },3000);
+
+                        @Override
+                        public void onError(Throwable e) {
+                            ToastCustomUtil.showLongToast(e.getMessage());
+                            mdismissDialog();
+                        }
+
+                        @Override
+                        public void onNext(LoginBean loginBean) {
+                            if(loginBean.getResult().equals("success")){
+                                jumpFinishCurrentActivity(LoginActivity.this,MainActivity.class);
+                            }else{
+                               ToastCustomUtil.showLongToast(loginBean.getResMsg());
+                            }
+                        }
+                    };
+
+                    Observable<LoginBean> observable =HttpRequest.getInstance().getServiceInterface().login(account,Md5Utils.MD5(pwd),"1");
+                    HttpRequest.getInstance().toSubscribe(observable,subscriber);
+
                 }else{
                     mdismissDialog();
                     ToastCustomUtil.showLongToast("请输入正确的账号密码!");

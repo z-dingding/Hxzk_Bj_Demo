@@ -26,9 +26,9 @@ public class HttpRequest {
 
     //通过volatile关键字来确保安全，使用该关键字修饰的变量在被变更时会被其他变量可见
     private volatile static HttpRequest sHttpRequest = null;
-    //请求服务器ip或域名
-    public static String BASE_URL="http://192.168.1.112:8080/ygcy/";
-    //public static String BASE_URL="http://ygcy.drugwebcn.com//ygcy/";
+    //请求服务器ip或域名>
+    public static String BASE_URL="http://ygcy.drugwebcn.com/";
+
 
     //Rotrofit
     private static Retrofit.Builder sRetrofit;
@@ -45,9 +45,9 @@ public class HttpRequest {
     /**
      * class 无参构造
      */
-    public HttpRequest() {
+    private HttpRequest() {
         sRetrofit = new Retrofit.Builder()
-                .client(MyApplication.getOkHttpClient().build())
+                .client(MyApplication.getOkHttpClientbBuild().build())
                 .addConverterFactory(GsonConverterFactory.create(new GsonBuilder()
                         .setLenient()
                         .create()))//转Gson
@@ -61,15 +61,8 @@ public class HttpRequest {
     }
 
 
-
-
     /**
-     * 获取HttpRequest对象实例
-     *
-     // DCL线程安全实现--volatile实现
-     //懒汉式多线程容易出现问题，线程不安全，最简单方法是用同步块synchronized，但会导致较大的性能损失
-     //DCL非线程安全的实现，不加volatile关键字,涉及指令重排序，指令重排序是JVM为了优化指令，允许可以在不影响单线程程序执行结果前提下进行
-     //最终采用DCL线程安全实现--volatile实现
+     * 获取HttpRequest实例
      * @return
      */
    public static HttpRequest getInstance() {
@@ -93,9 +86,10 @@ public class HttpRequest {
     }
 
 
-    private static  Subscription mSubscription;
 
-    /** 给观察者模式添加订阅 */
+
+    private static  Subscription mSubscription;
+    /** 观察者添加订阅 */
     public <T> Subscription toSubscribe(Observable<T> observable, Subscriber<T> subscriber) {
         mSubscription= observable.subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
@@ -105,5 +99,17 @@ public class HttpRequest {
     }
 
 
+
+
+    /**
+     * 观察者取消订阅
+     */
+    public void unsubscribe() {
+        //使用 isUnsubscribed() 先判断一下状态
+        if (mSubscription != null && !mSubscription.isUnsubscribed()) {
+            //unsubscribe() 来解除引用关系，以避免内存泄露的发生
+            mSubscription.unsubscribe();
+        }
+    }
 
 }

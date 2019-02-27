@@ -1,6 +1,10 @@
 package com.hxzk_bj_demo.network;
 
+import com.google.gson.JsonObject;
 import com.hxzk_bj_demo.javabean.InversBean;
+import com.hxzk_bj_demo.javabean.LoginBean;
+
+import org.json.JSONObject;
 
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -8,26 +12,33 @@ import rx.Observable;
 
 /**
  * Created by ${赵江涛} on 2018-1-18.
- * 作用:
+ * 作用:接口
  */
 
 public interface ServiceInterface {
 
 
-    //检查权限的接口
-
-   // http://192.168.1.112:8080/ygcy/app/appcallAction!getSjListJsonTest.do?
-   // entinfoqueryBean.pn=1  页数
-   // &entinfoqueryBean.pageSize=20  条目
-   // &isYgcy=1 //是否是阳光餐饮企业
-   // &entinfoqueryBean.lat=39.625   纬度
-   // &entinfoqueryBean.lng=119.632 经度
-   //@GET("app/appcallAction!getSjListJson.do")
-
     @GET("app/appcallAction!getSjListJsonTest.do")
     Observable<InversBean> getRefreshData(@Query("entinfoqueryBean.pn") String pageNum , @Query("entinfoqueryBean.pageSize") String itemNum, @Query("isYgcy") String isYgcy , @Query("entinfoqueryBean.lat") String entinfoqueryBean_lat , @Query("entinfoqueryBean.lng") String entinfoqueryBean_lng);
 
 
+    /**
+     * 登录接口
+     * @param account 用户名
+     * @param pwd 密码
+     * @param type 登录类型,普通登录为1，其他如微信登录为0
+     * @return
+     */
+    @GET("app/appUserAction!getUserLogin.do")
+    Observable<LoginBean> login(@Query("ygAppUser.username") String account , @Query("eygAppUser.password") String pwd, @Query("ygAppUser.usertype") String type);
+
+
+    /**
+     * 退出登录接口
+     * @return
+     */
+    @GET("app/appUserAction!logout.do")
+    Observable<JsonObject> loginout();
 
 
 }

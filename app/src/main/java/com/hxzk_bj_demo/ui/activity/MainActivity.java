@@ -2,6 +2,7 @@ package com.hxzk_bj_demo.ui.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -25,9 +26,11 @@ import android.view.Window;
 import android.widget.TextView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.JsonObject;
 import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.common.MyApplication;
 import com.hxzk_bj_demo.mvp.view.NoteBookActivity;
+import com.hxzk_bj_demo.network.HttpRequest;
 import com.hxzk_bj_demo.ui.activity.base.BaseBussActivity;
 import com.hxzk_bj_demo.ui.adapter.base.FragmentAdapter;
 import com.hxzk_bj_demo.ui.fragment.HomeFragment;
@@ -36,8 +39,15 @@ import com.hxzk_bj_demo.ui.fragment.UserFragment;
 import com.hxzk_bj_demo.ui.fragment.base.BaseFragment;
 import com.hxzk_bj_demo.utils.LanguageUtil;
 import com.hxzk_bj_demo.utils.LogUtil;
+import com.hxzk_bj_demo.utils.SPUtils;
+import com.hxzk_bj_demo.utils.activity.ActivityJump;
+import com.hxzk_bj_demo.utils.activity.ActivityManager;
 import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
 import com.tbruyelle.rxpermissions2.RxPermissions;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -50,6 +60,9 @@ import butterknife.BindView;
 import butterknife.internal.Utils;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
+import okhttp3.Request;
+import rx.Observable;
+import rx.Subscriber;
 
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO;
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES;
@@ -185,6 +198,43 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
                         break;
 
                     case R.id.loginout:
+                        HttpRequest.getInstance().unsubscribe();
+                        Subscriber<JsonObject> subscriber =new Subscriber<JsonObject>() {
+                            @Override
+                            public void onCompleted() {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                 ToastCustomUtil.showLongToast(e.getMessage());
+                             }
+
+                            @Override
+                            public void onNext(JsonObject s) {
+                                try {
+                                    JSONObject jsonObject =new JSONObject(s.toString());
+                                    String result = jsonObject.getString("result");
+                                    String message=jsonObject.getString("message");
+                                    if(result.equals("true")){
+                                        //清空保存在本地的cookie
+                                        SPUtils.remove(MainActivity.this,"ygcy.drugwebcn.com");
+                                        ActivityJump.finnishAllActivitys();
+                                        ActivityJump.NormalJumpAndFinish(MainActivity.this,LoginActivity.class);
+                                    }else{
+                                        ToastCustomUtil.showLongToast(message);
+                                    }
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    ToastCustomUtil.showLongToast(e.getMessage());
+                                }
+
+                            }
+                        };
+
+                        Observable<JsonObject> observable =HttpRequest.getInstance().getServiceInterface().loginout();
+                        HttpRequest.getInstance().toSubscribe(observable,subscriber);
                         break;
 
                     case R.id.settting:
@@ -243,20 +293,6 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
              tv_userInfo_hvfromvn.setMovementMethod(LinkMovementMethod.getInstance());
              tv_userInfo_hvfromvn.setText(mSpannableString);
          }
-
-
-//        int uiMode = getResources().getConfiguration().uiMode;
-//        int dayNightUiMode = uiMode & Configuration.UI_MODE_NIGHT_MASK;
-//        if(dayNightUiMode == Configuration.UI_MODE_NIGHT_NO){//亮色主题
-//            tv_userInfo_hvfromvn.setHighlightColor(Color.parseColor("#36969696"));
-//        }else if(dayNightUiMode == Configuration.UI_MODE_NIGHT_YES){//暗色主题
-//            tv_userInfo_hvfromvn.setHighlightColor(Color.parseColor("#87CEFA"));
-//       }
-        // else {
-//            tv_userInfo_hvfromvn.setBackgroundColor(Color.parseColor("#87CEFA"));
-//        }
-
-
     }
 class MyClickableSpan extends ClickableSpan{
 
