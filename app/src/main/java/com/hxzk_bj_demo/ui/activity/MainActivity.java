@@ -31,6 +31,7 @@ import com.google.gson.JsonObject;
 import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.common.MyApplication;
 import com.hxzk_bj_demo.mvp.view.NoteBookActivity;
+import com.hxzk_bj_demo.network.BaseSubscriber;
 import com.hxzk_bj_demo.network.HttpRequest;
 import com.hxzk_bj_demo.ui.activity.base.BaseBussActivity;
 import com.hxzk_bj_demo.ui.adapter.base.FragmentAdapter;
@@ -201,12 +202,7 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
                         break;
 
                     case R.id.loginout:
-                        subscriber = new Subscriber<JsonObject>() {
-                            @Override
-                            public void onCompleted() {
-
-                            }
-
+                        subscriber = new BaseSubscriber<JsonObject>(MainActivity.this) {
                             @Override
                             public void onError(Throwable e) {
                                 ToastCustomUtil.showLongToast(e.getMessage());

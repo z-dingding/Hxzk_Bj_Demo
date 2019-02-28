@@ -110,7 +110,7 @@ public class HttpRequest {
     /**
      * 观察者取消订阅
      */
-    public  void unsubscribe() {
+    public  void unsubscribe(Observable observable) {
         //使用 isUnsubscribed() 先判断一下状态
         if (mSubscription != null && !mSubscription.isUnsubscribed()) {
             //unsubscribe() 来解除引用关系，以避免内存泄露的发生
