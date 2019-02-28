@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.JsonObject;
 import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.common.Const;
 import com.hxzk_bj_demo.javabean.LoginBean;
@@ -22,7 +23,11 @@ import com.hxzk_bj_demo.ui.activity.base.BaseBussActivity;
 import com.hxzk_bj_demo.utils.KeyBoardHelperUtil;
 import com.hxzk_bj_demo.utils.Md5Utils;
 import com.hxzk_bj_demo.utils.SPUtils;
+import com.hxzk_bj_demo.utils.activity.ActivityJump;
 import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,7 +55,8 @@ public class LoginActivity extends BaseBussActivity {
     Button btn_Loginin_Login;
     @BindView(R.id.tv_otherwaylogin_login)
     TextView tv_otherWayLogin;
-
+    @BindView(R.id.tv_register_login)
+    TextView tv_rigister_login;
 
 
     private int bottomHeight;
@@ -63,8 +69,9 @@ public class LoginActivity extends BaseBussActivity {
     //密码
     String pwd;
 
-    /**Subscription 用于取消或添加订阅*/
-    private Subscription mSubscription;
+
+    Subscriber<JsonObject> subscriber;
+    Observable<JsonObject> observable;
 
     @Override
     protected int setLayoutId() {
@@ -73,22 +80,10 @@ public class LoginActivity extends BaseBussActivity {
         return R.layout.activity_login;
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-         account= (String) SPUtils.get(LoginActivity.this,Const.KEY_LOGIN_ACCOUNT,"");
-         pwd= (String) SPUtils.get(LoginActivity.this,Const.KEY_LOGIN_PWD,"");
-        if(!TextUtils.isEmpty(account) && !TextUtils.isEmpty(pwd)){
-            edt_Account_Login.setText(account);
-            edt_Pwd_Login.setText(pwd);
-        }
-    }
 
     @Override
     protected void initView() {
         super.initView();
-
-
         initToolbar(R.drawable.back, getResources().getString(R.string.login));
         //为 Activity 指定 windowSoftInputMode
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
@@ -96,6 +91,39 @@ public class LoginActivity extends BaseBussActivity {
         layoutBottom = findViewById(R.id.layout_bottom);
         boardHelper = new KeyBoardHelperUtil(this);
         boardHelper.onCreate();
+    }
+
+    @Override
+    protected void initEvent() {
+        super.initEvent();
+
+        boardHelper.setOnKeyBoardStatusChangeListener(onKeyBoardStatusChangeListener);
+        layoutBottom.post(new Runnable() {
+            @Override
+            public void run() {
+                bottomHeight = layoutBottom.getHeight();
+            }
+        });
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        account= (String) SPUtils.get(LoginActivity.this,Const.KEY_LOGIN_ACCOUNT,"");
+        pwd= (String) SPUtils.get(LoginActivity.this,Const.KEY_LOGIN_PWD,"");
+        if(!TextUtils.isEmpty(account) && !TextUtils.isEmpty(pwd)){
+            edt_Account_Login.setText(account);
+            edt_Pwd_Login.setText(pwd);
+        }
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //视图消亡后，无需RxJava再执行，可以直接取消订阅
+        HttpRequest.getInstance().unsubscribe(observable);
     }
 
 
@@ -117,6 +145,7 @@ public class LoginActivity extends BaseBussActivity {
 
         }
 
+
         @Override
         public void OnKeyBoardClose(int oldKeyBoardheight) {
             if (View.VISIBLE != layoutBottom.getVisibility()) {
@@ -132,46 +161,31 @@ public class LoginActivity extends BaseBussActivity {
         }
     };
 
-    @Override
-    protected void initEvent() {
-        super.initEvent();
-
-        boardHelper.setOnKeyBoardStatusChangeListener(onKeyBoardStatusChangeListener);
-        layoutBottom.post(new Runnable() {
-            @Override
-            public void run() {
-                bottomHeight = layoutBottom.getHeight();
-            }
-        });
-    }
-
-
-    @Override
-    protected void initData() {
-        super.initData();
-
-    }
 
 
 
-    @OnClick({R.id.tv_otherwaylogin_login, R.id.btn_loginin_login})
+
+
+    @OnClick({R.id.tv_otherwaylogin_login, R.id.btn_loginin_login,R.id.tv_register_login})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_otherwaylogin_login:
                 addActivityToManager(LoginActivity.this,OntherWayLoginActivity.class);
                 break;
+
+
+                case R.id.tv_register_login:
+                addActivityToManager(LoginActivity.this,RegisterActivity.class);
+                break;
+
+
             case R.id.btn_loginin_login:
                 mshowDialog(LoginActivity.this);
                 account=edt_Account_Login.getText().toString();
                  pwd=edt_Pwd_Login.getText().toString();
                 if(!TextUtils.isEmpty(account) && !TextUtils.isEmpty(pwd)){
-                    SPUtils.put(LoginActivity.this, Const.KEY_LOGIN_ACCOUNT,account);
-                    SPUtils.put(LoginActivity.this,Const.KEY_LOGIN_PWD,pwd);
-                    //edt_Pwd_Login.setText("111111111111111111111111");
 
-                    //每次开始新的请求前,先取消上一次请求的订阅关系，避免内存泄漏
-                    HttpRequest.getInstance().unsubscribe();
-                    Subscriber<LoginBean> subscriber =new  Subscriber<LoginBean>(){
+                    subscriber =new  Subscriber<JsonObject>(){
 
                         @Override
                         public void onCompleted() {
@@ -185,16 +199,28 @@ public class LoginActivity extends BaseBussActivity {
                         }
 
                         @Override
-                        public void onNext(LoginBean loginBean) {
-                            if(loginBean.getResult().equals("success")){
-                                jumpFinishCurrentActivity(LoginActivity.this,MainActivity.class);
-                            }else{
-                               ToastCustomUtil.showLongToast(loginBean.getResMsg());
+                        public void onNext(JsonObject s) {
+                            String sd =s.toString();
+                            JSONObject dataJsonObject = null;
+                            try {
+                                dataJsonObject = new JSONObject(s.toString());
+                                String errorCode =dataJsonObject.getString("errorCode");
+                                String errorMsg = dataJsonObject.getString("errorMsg");
+                                if(!errorCode.equals("0")){
+                                    ToastCustomUtil.showLongToast(errorMsg);
+                                }else{
+                                    SPUtils.put(LoginActivity.this, Const.KEY_LOGIN_ACCOUNT,account);
+                                    SPUtils.put(LoginActivity.this,Const.KEY_LOGIN_PWD,pwd);
+                                    ActivityJump.NormalJumpAndFinish(LoginActivity.this,MainActivity.class);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
+
                         }
                     };
 
-                    Observable<LoginBean> observable =HttpRequest.getInstance().getServiceInterface().login(account,Md5Utils.MD5(pwd),"1");
+                    observable =HttpRequest.getInstance().getServiceInterface().login(account,pwd);
                     HttpRequest.getInstance().toSubscribe(observable,subscriber);
 
                 }else{

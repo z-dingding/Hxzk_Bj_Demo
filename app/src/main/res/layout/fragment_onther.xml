@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <!--&lt;!&ndash;app:canLoop="true"    //设置是否循环&ndash;&gt;-->
+    <!--&lt;!&ndash;app:canTurn="true"  //是否可以跳转&ndash;&gt;-->
+    <!--&lt;!&ndash;app:autoTurnTime="5000"// 页面切换间隔&ndash;&gt;-->
+    <!--&lt;!&ndash;app:scrollDuration="2000"//页面切换持续时间&ndash;&gt;-->
+    <!--&lt;!&ndash;app:isTouchScroll="true" //是否支持手动滑动&ndash;&gt;-->
+    <!--&lt;!&ndash;app:reverse="true" // 是否反向切换页面（切换方向）&ndash;&gt;-->
+    <com.wenld.wenldbanner.WenldBanner
+        android:id="@+id/commonBanner"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_180"
+        app:canLoop="true"
+        app:canTurn="true"
+        app:autoTurnTime="2000"
+        app:scrollDuration="3000"
+        app:isTouchScroll="true"
+        app:reverse="true"/>
+
+    <!--android:fillViewport="true" NestedScrollView的子布局不显示解决-->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedsv_invest"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/dp_180"
+        android:fillViewport="true">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/swiperrl_invest"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_invest"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+            <!--backgroundTint 底色,点击颜色
+            app:elevation="6dp"//显示的阴影大小
+            app:pressedTranslationZ="12dp"//点击时的阴影大小
+            @android:drawable/ic_input_add 系统自带加好图标-->
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_invest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="16dp"
+                android:src="@drawable/backtop" />
+
+        </FrameLayout>
+
+
+    </androidx.core.widget.NestedScrollView>
+
+
+</FrameLayout>
+
+
+
+
+
+

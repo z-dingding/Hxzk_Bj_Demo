@@ -3,6 +3,8 @@ package com.hxzk_bj_demo.network;
 import com.google.gson.GsonBuilder;
 import com.hxzk_bj_demo.common.MyApplication;
 
+import java.util.concurrent.TimeUnit;
+
 import retrofit2.CallAdapter;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
@@ -27,7 +29,8 @@ public class HttpRequest {
     //通过volatile关键字来确保安全，使用该关键字修饰的变量在被变更时会被其他变量可见
     private volatile static HttpRequest sHttpRequest = null;
     //请求服务器ip或域名>
-    public static String BASE_URL="http://ygcy.drugwebcn.com/";
+    public static String BASE_URL="http://www.wanandroid.com/";
+    /*public static String BASE_URL="http://ygcy.drugwebcn.com/";*/
 
 
     //Rotrofit
@@ -82,7 +85,7 @@ public class HttpRequest {
      * @return
      */
     public ServiceInterface getServiceInterface() {
-        return sServiceInterface;
+            return sServiceInterface;
     }
 
 
@@ -90,8 +93,11 @@ public class HttpRequest {
 
     private static  Subscription mSubscription;
     /** 观察者添加订阅 */
-    public <T> Subscription toSubscribe(Observable<T> observable, Subscriber<T> subscriber) {
+    public  <T>  Subscription toSubscribe(Observable<T> observable, Subscriber<T> subscriber) {
         mSubscription= observable.subscribeOn(Schedulers.io())
+                //需要UI绘制后再进行订阅的场景，防止阻塞UI，我们需要延迟订阅执行
+                .delay(2, TimeUnit.SECONDS)
+                //取消发生在IO线程
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
@@ -104,12 +110,13 @@ public class HttpRequest {
     /**
      * 观察者取消订阅
      */
-    public void unsubscribe() {
+    public  void unsubscribe() {
         //使用 isUnsubscribed() 先判断一下状态
         if (mSubscription != null && !mSubscription.isUnsubscribed()) {
             //unsubscribe() 来解除引用关系，以避免内存泄露的发生
             mSubscription.unsubscribe();
         }
     }
+
 
 }

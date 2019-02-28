@@ -67,13 +67,13 @@ public class MyApplication extends LitePalApplication {
 
 
         //每次程序启动重新设置上次保存的theme
-        if(getAppTheme()){
-            //设置为夜间模式，可直接调用
-            AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES);
-        }else{
-            //设置为白天模式
-            AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_NO);
-        }
+//        if(getAppTheme()){
+//            //设置为夜间模式，可直接调用
+//            AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES);
+//        }else{
+//            //设置为白天模式
+//            AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_NO);
+//        }
 
 
    //注册Activity生命周期监听回调

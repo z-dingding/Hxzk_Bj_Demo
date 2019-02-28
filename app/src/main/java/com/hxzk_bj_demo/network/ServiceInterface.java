@@ -7,6 +7,7 @@ import com.hxzk_bj_demo.javabean.LoginBean;
 import org.json.JSONObject;
 
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 import rx.Observable;
 
@@ -23,22 +24,35 @@ public interface ServiceInterface {
 
 
     /**
-     * 登录接口
-     * @param account 用户名
-     * @param pwd 密码
-     * @param type 登录类型,普通登录为1，其他如微信登录为0
+     * 注册接口
+     * @param username
+     * @param password
+     * @param repassword
      * @return
      */
-    @GET("app/appUserAction!getUserLogin.do")
-    Observable<LoginBean> login(@Query("ygAppUser.username") String account , @Query("eygAppUser.password") String pwd, @Query("ygAppUser.usertype") String type);
+    @POST("user/register")
+    Observable<JsonObject> rigister(@Query("username") String username , @Query("password") String password, @Query("repassword") String repassword);
+
+
+
+
+    /**
+     * 登录接口
+     * @param username 用户名
+     * @param password 密码
+     * @return
+     */
+    @POST("user/login")
+    Observable<JsonObject> login(@Query("username") String username , @Query("password") String password);
 
 
     /**
      * 退出登录接口
      * @return
      */
-    @GET("app/appUserAction!logout.do")
+    @GET("user/logout/json")
     Observable<JsonObject> loginout();
+
 
 
 }

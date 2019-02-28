@@ -4,16 +4,12 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-
 import android.view.Menu;
 import android.view.MenuItem;
-
-import com.google.android.material.appbar.AppBarLayout;
 import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.utils.activity.ActivityJump;
 import com.hxzk_bj_demo.utils.zxing.activity.CaptureActivity;
 import com.hxzk_bj_demo.widget.XDialog;
-
 import java.lang.reflect.Method;
 
 import androidx.appcompat.widget.Toolbar;
@@ -55,9 +51,9 @@ public class BaseBussActivity extends BaseActivity {
     @Override
     protected void initView() {
         if (null == mToolbar) {
-            mToolbar = (Toolbar) findViewById(R.id.toolbar_main);
+            mToolbar = findViewById(R.id.toolbar_main);
             if (mAppBarLayout == null) {
-                mAppBarLayout = (AppBarLayout) findViewById(R.id.appbarlayout_base);
+                mAppBarLayout =findViewById(R.id.appbarlayout_base);
             }
         }
 
@@ -123,9 +119,20 @@ public class BaseBussActivity extends BaseActivity {
         //设置左上角的图标响应
         getSupportActionBar().setHomeButtonEnabled(true);
         //Toolbar的空间监听有两种方式，一种是 Toolbar.OnMenuItemClickListener，另一种是onOptionsItemSelected
-        //  mToolbar.setOnMenuItemClickListener(onMenuItemClick);
+       // mToolbar.setOnMenuItemClickListener(onMenuItemClick);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+    }
+
+
+    /**
+     * 控制toolbar的显示隐藏
+     * @param visible
+     */
+    protected void  toolbarVisible(int visible){
+        if(mToolbar != null){
+            mToolbar.setVisibility(visible);
+        }
     }
 
 

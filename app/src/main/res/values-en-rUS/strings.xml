@@ -7,6 +7,7 @@
     <string name="empty_network_error">Network error, click retry!</string>
     <string name="empty_no_data">No data requested, click retry...</string>
     <string name="load_more_error">Failed to load more data!</string>
+    <string name="content_is_empty">the content cannot be empty!</string>
 
 
     <!--====================================二维码相关字符=============================-->
@@ -27,6 +28,14 @@
     <string name="login_account_prompt">please enter the account</string>
     <string name="login_pasword_prompt">please enter the password</string>
     <string name="login_otherwaylogin">Try temporary login?</string>
+    <string name="login_rigister">Or sign up for one</string>
+
+
+    <!--=====================================注册界面字符=============================-->
+    <string name="rigiser">rigister</string>
+    <string name="rigister_account">please enter register user name(At least six digits in length)</string>
+    <string name="rigister_pwd">Pleas enter registration password(At least six digits in length)</string>
+    <string name="rigister_confirmpwd">Please confirm your registration password</string>
 
 
     <!--=====================================左侧滑菜单字符=============================-->

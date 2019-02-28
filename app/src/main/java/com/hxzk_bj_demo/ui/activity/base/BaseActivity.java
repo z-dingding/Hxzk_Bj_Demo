@@ -50,14 +50,13 @@ public abstract class BaseActivity extends AppCompatActivity {
 
 
         setContentView(R.layout.activity_base);
-        layout_ContentView_Base= (LinearLayout) findViewById(R.id.layout_contentview_base);
-        mAppBarLayout = (AppBarLayout) findViewById(R.id.appbarlayout_base);
+        layout_ContentView_Base= findViewById(R.id.layout_contentview_base);
+        mAppBarLayout =  findViewById(R.id.appbarlayout_base);
         if(setLayoutId() != 0){
             View contentView = LayoutInflater.from(this).inflate(setLayoutId(),null);
             layout_ContentView_Base.addView(contentView);
-
             //状态栏着色
-            //addStatusBarView();
+            addStatusBarView();
             //绑定Butterknife
             ButterKnife.bind(this);
 
@@ -72,7 +71,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     //创建view添加到状态栏
     private void addStatusBarView() {
         View view = new View(this);
-        view.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+        view.setBackgroundColor(getResources().getColor(R.color.colorstate));
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 getStatusBarHeight(this));
         ViewGroup decorView = (ViewGroup) findViewById(android.R.id.content);

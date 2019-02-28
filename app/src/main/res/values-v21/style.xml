@@ -2,7 +2,7 @@
 <resources>
 
     //values-v21
-    <style name="TranslucentTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
     <item name="android:windowTranslucentStatus">true</item>
     <item name="android:windowTranslucentNavigation">false</item>
     <item name="android:statusBarColor">@android:color/transparent</item> //5.0

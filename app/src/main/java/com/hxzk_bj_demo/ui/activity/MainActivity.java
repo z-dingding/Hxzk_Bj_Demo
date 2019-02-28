@@ -24,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.JsonObject;
@@ -78,8 +79,7 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
     private static final String TAG = "MainActivity";
     private static final int HOME = 0;
     private static final int INVEST = 1;
-    private static final int USER =2;
-
+    private static final int USER = 2;
 
 
     @BindView(vp_main)
@@ -102,14 +102,17 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
 
     TextView tv_userInfo_hvfromvn;
 
+
+    Observable<JsonObject> observable;
+    Subscriber<JsonObject> subscriber;
+
     @Override
     protected int setLayoutId() {
         _context = MainActivity.this;
         //解决从登陆页跳转过来isShowMenu值为false
-        isShowMenu=true;
+        isShowMenu = true;
         return R.layout.activity_main;
     }
-
 
 
     @Override
@@ -117,12 +120,12 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
         super.initView();
 
         //初始化DrawerLayout
-        mDrawer= (DrawerLayout) findViewById(R.id.drawerlayout_main);
+        mDrawer = (DrawerLayout) findViewById(R.id.drawerlayout_main);
         initToolbar(R.drawable.back, getResources().getString(R.string.home));
         //让图片显示本来颜色
         navigationview_Main.setItemIconTintList(null);
 
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawer,mToolbar, 0, 0) {
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawer, mToolbar, 0, 0) {
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
@@ -159,7 +162,7 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
                 ToastCustomUtil.showShortToast("点击了用户头像");
             }
         });
-        tv_userInfo_hvfromvn= (TextView) headerView.findViewById(R.id.tv_userInfo_hvfromvn);
+        tv_userInfo_hvfromvn = (TextView) headerView.findViewById(R.id.tv_userInfo_hvfromvn);
 
         //设置用户详细信息点击
         UserInforLink();
@@ -170,24 +173,24 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
                 //在这里处理item的点击事件
                 switch (item.getItemId()) {
                     case R.id.theme:
-                        boolean boolTheme= MyApplication.getAppTheme();
-                        //false为白天true为黑夜
-                        if(boolTheme){
-                            MyApplication.setAppTheme(false);
-                            //设置为白天模式
-                            getDelegate().setLocalNightMode(MODE_NIGHT_NO);
-                            recreate();
-                        }else{
-                            MyApplication.setAppTheme(true);
-                            //设置为夜间模式，可直接调用
-                            getDelegate().setLocalNightMode(MODE_NIGHT_YES);
-                            recreate();
-                        }
-                       MainActivity.this.recreate();
+//                        boolean boolTheme= MyApplication.getAppTheme();
+//                        //false为白天true为黑夜
+//                        if(boolTheme){
+//                            MyApplication.setAppTheme(false);
+//                            //设置为白天模式
+//                            getDelegate().setLocalNightMode(MODE_NIGHT_NO);
+//                            recreate();
+//                        }else{
+//                            MyApplication.setAppTheme(true);
+//                            //设置为夜间模式，可直接调用
+//                            getDelegate().setLocalNightMode(MODE_NIGHT_YES);
+//                            recreate();
+//                        }
+//                       MainActivity.this.recreate();
 
                         break;
                     case R.id.favorite:
-                        addActivityToManager(MainActivity.this,CollectionActivity.class);
+                        addActivityToManager(MainActivity.this, CollectionActivity.class);
                         break;
 
                     case R.id.notebook:
@@ -198,8 +201,7 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
                         break;
 
                     case R.id.loginout:
-                        HttpRequest.getInstance().unsubscribe();
-                        Subscriber<JsonObject> subscriber =new Subscriber<JsonObject>() {
+                        subscriber = new Subscriber<JsonObject>() {
                             @Override
                             public void onCompleted() {
 
@@ -207,43 +209,40 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
 
                             @Override
                             public void onError(Throwable e) {
-                                 ToastCustomUtil.showLongToast(e.getMessage());
-                             }
+                                ToastCustomUtil.showLongToast(e.getMessage());
+                            }
 
                             @Override
                             public void onNext(JsonObject s) {
                                 try {
-                                    JSONObject jsonObject =new JSONObject(s.toString());
-                                    String result = jsonObject.getString("result");
-                                    String message=jsonObject.getString("message");
-                                    if(result.equals("true")){
+                                    JSONObject dataJsonObject = new JSONObject(s.toString());
+                                    String errorCode = dataJsonObject.getString("errorCode");
+                                    String errorMsg = dataJsonObject.getString("errorMsg");
+                                    if (!errorCode.equals("0")) {
+                                        ToastCustomUtil.showLongToast(errorMsg);
+                                    } else {
                                         //清空保存在本地的cookie
-                                        SPUtils.remove(MainActivity.this,"ygcy.drugwebcn.com");
+                                        SPUtils.remove(MainActivity.this, "ygcy.drugwebcn.com");
                                         ActivityJump.finnishAllActivitys();
-                                        ActivityJump.NormalJumpAndFinish(MainActivity.this,LoginActivity.class);
-                                    }else{
-                                        ToastCustomUtil.showLongToast(message);
+                                        ActivityJump.NormalJumpAndFinish(MainActivity.this, LoginActivity.class);
                                     }
-
                                 } catch (JSONException e) {
                                     e.printStackTrace();
-                                    ToastCustomUtil.showLongToast(e.getMessage());
                                 }
-
                             }
                         };
 
-                        Observable<JsonObject> observable =HttpRequest.getInstance().getServiceInterface().loginout();
-                        HttpRequest.getInstance().toSubscribe(observable,subscriber);
+                        observable = HttpRequest.getInstance().getServiceInterface().loginout();
+                        HttpRequest.getInstance().toSubscribe(observable, subscriber);
                         break;
 
                     case R.id.settting:
                         String lan = LanguageUtil.getAppLanguage(MainActivity.this);
-                        if(lan.equals("zh") || !lan.equals("en") ){
-                            setLocale(MainActivity.this,Locale.US);
+                        if (lan.equals("zh") || !lan.equals("en")) {
+                            setLocale(MainActivity.this, Locale.US);
 
-                        }else if(lan.equals("en") || !lan.equals("zh")){
-                            setLocale(MainActivity.this,Locale.SIMPLIFIED_CHINESE);
+                        } else if (lan.equals("en") || !lan.equals("zh")) {
+                            setLocale(MainActivity.this, Locale.SIMPLIFIED_CHINESE);
                         }
                         break;
                 }
@@ -254,6 +253,14 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
     }
 
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (vp_Main != null) {
+            vp_Main = null;
+        }
+        HttpRequest.getInstance().unsubscribe(observable);
+    }
 
 
 
@@ -263,70 +270,72 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
     private void UserInforLink() {
 
         //先判断中英文
-         if(getResources().getConfiguration().locale.getLanguage().equals("en")){ //英文
-             SpannableString  mSpannableString  =new SpannableString(getString(R.string.sideslip_welcom)) ;
-             //加粗字体
-             StyleSpan mStyleSpan =new StyleSpan(Typeface.BOLD_ITALIC);
-             mSpannableString.setSpan(mStyleSpan,8,20, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-             //加点击事件
-             //使用ClickableSpan的文本如果想真正实现点击作用，必须为TextView设置setMovementMethod方法
-             mSpannableString.setSpan(new MyClickableSpan(""),8,20, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-              //加前背景色
-             ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(Color.GREEN);
-             mSpannableString.setSpan(foregroundColorSpan, 8, 20, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        if (getResources().getConfiguration().locale.getLanguage().equals("en")) { //英文
+            SpannableString mSpannableString = new SpannableString(getString(R.string.sideslip_welcom));
+            //加粗字体
+            StyleSpan mStyleSpan = new StyleSpan(Typeface.BOLD_ITALIC);
+            mSpannableString.setSpan(mStyleSpan, 8, 20, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+            //加点击事件
+            //使用ClickableSpan的文本如果想真正实现点击作用，必须为TextView设置setMovementMethod方法
+            mSpannableString.setSpan(new MyClickableSpan(""), 8, 20, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+            //加前背景色
+            ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(Color.GREEN);
+            mSpannableString.setSpan(foregroundColorSpan, 8, 20, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
 
-             tv_userInfo_hvfromvn.setMovementMethod(LinkMovementMethod.getInstance());
-             tv_userInfo_hvfromvn.setText(mSpannableString);
+            tv_userInfo_hvfromvn.setMovementMethod(LinkMovementMethod.getInstance());
+            tv_userInfo_hvfromvn.setText(mSpannableString);
 
-         }else{//中文
-             SpannableString  mSpannableString  =new SpannableString(getString(R.string.sideslip_welcom)) ;
-             //加粗字体
-             StyleSpan mStyleSpan =new StyleSpan(Typeface.BOLD_ITALIC);
-             mSpannableString.setSpan(mStyleSpan,2,5, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-             //设置点击事件
-             //使用ClickableSpan的文本如果想真正实现点击作用，必须为TextView设置setMovementMethod方法
-             mSpannableString.setSpan(new MyClickableSpan(""),2,5, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-             //加前背景色
-             ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(Color.GREEN);
-             mSpannableString.setSpan(foregroundColorSpan, 2, 5, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        } else {//中文
+            SpannableString mSpannableString = new SpannableString(getString(R.string.sideslip_welcom));
+            //加粗字体
+            StyleSpan mStyleSpan = new StyleSpan(Typeface.BOLD_ITALIC);
+            mSpannableString.setSpan(mStyleSpan, 2, 5, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+            //设置点击事件
+            //使用ClickableSpan的文本如果想真正实现点击作用，必须为TextView设置setMovementMethod方法
+            mSpannableString.setSpan(new MyClickableSpan(""), 2, 5, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+            //加前背景色
+            ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(Color.GREEN);
+            mSpannableString.setSpan(foregroundColorSpan, 2, 5, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
 
-             tv_userInfo_hvfromvn.setMovementMethod(LinkMovementMethod.getInstance());
-             tv_userInfo_hvfromvn.setText(mSpannableString);
-         }
-    }
-class MyClickableSpan extends ClickableSpan{
-
-    private String content;
-
-    public MyClickableSpan(String content) {
-        this.content = content;
-    }
-
-    @Override
-    public void onClick(View widget) {
-        Intent intent=new Intent();//创建Intent对象
-        intent.setAction(Intent.ACTION_VIEW);//为Intent设置动作
-        intent.putExtra("content",content);//可以传递数据到下个页面
-        intent.setData(Uri.parse("http://www.baidu.com"));//为Intent设置数据
-        startActivity(intent);//将Intent传递给Activity
-    }
-
-    @Override
-    public void updateDrawState(TextPaint ds) {
-        //设置不显示下划线，默认显示
-      //  ds.setUnderlineText(false);
-        super.updateDrawState(ds);
+            tv_userInfo_hvfromvn.setMovementMethod(LinkMovementMethod.getInstance());
+            tv_userInfo_hvfromvn.setText(mSpannableString);
+        }
     }
 
 
-}
+    class MyClickableSpan extends ClickableSpan {
+
+        private String content;
+
+        public MyClickableSpan(String content) {
+            this.content = content;
+        }
+
+        @Override
+        public void onClick(View widget) {
+            Intent intent = new Intent();//创建Intent对象
+            intent.setAction(Intent.ACTION_VIEW);//为Intent设置动作
+            intent.putExtra("content", content);//可以传递数据到下个页面
+            intent.setData(Uri.parse("http://www.baidu.com"));//为Intent设置数据
+            startActivity(intent);//将Intent传递给Activity
+        }
+
+        @Override
+        public void updateDrawState(TextPaint ds) {
+            //设置不显示下划线，默认显示
+            //  ds.setUnderlineText(false);
+            super.updateDrawState(ds);
+        }
+
+
+    }
 
     @Override
     protected void initData() {
         super.initData();
-        homeFrag=HomeFragment.getInstance(HomeFragment.class,null);
-        investFrag=InvestFragment.getInstance(HomeFragment.class,null);
-        userFrag=UserFragment.getInstance(HomeFragment.class,null);
+        homeFrag = HomeFragment.getInstance(HomeFragment.class, null);
+        investFrag = InvestFragment.getInstance(InvestFragment.class, null);
+        userFrag = UserFragment.getInstance(UserFragment.class, null);
         List<Fragment> list = new ArrayList<>();
         list.add(homeFrag);
         list.add(investFrag);
@@ -335,11 +344,6 @@ class MyClickableSpan extends ClickableSpan{
         vp_Main.setAdapter(adapter);
         //vp_Main.setOffscreenPageLimit(3);
     }
-
-
-
-
-
 
 
     private ViewPager.OnPageChangeListener mOnPageChangeListener = new ViewPager.OnPageChangeListener() {
@@ -357,29 +361,32 @@ class MyClickableSpan extends ClickableSpan{
             } else {
                 bav_Main.getMenu().getItem(0).setChecked(false);
             }
-            switch (position){
+            switch (position) {
                 case 0:
                     mToolbar.setTitle(getResources().getString(R.string.home));
-                    fragmentFlag=0;
+                    toolbarVisible(View.VISIBLE);
+                    fragmentFlag = 0;
                     isShowMenu = true;
                     getWindow().invalidatePanelMenu(Window.FEATURE_OPTIONS_PANEL);
                     invalidateOptionsMenu();
                     break;
-                  case 1:
-                      mToolbar.setTitle(getResources().getString(R.string.investment));
-                      fragmentFlag=1;
-                      isShowMenu = true;
-                      getWindow().invalidatePanelMenu(Window.FEATURE_OPTIONS_PANEL);
-                      invalidateOptionsMenu();
-                break;
+                case 1:
+                    mToolbar.setTitle(getResources().getString(R.string.investment));
+                    toolbarVisible(View.GONE);
+                    fragmentFlag = 1;
+                    isShowMenu = true;
+                    getWindow().invalidatePanelMenu(Window.FEATURE_OPTIONS_PANEL);
+                    invalidateOptionsMenu();
+                    break;
 
-                  case 2:
-                      mToolbar.setTitle(getResources().getString(R.string.mine));
-                      fragmentFlag=2;
-                      isShowMenu = false;
-                     getWindow().invalidatePanelMenu(Window.FEATURE_OPTIONS_PANEL);
-                      invalidateOptionsMenu();
-                break;
+                case 2:
+                    mToolbar.setTitle(getResources().getString(R.string.mine));
+                    toolbarVisible(View.VISIBLE);
+                    fragmentFlag = 2;
+                    isShowMenu = false;
+                    getWindow().invalidatePanelMenu(Window.FEATURE_OPTIONS_PANEL);
+                    invalidateOptionsMenu();
+                    break;
             }
             menuItem = bav_Main.getMenu().getItem(position);
             menuItem.setChecked(true);
@@ -395,9 +402,9 @@ class MyClickableSpan extends ClickableSpan{
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
-        public boolean onNavigationItemSelected( MenuItem item) {
+        public boolean onNavigationItemSelected(MenuItem item) {
             //item.getOrder()对应menu里的orderInCategory属性值
-                    vp_Main.setCurrentItem(item.getOrder());
+            vp_Main.setCurrentItem(item.getOrder());
             return true;
         }
     };
@@ -406,7 +413,7 @@ class MyClickableSpan extends ClickableSpan{
     @Override
     public void setValue(Object... param) {
         Bundle bundleData = (Bundle) param[0];
-        int flag =bundleData.getInt("fragmentflag");
+        int flag = bundleData.getInt("fragmentflag");
 //        switch (flag){
 //            case 2:
 //                showSearchOnMenu=true;
@@ -418,13 +425,6 @@ class MyClickableSpan extends ClickableSpan{
     }
 
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if(vp_Main != null ){
-            vp_Main = null;
-        }
-    }
 
 
 
@@ -449,7 +449,7 @@ class MyClickableSpan extends ClickableSpan{
                         //执行顺序——1【多个权限的情况，只有所有的权限均允许的情况下granted==true】
                         if (granted) { // 在android 6.0之前会默认返回true
                             // 已经获取权限
-                         //   LogUtil.e(TAG, "已经获取权限");
+                            //   LogUtil.e(TAG, "已经获取权限");
                         } else {
                             // 未获取权限
                             ToastCustomUtil.showShortToast("您没有授权该权限，请在设置中打开授权");
@@ -458,7 +458,7 @@ class MyClickableSpan extends ClickableSpan{
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                       // LogUtil.e(TAG, "授权异常请检查处理");//可能是授权异常的情况下的处理
+                        // LogUtil.e(TAG, "授权异常请检查处理");//可能是授权异常的情况下的处理
                     }
                 }, new Action() {
                     @Override
@@ -470,13 +470,13 @@ class MyClickableSpan extends ClickableSpan{
 
 
     @Override
-    protected void doActivityResult(int requestCode,int resultCode, Intent data) {
-        super.doActivityResult(requestCode,resultCode,data);
+    protected void doActivityResult(int requestCode, int resultCode, Intent data) {
+        super.doActivityResult(requestCode, resultCode, data);
         /**
          * 处理二维码扫描结果
          */
         if (requestCode == REQUEST_CODE) {
-          homeFrag.onActivityResult(requestCode,resultCode,data);
+            homeFrag.onActivityResult(requestCode, resultCode, data);
         }
 
     }

@@ -7,6 +7,7 @@
     <string name="empty_no_data">没有请求到数据，点击重试...</string>
     <string name="wechat_select">微信精选</string>
     <string name="load_more_error">加载更多数据失败！</string>
+    <string name="content_is_empty">内容不能为空!</string>
 
 
     <!--====================================二维码相关字符=============================-->
@@ -28,7 +29,17 @@
     <string name="login_account_prompt">请输入账号</string>
     <string name="login_pasword_prompt">请输入密码</string>
     <string name="login_otherwaylogin">试试临时登录?</string>
+    <string name="login_rigister">要不注册一个?</string>
 
+
+    <!--=====================================注册界面字符=============================-->
+    <string name="rigiser">注册</string>
+    <string name="rigister_account">请输入注册用户名(长度至少为6-16)</string>
+    <string name="rigister_pwd">请输入注册密码(长度至少为6-16)</string>
+    <string name="rigister_confirmpwd">请确认注册密码</string>
+    <string name="toast_pwdnotequel">两次输入密码不一致</string>
+    <string name="toast_accountlength">账号长度不符</string>
+    <string name="toast_pwdlength">密码长度不符</string>
 
     <!--=====================================左侧滑菜单字符=============================-->
     <string name="sideslip_welcom">欢迎赵涛涛今日签到</string>

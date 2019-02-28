@@ -426,6 +426,12 @@
     <dimen name="sp_42">42sp</dimen>
     <dimen name="sp_48">48sp</dimen>
 
-
+    <!-- *********************************ViewPager+Tablayout顶部选项卡区域********************************* -->
+    <!-- 选项卡的内边距 -->
+    <dimen name="tab_top_auto_padding">10dp</dimen>
+    <!-- 选项卡标题的文字大小 -->
+    <dimen name="tab_top_auto_title_size">18sp</dimen>
+    <!-- 选项卡标题的下划线高度 -->
+    <dimen name="tab_top_auto_height">3dp</dimen>
 
 </resources>

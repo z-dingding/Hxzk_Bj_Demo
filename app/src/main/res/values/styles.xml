@@ -2,14 +2,15 @@
 
 
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.DayNight">
-
+    <!-- Base application theme. Theme.AppCompat.DayNight
+    Theme.AppCompat.NoActionBar
+   -->
+    <style name="Base.AppTheme" parent="Theme.AppCompat.NoActionBar">
+        <!-- API Level 22 编译要去点android -->
         <item name="windowNoTitle">true</item>
-        <item name="windowActionBar">false</item>
-
+        <item name="android:windowNoTitle">true</item>
     </style>
-        <style name="TranslucentTheme" parent="AppTheme">
+        <style name="AppTheme" parent="Base.AppTheme">
         <!--colorPrimary:这个属性是你的导航栏的属性颜色,应用的主要色调，actionBar默认使用该颜色，Toolbar导航栏的底色;
         colorPrimaryDark：这个属性则是你的—通知栏的颜色,状态栏默认使用该颜色
         colorAccent—控件选中后颜色-->
@@ -17,7 +18,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-    </style>
+        </style>
 
 
     <!-- ProgressBar 样式 -->
@@ -30,7 +31,7 @@
     </style>
 
 
-
+    <!-- Dialog 样式 -->
     <style name="Dialog_image" parent="android:style/Theme.Dialog">
         <!-- 背景颜色及透明程度 -->
         <item name="android:windowBackground">@android:color/transparent</item>
@@ -44,22 +45,31 @@
 
 
     <!-- toolbar弹出菜单样式,设置在toolbar之下-->
-    <style name="ToolbarPopupTheme" parent="@style/ThemeOverlay.AppCompat.Light"><!-- light会使字体为黑，背景为白色 -->
+    <style name="ToolbarPopupTheme" parent="@style/ThemeOverlay.AppCompat"><!-- light会使字体为黑，背景为白色 -->
         <item name="actionOverflowMenuStyle">@style/OverflowMenuStyle
         </item> <!--新增一个item，用于控制menu-->
     </style>
-    <style name="OverflowMenuStyle" parent="Widget.AppCompat.Light.PopupMenu.Overflow">
+    <style name="OverflowMenuStyle" parent="Widget.AppCompat.PopupMenu.Overflow">
         <item name="overlapAnchor">false</item>  <!--把该属性改为false即可使menu位置位于toolbar之下-->
     </style>
 
 
 
     <!-- 启动页的样式，解决白屏使用且实现app秒开(并不是真正的秒开，只是显示效果)-->
-    <style name="welcometheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="welcometheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:background">@drawable/whitescreen</item>
     </style>
 
 
+    <!-- 注册页面字数超出提示-->
+    <style name="rigister_hinterroy">
+        <item name="android:textColor">@color/red</item>
+    </style>
 
+
+    <!-- TabLayout的文字大小 -->
+    <style name="TabLayoutTextStyle">
+        <item name="android:textSize">@dimen/tab_top_auto_title_size</item>
+    </style>
 
 </resources>

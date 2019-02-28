@@ -1,72 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
-    <!--&lt;!&ndash;app:canLoop="true"    //设置是否循环&ndash;&gt;-->
-    <!--&lt;!&ndash;app:canTurn="true"  //是否可以跳转&ndash;&gt;-->
-    <!--&lt;!&ndash;app:autoTurnTime="5000"// 页面切换间隔&ndash;&gt;-->
-    <!--&lt;!&ndash;app:scrollDuration="2000"//页面切换持续时间&ndash;&gt;-->
-    <!--&lt;!&ndash;app:isTouchScroll="true" //是否支持手动滑动&ndash;&gt;-->
-    <!--&lt;!&ndash;app:reverse="true" // 是否反向切换页面（切换方向）&ndash;&gt;-->
-    <com.wenld.wenldbanner.WenldBanner
-        android:id="@+id/commonBanner"
+    <!-- 选项卡区域 -->
+    <!--设置TabLayout的模式 app:tabMode 默认是fixed：固定的，标签很多时候会被挤压，不能滑动。-->
+    <!--设置整个TabLayout的颜色 app:tabBackground-->
+    <!--设置选中字体的颜色 app:tabSelectedTextColor-->
+    <!--设置未选中字体的颜色 app:tabTextColor-->
+    <!--设置指示器下标的颜色 app:tabIndicatorColor-->
+    <!--设置指示器下标的高度 app:tabIndicatorHeight，如果设置的是0.0dp，则代表没有下划线-->
+    <!--设置内容的显示模式 app:tabGravity，center : 居中，如果是fill，则是充满-->
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tl_top"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_180"
-        app:canLoop="true"
-         app:canTurn="true"
-        app:autoTurnTime="2000"
-        app:scrollDuration="3000"
-        app:isTouchScroll="true"
-        app:reverse="true"/>
+        android:layout_height="wrap_content"
+        app:tabBackground="@android:color/transparent"
+        app:tabMode="scrollable"
+        app:tabSelectedTextColor="@color/tab_text_selected_top"
+        app:tabTextColor="@color/tab_text_normal_top"
+        app:tabTextAppearance="@style/TabLayoutTextStyle"
+        app:tabIndicatorColor="@color/tab_auto_selected_top"
+        app:tabIndicatorHeight="@dimen/tab_top_auto_height"
+        app:tabGravity="center"
+        />
 
-    <!--android:fillViewport="true" NestedScrollView的子布局不显示解决-->
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/nestedsv_invest"
+    <!-- 自定义viewpager区域 -->
+    <com.hxzk_bj_demo.widget.CustomViewPager
+        android:id="@+id/vp_tab"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/dp_180"
-        android:fillViewport="true">
+        android:layout_height="0.0dp"
+        android:layout_weight="1"/>
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-
-            <android.support.v4.widget.SwipeRefreshLayout
-                android:id="@+id/swiperrl_invest"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recycler_invest"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </android.support.v4.widget.SwipeRefreshLayout>
-
-
-            <!--backgroundTint 底色,点击颜色
-            app:elevation="6dp"//显示的阴影大小
-            app:pressedTranslationZ="12dp"//点击时的阴影大小
-            @android:drawable/ic_input_add 系统自带加好图标-->
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/fab_invest"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end"
-                android:layout_margin="16dp"
-                android:src="@drawable/backtop" />
-
-        </FrameLayout>
-
-
-    </androidx.core.widget.NestedScrollView>
-
-
-</FrameLayout>
+</LinearLayout>
 
 
 

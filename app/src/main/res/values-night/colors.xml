@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <!-- 夜间模式 -->
-    <color name="colorPrimary_Night">#303030</color>
-    <color name="colorPrimaryDark_Night">#303030</color>
-    <color name="colorAccent_Night">#303030</color>
-</resources>

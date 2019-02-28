@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!--counterEnabled 设置为true才能显字符数-->
+    <!--counterMaxLength  设置最大字符数-->
+    <!--counterOverflowTextAppearance  设置超出字符数后提示文字的颜色，如果不设置默认为@color/colorAccent的颜色-->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilayout_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_40"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginRight="@dimen/dp_10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:counterEnabled="true"
+        app:counterMaxLength="16"
+        app:counterOverflowTextAppearance="@style/rigister_hinterroy"
+     >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tiet_accoount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/rigister_account"
+           />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilayout_pwd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_50"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginRight="@dimen/dp_10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tilayout_account"
+        app:counterEnabled="true"
+        app:counterMaxLength="16"
+        app:counterOverflowTextAppearance="@style/rigister_hinterroy"
+       >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tiet_pwd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/rigister_pwd"
+           />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_confirmpwd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_50"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginRight="@dimen/dp_10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tilayout_pwd"
+        app:counterEnabled="true"
+        app:counterMaxLength="16"
+        app:counterOverflowTextAppearance="@style/rigister_hinterroy"
+       >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tiet_confirmpwd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/rigister_confirmpwd"
+         />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/btn_register"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_60"
+        android:text="@string/rigiser"
+        android:layout_marginRight="@dimen/dp_20"
+        android:layout_marginLeft="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_50"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/til_confirmpwd"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

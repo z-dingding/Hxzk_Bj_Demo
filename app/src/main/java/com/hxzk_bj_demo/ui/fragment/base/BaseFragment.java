@@ -26,12 +26,14 @@ import butterknife.Unbinder;
 public abstract class BaseFragment extends LazyLoadFragment {
 
 
-    private  final String TAG = "BaseFragment";
+    private final String TAG = "BaseFragment";
 
     public FragmentCallBack mCallBack;
 
 
-    /**Butterknife绑定对象*/
+    /**
+     * Butterknife绑定对象
+     */
     private Unbinder mUnbinder;
 
 
@@ -47,28 +49,28 @@ public abstract class BaseFragment extends LazyLoadFragment {
 
     }
 
-    protected Context mContext;
+    protected static Context mContext;
 
     //获取布局文件ID
     protected abstract int getLayoutId();
 
 
-
     /**
      * 创建fragment的静态方法，方便传递参数
+     *
      * @param args 传递的参数
      * @return
      */
-    public static <T extends Fragment>T getInstance(Class clazz, Bundle args) {
-        T mFragment=null;
+    public static <T extends Fragment> T getInstance(Class clazz, Bundle args) {
+        T mFragment = null;
         try {
-                mFragment= (T) clazz.newInstance();
+            mFragment = (T) clazz.newInstance();
         } catch (java.lang.InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
-        if(args != null){
+        if (args != null) {
             mFragment.setArguments(args);
         }
 
@@ -76,22 +78,31 @@ public abstract class BaseFragment extends LazyLoadFragment {
     }
 
 
-
     View view = null;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (getLayoutId() != 0) {
-            String name =getClass().getSimpleName();
-            if(view == null){
-            view = inflater.inflate(getLayoutId(), null); }
-            mUnbinder= ButterKnife.bind(this,view);
+            String name = getClass().getSimpleName();
+            if (view == null) {
+                view = inflater.inflate(getLayoutId(), null);
+            }
+            //缓存的rootView需要判断是否已经被加过parent， 如果有parent需要从parent删除。
+            ViewGroup parent = (ViewGroup) view.getParent();
+            if (parent != null) {
+                parent.removeView(view);
+            }
+            mUnbinder = ButterKnife.bind(this, view);
             initView(view, savedInstanceState);
             initData();
             initEvent();
-            }
-            return view;
+        }
+        return view;
     }
+
+
+
 
 
     protected abstract void initView(View view, Bundle savedInstanceState);
@@ -104,7 +115,7 @@ public abstract class BaseFragment extends LazyLoadFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mContext =context;
+        mContext = context;
         try {
             mCallBack = (FragmentCallBack) context;
         } catch (ClassCastException e) {
