@@ -11,6 +11,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import com.bumptech.glide.Glide;
 import com.hxzk_bj_demo.R;
+import com.hxzk_bj_demo.javabean.BannerBean;
+import com.hxzk_bj_demo.network.BaseResponse;
+import com.hxzk_bj_demo.network.BaseSubscriber;
+import com.hxzk_bj_demo.network.ExceptionHandle;
+import com.hxzk_bj_demo.network.HttpRequest;
 import com.hxzk_bj_demo.other.ZoomOutPageTransformer;
 import com.hxzk_bj_demo.ui.fragment.base.BaseFragment;
 import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
@@ -25,6 +30,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import butterknife.BindView;
+import rx.Observable;
+import rx.Subscriber;
 
 
 /**
@@ -48,8 +55,12 @@ public class HomeFragment extends BaseFragment {
 
     ExecutorService fixThreadPool;
 
+    //Banner请求链接
+    LinkedList<BannerBean.DataBean>  bannerList;
 
 
+    Observable<BaseResponse<BannerBean>> observable;
+    BaseSubscriber<BaseResponse<BannerBean>> subscriber;
 
 
     @Override
@@ -78,19 +89,17 @@ public class HomeFragment extends BaseFragment {
     }
 
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        HttpRequest.getInstance().unsubscribe(observable);
+    }
 
     /**
      * 初始化Banner
      */
     private void initBanner(){
-
-        List bannerList = new LinkedList<>();
-        bannerList.add("https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=255672777,4242622346&fm=27&gp=0.jpg");
-        bannerList.add("https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2232245861,612896867&fm=27&gp=0.jpg");
-        bannerList.add("https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2621991350,510510471&fm=27&gp=0.jpg");
-        bannerList.add("https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=952379700,3301162203&fm=27&gp=0.jpg");
-        bannerList.add("https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=4223445256,1173646510&fm=27&gp=0.jpg");
-
+        requestBanner();
 
         int[] indicatorGrouop = new int[]{R.drawable.ic_page_indicator, R.drawable.ic_page_indicator_focused};
 
@@ -158,6 +167,40 @@ public class HomeFragment extends BaseFragment {
                 .setData(bannerList);
 
 
+    }
+
+    /**
+     * 请求banner图片信息
+     */
+    private void requestBanner() {
+        bannerList = new LinkedList();
+       subscriber =new BaseSubscriber<BaseResponse<BannerBean>>(mContext) {
+
+
+
+           @Override
+           public void onError(ExceptionHandle.ResponeThrowable e) {
+               ToastCustomUtil.showLongToast(e.message);
+
+           }
+
+           @Override
+           public void onNext(BaseResponse<BaseResponse<BannerBean>> baseResponse) {
+               List mList =new LinkedList();
+               mList =baseResponse.getData().getData().getData();
+               for(Object bean : mList){
+                   bannerList.add((BannerBean.DataBean) bean);
+               }
+
+           }
+
+
+       };
+
+        Observable<BaseResponse<BannerBean>> observable =HttpRequest.getInstance().getServiceInterface().homeBanner();
+        //用observable提供的onErrorResumeNext 则可以将你自定义的Func1 关联到错误处理类中
+        observable.onErrorResumeNext(new BaseSubscriber.HttpResponseFunc<>());
+        HttpRequest.getInstance().toSubscribe(observable,subscriber);
     }
 
     @Override

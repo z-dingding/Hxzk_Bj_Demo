@@ -1,6 +1,7 @@
 package com.hxzk_bj_demo.network;
 
 import com.google.gson.JsonObject;
+import com.hxzk_bj_demo.javabean.BannerBean;
 import com.hxzk_bj_demo.javabean.InversBean;
 import com.hxzk_bj_demo.javabean.LoginBean;
 import com.hxzk_bj_demo.javabean.LoginOutBean;
@@ -55,7 +56,8 @@ public interface ServiceInterface {
     Observable<BaseResponse<LoginOutBean>> loginout();
 
 
-
+    @GET("banner/json")
+    Observable<BaseResponse<BannerBean>> homeBanner();
 
 
 }
