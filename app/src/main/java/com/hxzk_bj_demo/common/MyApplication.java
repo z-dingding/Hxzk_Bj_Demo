@@ -51,7 +51,7 @@ public class MyApplication extends LitePalApplication {
              导致第三部分(MainActivity类的实例instance)泄露.
                     如果手动启动activity进行内存检测则需要执行:adb shell am start  -n [包名]/[Activity名]*/
         }
-       // LeakCanary.install(this);
+        LeakCanary.install(this);
         //正常程序初始化代码…
         //获取全局Context对象
         appContext = getApplicationContext();
@@ -65,15 +65,6 @@ public class MyApplication extends LitePalApplication {
 //        //给OkttpClient添加开源库
 //        httpClientBuilder.cookieJar(cookieJar);
 
-
-        //每次程序启动重新设置上次保存的theme
-//        if(getAppTheme()){
-//            //设置为夜间模式，可直接调用
-//            AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES);
-//        }else{
-//            //设置为白天模式
-//            AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_NO);
-//        }
 
 
    //注册Activity生命周期监听回调

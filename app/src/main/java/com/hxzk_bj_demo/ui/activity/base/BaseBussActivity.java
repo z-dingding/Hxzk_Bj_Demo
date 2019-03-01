@@ -28,7 +28,6 @@ public class BaseBussActivity extends BaseActivity {
 
     public Toolbar mToolbar;
 
-    private XDialog loadingDialog;
 
 
     /**
@@ -71,36 +70,10 @@ public class BaseBussActivity extends BaseActivity {
     }
 
 
-    /**
-     * 显示dialog
-     *
-     * @param mContext 上下文
-     */
-    public void mshowDialog(Context mContext) {
-        if (null == loadingDialog) {
-            loadingDialog = new XDialog(mContext, R.style.Dialog_image, "");
-            loadingDialog.setCancelable(false);
-            loadingDialog.show();
-        } else {
-            if (!loadingDialog.isShowing()){
-                loadingDialog.show();
-            }
 
 
 
-        }
-    }
 
-
-    /**
-     * 让dialog消失
-     */
-    public void mdismissDialog() {
-        if (null != loadingDialog && loadingDialog.isShowing()) {
-            loadingDialog.dismiss();
-            loadingDialog = null;
-        }
-    }
 
 
     /**

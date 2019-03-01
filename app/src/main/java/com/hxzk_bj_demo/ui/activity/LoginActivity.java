@@ -18,6 +18,10 @@ import com.google.gson.JsonObject;
 import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.common.Const;
 import com.hxzk_bj_demo.javabean.LoginBean;
+import com.hxzk_bj_demo.javabean.LoginOutBean;
+import com.hxzk_bj_demo.network.BaseResponse;
+import com.hxzk_bj_demo.network.BaseSubscriber;
+import com.hxzk_bj_demo.network.ExceptionHandle;
 import com.hxzk_bj_demo.network.HttpRequest;
 import com.hxzk_bj_demo.ui.activity.base.BaseBussActivity;
 import com.hxzk_bj_demo.utils.KeyBoardHelperUtil;
@@ -70,8 +74,8 @@ public class LoginActivity extends BaseBussActivity {
     String pwd;
 
 
-    Subscriber<JsonObject> subscriber;
-    Observable<JsonObject> observable;
+    BaseSubscriber<BaseResponse<LoginOutBean>> subscriber;
+    Observable<BaseResponse<LoginOutBean>> observable;
 
     @Override
     protected int setLayoutId() {
@@ -180,51 +184,43 @@ public class LoginActivity extends BaseBussActivity {
 
 
             case R.id.btn_loginin_login:
-                mshowDialog(LoginActivity.this);
+
                 account=edt_Account_Login.getText().toString();
                  pwd=edt_Pwd_Login.getText().toString();
                 if(!TextUtils.isEmpty(account) && !TextUtils.isEmpty(pwd)){
 
-                    subscriber =new  Subscriber<JsonObject>(){
+                    subscriber =new  BaseSubscriber<BaseResponse<LoginOutBean>>(LoginActivity.this){
 
                         @Override
-                        public void onCompleted() {
-                            mdismissDialog();
+                        public void onError(ExceptionHandle.ResponeThrowable e) {
+                            ToastCustomUtil.showLongToast(e.message);
+
                         }
 
                         @Override
                         public void onError(Throwable e) {
+                            super.onError(e);
                             ToastCustomUtil.showLongToast(e.getMessage());
-                            mdismissDialog();
                         }
 
                         @Override
-                        public void onNext(JsonObject s) {
-                            String sd =s.toString();
-                            JSONObject dataJsonObject = null;
-                            try {
-                                dataJsonObject = new JSONObject(s.toString());
-                                String errorCode =dataJsonObject.getString("errorCode");
-                                String errorMsg = dataJsonObject.getString("errorMsg");
-                                if(!errorCode.equals("0")){
-                                    ToastCustomUtil.showLongToast(errorMsg);
-                                }else{
-                                    SPUtils.put(LoginActivity.this, Const.KEY_LOGIN_ACCOUNT,account);
-                                    SPUtils.put(LoginActivity.this,Const.KEY_LOGIN_PWD,pwd);
-                                    ActivityJump.NormalJumpAndFinish(LoginActivity.this,MainActivity.class);
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                        public void onNext(BaseResponse<BaseResponse<LoginOutBean>> baseResponse) {
+                            if (!baseResponse.isOk()) {
+                                ToastCustomUtil.showLongToast(baseResponse.getMsg());
+                            } else {
+                                SPUtils.put(LoginActivity.this, Const.KEY_LOGIN_ACCOUNT,account);
+                                SPUtils.put(LoginActivity.this,Const.KEY_LOGIN_PWD,pwd);
+                                ActivityJump.NormalJumpAndFinish(LoginActivity.this,MainActivity.class);
                             }
-
                         }
                     };
-
                     observable =HttpRequest.getInstance().getServiceInterface().login(account,pwd);
+                    //用observable提供的onErrorResumeNext 则可以将你自定义的Func1 关联到错误处理类中
+                    observable.onErrorResumeNext(new BaseSubscriber.HttpResponseFunc<>());
                     HttpRequest.getInstance().toSubscribe(observable,subscriber);
 
                 }else{
-                    mdismissDialog();
+
                     ToastCustomUtil.showLongToast("请输入正确的账号密码!");
                 }
 

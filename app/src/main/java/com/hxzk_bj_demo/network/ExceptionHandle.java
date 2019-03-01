@@ -12,7 +12,7 @@ import retrofit2.HttpException;
 
 /**
  * 作者：created by ${zjt} on 2019/2/28
- * 描述:
+ * 描述:对服务器返回的错误状态进行了自我的处理
  */
 public class ExceptionHandle {
 
@@ -106,7 +106,6 @@ public static class ResponeThrowable extends Exception {
     public ResponeThrowable(Throwable throwable, int code) {
         super(throwable);
         this.code = code;
-
     }
 }
 

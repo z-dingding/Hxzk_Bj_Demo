@@ -30,8 +30,11 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.gson.JsonObject;
 import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.common.MyApplication;
+import com.hxzk_bj_demo.javabean.LoginOutBean;
 import com.hxzk_bj_demo.mvp.view.NoteBookActivity;
+import com.hxzk_bj_demo.network.BaseResponse;
 import com.hxzk_bj_demo.network.BaseSubscriber;
+import com.hxzk_bj_demo.network.ExceptionHandle;
 import com.hxzk_bj_demo.network.HttpRequest;
 import com.hxzk_bj_demo.ui.activity.base.BaseBussActivity;
 import com.hxzk_bj_demo.ui.adapter.base.FragmentAdapter;
@@ -63,8 +66,10 @@ import butterknife.internal.Utils;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import okhttp3.Request;
+import retrofit2.Response;
 import rx.Observable;
 import rx.Subscriber;
+import rx.functions.Func1;
 
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO;
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES;
@@ -104,8 +109,8 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
     TextView tv_userInfo_hvfromvn;
 
 
-    Observable<JsonObject> observable;
-    Subscriber<JsonObject> subscriber;
+    Observable<BaseResponse<LoginOutBean>> observable;
+    Subscriber<BaseResponse<LoginOutBean>> subscriber;
 
     @Override
     protected int setLayoutId() {
@@ -174,21 +179,6 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
                 //在这里处理item的点击事件
                 switch (item.getItemId()) {
                     case R.id.theme:
-//                        boolean boolTheme= MyApplication.getAppTheme();
-//                        //false为白天true为黑夜
-//                        if(boolTheme){
-//                            MyApplication.setAppTheme(false);
-//                            //设置为白天模式
-//                            getDelegate().setLocalNightMode(MODE_NIGHT_NO);
-//                            recreate();
-//                        }else{
-//                            MyApplication.setAppTheme(true);
-//                            //设置为夜间模式，可直接调用
-//                            getDelegate().setLocalNightMode(MODE_NIGHT_YES);
-//                            recreate();
-//                        }
-//                       MainActivity.this.recreate();
-
                         break;
                     case R.id.favorite:
                         addActivityToManager(MainActivity.this, CollectionActivity.class);
@@ -202,34 +192,34 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
                         break;
 
                     case R.id.loginout:
-                        subscriber = new BaseSubscriber<JsonObject>(MainActivity.this) {
-                            @Override
-                            public void onError(Throwable e) {
-                                ToastCustomUtil.showLongToast(e.getMessage());
-                            }
 
+                        subscriber = new BaseSubscriber<BaseResponse<LoginOutBean>>(MainActivity.this) {
                             @Override
-                            public void onNext(JsonObject s) {
-                                try {
-                                    JSONObject dataJsonObject = new JSONObject(s.toString());
-                                    String errorCode = dataJsonObject.getString("errorCode");
-                                    String errorMsg = dataJsonObject.getString("errorMsg");
-                                    if (!errorCode.equals("0")) {
-                                        ToastCustomUtil.showLongToast(errorMsg);
-                                    } else {
-                                        //清空保存在本地的cookie
-                                        SPUtils.remove(MainActivity.this, "ygcy.drugwebcn.com");
-                                        ActivityJump.finnishAllActivitys();
-                                        ActivityJump.NormalJumpAndFinish(MainActivity.this, LoginActivity.class);
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
+                            public void onNext(com.hxzk_bj_demo.network.BaseResponse<com.hxzk_bj_demo.network.BaseResponse<LoginOutBean>> baseResponse) {
+                                if (!baseResponse.isOk()) {
+                                    ToastCustomUtil.showLongToast(baseResponse.getMsg());
+                                } else {
+                                    //清空保存在本地的cookie
+                                    SPUtils.remove(MainActivity.this, "ygcy.drugwebcn.com");
+                                    ActivityJump.finnishAllActivitys();
+                                    ActivityJump.NormalJumpAndFinish(MainActivity.this, LoginActivity.class);
                                 }
                             }
-                        };
 
+
+                            @Override
+                            public void onError(ExceptionHandle.ResponeThrowable e) {
+                                //处理后的异常为ResponeThrowable
+                                    ToastCustomUtil.showLongToast(e.message);
+                            }
+
+
+
+                        };
                         observable = HttpRequest.getInstance().getServiceInterface().loginout();
-                        HttpRequest.getInstance().toSubscribe(observable, subscriber);
+                        //用observable提供的onErrorResumeNext 则可以将你自定义的Func1 关联到错误处理类中
+                         observable.onErrorResumeNext(new BaseSubscriber.HttpResponseFunc<>());
+                         HttpRequest.getInstance().toSubscribe(observable, subscriber);
                         break;
 
                     case R.id.settting:
@@ -247,6 +237,7 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
         });
         MultPermission();
     }
+
 
 
     @Override

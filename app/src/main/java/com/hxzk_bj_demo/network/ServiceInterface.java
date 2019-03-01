@@ -3,6 +3,7 @@ package com.hxzk_bj_demo.network;
 import com.google.gson.JsonObject;
 import com.hxzk_bj_demo.javabean.InversBean;
 import com.hxzk_bj_demo.javabean.LoginBean;
+import com.hxzk_bj_demo.javabean.LoginOutBean;
 
 import org.json.JSONObject;
 
@@ -43,7 +44,7 @@ public interface ServiceInterface {
      * @return
      */
     @POST("user/login")
-    Observable<JsonObject> login(@Query("username") String username , @Query("password") String password);
+    Observable<BaseResponse<LoginOutBean>> login(@Query("username") String username , @Query("password") String password);
 
 
     /**
@@ -51,7 +52,9 @@ public interface ServiceInterface {
      * @return
      */
     @GET("user/logout/json")
-    Observable<JsonObject> loginout();
+    Observable<BaseResponse<LoginOutBean>> loginout();
+
+
 
 
 
