@@ -42,35 +42,35 @@ public abstract class BaseSubscriber<T> extends Subscriber<T> {
             return;
        }
         //此处可以显示进度条
-        ProgressDialogUtil.getInstance().mshowDialog(context);
+        //ProgressDialogUtil.getInstance().mshowDialog(context);
 
     }
 
     @Override
     public void onCompleted() {
         //此处可以关闭进度条
-        ProgressDialogUtil.getInstance().mdismissDialog();
+        //ProgressDialogUtil.getInstance().mdismissDialog();
     }
 
-    //如果想对Error错误统一处理，也可以在BaseSubscriber处理onError()，然后回调搭到callback上层
-    @Override
-    public void onError(Throwable e) {
-        if(e instanceof ExceptionHandle.ResponeThrowable){
-            onError(e);
-        } else {
-            onError(new ExceptionHandle.ResponeThrowable(e, ExceptionHandle.ERROR.UNKNOWN));
-        }
-    }
-    public abstract void onError(ExceptionHandle.ResponeThrowable e);
-
+//    //如果想对Error错误统一处理，也可以在BaseSubscriber处理onError()，然后回调搭到callback上层
+//    @Override
+//    public void onError(Throwable e) {
+//        if(e instanceof ExceptionHandle.ResponeThrowable){
+//            onError(e);
+//        } else {
+//            onError(new ExceptionHandle.ResponeThrowable(e, ExceptionHandle.ERROR.UNKNOWN));
+//        }
+//    }
+//    public abstract void onError(ExceptionHandle.ResponeThrowable e);
+//
 
 
     @Override
     public void onNext(T t) {
         onNext((com.hxzk_bj_demo.network.BaseResponse<T>) t);
-
     }
     public abstract void onNext(BaseResponse<T> baseResponse);
+
 
 
     //通过RXJva的 Func1来进行对原始的Throwable 进行包装转换将原来Throwable 强转成自定义的 ResponeThrowable

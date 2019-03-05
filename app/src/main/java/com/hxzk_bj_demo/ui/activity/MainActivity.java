@@ -99,7 +99,7 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
 
 
     private FragmentAdapter adapter;
-    private Fragment homeFrag, investFrag, userFrag;
+    private Fragment  investFrag, homeFrag , userFrag;
     private MenuItem menuItem;
 
 
@@ -195,6 +195,11 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
 
                         subscriber = new BaseSubscriber<BaseResponse<LoginOutBean>>(MainActivity.this) {
                             @Override
+                            public void onError(Throwable e) {
+                                ToastCustomUtil.showLongToast(e.getMessage());
+                            }
+
+                            @Override
                             public void onNext(com.hxzk_bj_demo.network.BaseResponse<com.hxzk_bj_demo.network.BaseResponse<LoginOutBean>> baseResponse) {
                                 if (!baseResponse.isOk()) {
                                     ToastCustomUtil.showLongToast(baseResponse.getMsg());
@@ -207,11 +212,6 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
                             }
 
 
-                            @Override
-                            public void onError(ExceptionHandle.ResponeThrowable e) {
-                                //处理后的异常为ResponeThrowable
-                                    ToastCustomUtil.showLongToast(e.message);
-                            }
 
 
 
@@ -329,7 +329,7 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
         list.add(userFrag);
         adapter = new FragmentAdapter(getSupportFragmentManager(), _context, list);
         vp_Main.setAdapter(adapter);
-        //vp_Main.setOffscreenPageLimit(3);
+        vp_Main.setOffscreenPageLimit(3);
     }
 
 

@@ -57,7 +57,7 @@ public interface ServiceInterface {
 
 
     @GET("banner/json")
-    Observable<BaseResponse<BannerBean>> homeBanner();
+    Observable<BannerBean> homeBanner();
 
 
 }

@@ -3,7 +3,8 @@
     android:id="@+id/linear_root_home"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:clipChildren="false">
 
 
     <!--clipChildren : 是否限制子View在其范围内，当我们将其值设置为false后那么在子控件的高度高于父控件时也会完全显示,而不会被压缩，-->

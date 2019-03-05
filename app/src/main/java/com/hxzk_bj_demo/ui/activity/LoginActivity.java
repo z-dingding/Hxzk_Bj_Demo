@@ -191,15 +191,10 @@ public class LoginActivity extends BaseBussActivity {
 
                     subscriber =new  BaseSubscriber<BaseResponse<LoginOutBean>>(LoginActivity.this){
 
-                        @Override
-                        public void onError(ExceptionHandle.ResponeThrowable e) {
-                            ToastCustomUtil.showLongToast(e.message);
 
-                        }
 
                         @Override
                         public void onError(Throwable e) {
-                            super.onError(e);
                             ToastCustomUtil.showLongToast(e.getMessage());
                         }
 
@@ -216,7 +211,7 @@ public class LoginActivity extends BaseBussActivity {
                     };
                     observable =HttpRequest.getInstance().getServiceInterface().login(account,pwd);
                     //用observable提供的onErrorResumeNext 则可以将你自定义的Func1 关联到错误处理类中
-                    observable.onErrorResumeNext(new BaseSubscriber.HttpResponseFunc<>());
+                    //observable.onErrorResumeNext(new BaseSubscriber.HttpResponseFunc<>());
                     HttpRequest.getInstance().toSubscribe(observable,subscriber);
 
                 }else{

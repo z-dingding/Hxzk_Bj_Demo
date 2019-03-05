@@ -13,6 +13,12 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        //添加了javaCompileOptions,解决Annotation processors must be explicitly declared now 问题
+        javaCompileOptions {
+            annotationProcessorOptions {
+                includeCompileClasspath = true
+            }
+        }
     }
     buildTypes {
         release {
@@ -34,14 +40,18 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     testImplementation 'junit:junit:4.12'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     implementation androidDependencies.design
     implementation androidDependencies.appcompat
+    implementation androidDependencies.constraint
+    //Glide版本
+    implementation androidDependencies.glide
+    //annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
+    implementation androidDependencies.glideAnnotationProcessor
     //Butterknife
     implementation 'com.jakewharton:butterknife:10.0.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
     //leakcanary内存检测
-   debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
     //BRVAH是一个强大的RecyclerAdapter框架
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
@@ -59,7 +69,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:3.2.0'
     implementation 'com.squareup.okio:okio:1.8.0'
     //Cookies持久化库
-    implementation 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
+    // implementation 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
     //添加litepal依赖
     implementation 'org.litepal.android:core:1.6.0'
     //进度dialog
@@ -70,12 +80,7 @@ dependencies {
     //ZXing
     implementation 'com.google.zxing:core:3.2.0'
     //Banner
-    implementation 'com.github.LidongWen:WenldBanner:2.0.2'
-    implementation 'com.github.bumptech.glide:glide:4.8.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
-//    //这两行是为了解决 https://github.com/bumptech/glide/issues/3185 ——Glide 中的注解还没有完全兼容androidx
-//    implementation "com.android.support:support-annotations:28.0.0-alpha3"
-//    annotationProcessor "com.android.support:support-annotations:28.0.0-alpha3"
-
+    // implementation 'com.github.LidongWen:WenldBanner:2.0.2'
+    implementation project(':wenldbanner')
 }
 

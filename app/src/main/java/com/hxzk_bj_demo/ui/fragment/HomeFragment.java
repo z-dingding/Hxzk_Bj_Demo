@@ -1,14 +1,18 @@
 package com.hxzk_bj_demo.ui.fragment;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
 import com.bumptech.glide.Glide;
 import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.javabean.BannerBean;
@@ -21,14 +25,18 @@ import com.hxzk_bj_demo.ui.fragment.base.BaseFragment;
 import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
 import com.wenld.wenldbanner.AutoTurnViewPager;
 import com.wenld.wenldbanner.DefaultPageIndicator;
+import com.wenld.wenldbanner.OnPageClickListener;
 import com.wenld.wenldbanner.helper.Holder;
 import com.wenld.wenldbanner.helper.UIContact;
 import com.wenld.wenldbanner.helper.ViewHolder;
+
+import java.lang.ref.WeakReference;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
 import butterknife.BindView;
 import rx.Observable;
 import rx.Subscriber;
@@ -45,7 +53,7 @@ public class HomeFragment extends BaseFragment {
 
     private static final String TAG = "HomeFragment";
 
-    static Context mContext;
+
     @BindView(R.id.autoTurnViewPager)
     AutoTurnViewPager autoTurnViewPager;
     @BindView(R.id.defaultPageIndicator)
@@ -56,11 +64,25 @@ public class HomeFragment extends BaseFragment {
     ExecutorService fixThreadPool;
 
     //Banner请求链接
-    LinkedList<BannerBean.DataBean>  bannerList;
+    LinkedList<BannerBean.DataBean> bannerList;
 
 
-    Observable<BaseResponse<BannerBean>> observable;
-    BaseSubscriber<BaseResponse<BannerBean>> subscriber;
+    Observable<BannerBean> observable;
+    Subscriber<BannerBean> subscriber;
+
+
+    Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 0x111:
+                    //初始化Banner
+                    initBanner();
+                    break;
+            }
+        }
+    };
 
 
     @Override
@@ -70,7 +92,6 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
-
     }
 
     @Override
@@ -78,14 +99,12 @@ public class HomeFragment extends BaseFragment {
 
     }
 
-
     @Override
     protected void initData() {
-        //初始化Banner
-        initBanner();
+        //请求Bannder数据
+       requestBanner();
         //创建线程池
-         fixThreadPool= Executors.newFixedThreadPool(3);
-
+        fixThreadPool = Executors.newFixedThreadPool(3);
     }
 
 
@@ -95,56 +114,75 @@ public class HomeFragment extends BaseFragment {
         HttpRequest.getInstance().unsubscribe(observable);
     }
 
+
+    /**
+     * 请求banner图片信息
+     */
+    private void requestBanner() {
+        bannerList = new LinkedList();
+        subscriber = new Subscriber<BannerBean>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                ToastCustomUtil.showLongToast(e.getMessage());
+            }
+
+            @Override
+            public void onNext(BannerBean baseResponse) {
+                List mList = baseResponse.getData();
+                for (Object bean : mList) {
+                    bannerList.add((BannerBean.DataBean) bean);
+                }
+                mHandler.sendEmptyMessage(0x111);
+            }
+        };
+
+        Observable<BannerBean> observable = HttpRequest.getInstance().getServiceInterface().homeBanner();
+        //用observable提供的onErrorResumeNext 则可以将你自定义的Func1 关联到错误处理类中
+        //observable.onErrorResumeNext(new BaseSubscriber.HttpResponseFunc<>());
+        HttpRequest.getInstance().toSubscribe(observable, subscriber);
+    }
+
+
     /**
      * 初始化Banner
      */
-    private void initBanner(){
-        requestBanner();
-
+    private void initBanner() {
         int[] indicatorGrouop = new int[]{R.drawable.ic_page_indicator, R.drawable.ic_page_indicator_focused};
 
-        Holder holder = new Holder<String>() {
+        Holder holder = new Holder<BannerBean.DataBean>() {
             @Override
             public ViewHolder createView(Context context, ViewGroup parent, int pos, int viewType) {
                 return ViewHolder.createViewHolder(context, parent, R.layout.item_vp_home, getViewType(pos));
             }
 
             @Override
-            public void UpdateUI(final Context context, final ViewHolder viewHolder, int position, final String data) {
-
+            public void UpdateUI(Context context, ViewHolder viewHolder, int position, BannerBean.DataBean data) {
                 try {
                     fixThreadPool.execute(new Runnable() {
                         @Override
                         public void run() {
-                            try {
-                                final Bitmap myBitmap = Glide.with(context)
-                                      //  .centerCrop()
-                                        .asBitmap() //必须
-                                       .load(data)
-                                      .into(500, 500)
-                                       .get();
-                                if(myBitmap != null){
-                                    final ImageView imageView =viewHolder.getView(R.id.iv_item_vp_home);
-                                   //调用View的Post方法更新Ui
-                                    imageView.post(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            imageView.setImageBitmap(myBitmap);
-                                        }
-                                    });
-
+                                ImageView imageView = viewHolder.getView(R.id.iv_item_vp_home);
+                                //You must call this method on the main thread
+                            imageView.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Glide.with(context)
+                                            //.centerCrop()
+                                            .asBitmap() //必须
+                                            .load(data.getImagePath())
+                                            .into(imageView);
                                 }
-
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            } catch (ExecutionException e) {
-                                e.printStackTrace();
-                            }
+                            });
 
                         }
                     });
 
-                }  catch (Exception e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -154,7 +192,6 @@ public class HomeFragment extends BaseFragment {
                 return 0;
             }
         };
-
         autoTurnViewPager.setPages(holder)
                 .setCanTurn(true)
                 .setScrollDuration(3000)
@@ -162,46 +199,19 @@ public class HomeFragment extends BaseFragment {
         autoTurnViewPager.setPageTransformer(new ZoomOutPageTransformer());
         //设置指示器(选中,未选中)
         defaultPageIndicator.setPageIndicator(indicatorGrouop);
-        UIContact uiContact = UIContact.with(autoTurnViewPager, defaultPageIndicator)
+        UIContact.with(autoTurnViewPager, defaultPageIndicator)
                 //设置数据
                 .setData(bannerList);
+        autoTurnViewPager.setOnItemClickListener(new OnPageClickListener() {
+            @Override
+            public void onItemClick(int i) {
+                ToastCustomUtil.showLongToast(bannerList.get(i).getTitle());
+            }
+        });
 
 
     }
 
-    /**
-     * 请求banner图片信息
-     */
-    private void requestBanner() {
-        bannerList = new LinkedList();
-       subscriber =new BaseSubscriber<BaseResponse<BannerBean>>(mContext) {
-
-
-
-           @Override
-           public void onError(ExceptionHandle.ResponeThrowable e) {
-               ToastCustomUtil.showLongToast(e.message);
-
-           }
-
-           @Override
-           public void onNext(BaseResponse<BaseResponse<BannerBean>> baseResponse) {
-               List mList =new LinkedList();
-               mList =baseResponse.getData().getData().getData();
-               for(Object bean : mList){
-                   bannerList.add((BannerBean.DataBean) bean);
-               }
-
-           }
-
-
-       };
-
-        Observable<BaseResponse<BannerBean>> observable =HttpRequest.getInstance().getServiceInterface().homeBanner();
-        //用observable提供的onErrorResumeNext 则可以将你自定义的Func1 关联到错误处理类中
-        observable.onErrorResumeNext(new BaseSubscriber.HttpResponseFunc<>());
-        HttpRequest.getInstance().toSubscribe(observable,subscriber);
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
