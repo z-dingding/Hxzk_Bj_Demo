@@ -30,7 +30,7 @@ public class ProgressDialogUtil {
                }
            }
         }
-        return null;
+        return progressDialog;
     }
 
 
@@ -38,9 +38,11 @@ public class ProgressDialogUtil {
     /**
      * 显示dialog
      *
-     * @param mContext 上下文
+     * @param context 上下文
      */
-    public void mshowDialog(Context mContext) {
+    private static  Context mContext;
+    public void mshowDialog(Context context) {
+        mContext=context;
         if (null == loadingDialog) {
             loadingDialog = new XDialog(mContext, R.style.Dialog_image, "");
             loadingDialog.setCancelable(false);

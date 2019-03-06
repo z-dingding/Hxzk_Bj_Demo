@@ -47,4 +47,17 @@
     <!-- 顶部选项卡文本颜色 -->
     <color name="tab_text_normal_top">#191919</color>
     <color name="tab_text_selected_top">#3090d9</color>
+
+
+    <!-- *********************SwipeRefreshLayout进度条颜色********************* -->
+    <color name="swiperefresh_color_1">#5DB5F4</color>
+    <color name="swiperefresh_color_2">#4E93D7</color>
+    <color name="swiperefresh_color_3">#3689EE</color>
+    <color name="swiperefresh_color_4">#5588FF</color>
+
+    <!-- ************自定义WRecyclerview************ -->
+    <color name="wrecyclerview_footer_bg_color">#EDEFF1</color>
+    <color name="wrecyclerview_footer_hint_text_color">#70747E</color>
+    <color name="wrecyclerview_footer_loading_text_color">#ABB1BD</color>
+    <color name="wrecyclerview_divider_color">#eeeeee</color>
 </resources>

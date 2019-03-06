@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -18,13 +19,17 @@ import com.bumptech.glide.Glide;
 import com.hxzk.bj.common.X5ActionMessage;
 import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.javabean.BannerBean;
+import com.hxzk_bj_demo.javabean.HomeListBean;
 import com.hxzk_bj_demo.network.BaseResponse;
 import com.hxzk_bj_demo.network.BaseSubscriber;
 import com.hxzk_bj_demo.network.ExceptionHandle;
 import com.hxzk_bj_demo.network.HttpRequest;
 import com.hxzk_bj_demo.other.ZoomOutPageTransformer;
+import com.hxzk_bj_demo.ui.adapter.HomeListAdapter;
 import com.hxzk_bj_demo.ui.fragment.base.BaseFragment;
+import com.hxzk_bj_demo.utils.ProgressDialogUtil;
 import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
+import com.hxzk_bj_demo.widget.xrecyclerview.WRecyclerView;
 import com.wenld.wenldbanner.AutoTurnViewPager;
 import com.wenld.wenldbanner.DefaultPageIndicator;
 import com.wenld.wenldbanner.OnPageClickListener;
@@ -36,12 +41,15 @@ import com.xzt.xrouter.router.XrouterRequest;
 import com.xzt.xrouter.router.XrouterResponse;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.BindView;
 import rx.Observable;
 import rx.Subscriber;
@@ -76,6 +84,30 @@ public class HomeFragment extends BaseFragment {
     Subscriber<BannerBean> subscriber;
 
 
+
+    Observable<HomeListBean>  homeListBeanObservable;
+    Subscriber<HomeListBean> baseHomeListSubscriber;
+
+
+    /**下拉刷新组件*/
+    private SwipeRefreshLayout swipe_container;
+
+    private WRecyclerView mRecyclerView;
+    private List<HomeListBean.DataBean.DatasBean> listitemList;
+    private HomeListAdapter mHomeListAdapter;
+
+    //当前页数
+    private int curPageIndex = 0;
+    //序号
+    private int position = 0;
+    //每页显示条数
+    private int pageSize =20;
+    //总页数
+    private int totalPage;
+
+    private LinearLayout nodata_layout;//暂无数据区域
+
+
     Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -85,6 +117,42 @@ public class HomeFragment extends BaseFragment {
                     //初始化Banner
                     initBanner();
                     break;
+
+                    case 0x222:
+                        //如果首页数据为空或者小于每页展现的条数，则禁用上拉加载功能
+                        if(curPageIndex == 0){
+                            if(listitemList.size() < pageSize){
+                                mRecyclerView.setPullLoadEnable(false);//禁用上拉加载功能
+                            }else{
+                                mRecyclerView.setPullLoadEnable(true);//启用上拉加载功能
+                            }
+                        }
+                        //设置适配器
+                        if(mHomeListAdapter == null){
+                            //设置适配器
+                            mHomeListAdapter = new HomeListAdapter(mContext, listitemList,R.layout.item_homelist);
+                            mRecyclerView.setAdapter(mHomeListAdapter);
+                            //添加分割线
+                            //设置添加删除动画
+                            //调用ListView的setSelected(!ListView.isSelected())方法，这样就能及时刷新布局
+                            mRecyclerView.setSelected(true);
+                            //列表适配器的点击监听事件
+                            mHomeListAdapter.setOnItemClickLitener(new HomeListAdapter.OnItemClickLitener() {
+                                @Override
+                                public void onItemClick(int position) {
+                                    ToastCustomUtil.showLongToast(listitemList.get(position).getTitle());
+                                }
+
+                                @Override
+                                public void onItemLongClick(int position) {
+
+                                }
+                            });
+                        }else{
+                            mHomeListAdapter.notifyDataSetChanged();
+                        }
+                        stopRefreshAndLoading();//停止刷新和上拉加载
+                        break;
             }
         }
     };
@@ -97,19 +165,59 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
+        mRecyclerView = view.findViewById(R.id.recycler_view);
+        nodata_layout =  view.findViewById(R.id.nodata_layout);
+        swipe_container = view.findViewById(R.id.list_swiperefreshlayout);
     }
 
     @Override
     protected void initEvent() {
+        //为SwipeRefreshLayout布局添加一个Listener，下拉刷新
+        swipe_container.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshList();//刷新列表
+            }
+        });
+
+        //自定义上拉加载的监听
+        mRecyclerView.setWRecyclerListener(new WRecyclerView.WRecyclerViewListener() {
+            @Override
+            public void onLoadMore() {
+                Log.w(TAG, "onLoadMore-正在加载");
+                curPageIndex = curPageIndex + 1;
+                if (curPageIndex <= totalPage) {
+                    requestHomeList(curPageIndex);//更新列表项集合
+                } else {
+                    //到达最后一页了
+                    Toast.makeText(mContext, "我也是有底线滴", Toast.LENGTH_SHORT).show();
+                    //隐藏正在加载的区域
+                    stopRefreshAndLoading();
+                }
+            }
+        });
+
 
     }
 
+
     @Override
     protected void initData() {
+        // 初始化SwipeRefresh刷新控件
+        initSwipeRefreshView();
         //请求Bannder数据
-       requestBanner();
+        requestBanner();
         //创建线程池
         fixThreadPool = Executors.newFixedThreadPool(3);
+
+
+        //初始化集合
+        listitemList = new LinkedList<HomeListBean.DataBean.DatasBean>();
+        //设置布局管理器
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+        //首次进来默认加载第一页数据,下标为0
+        requestHomeList(0);
     }
 
 
@@ -117,6 +225,103 @@ public class HomeFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         HttpRequest.getInstance().unsubscribe(observable);
+        HttpRequest.getInstance().unsubscribe(homeListBeanObservable);
+    }
+
+
+    /**刷新列表*/
+    private void refreshList() {
+        mRecyclerView.setPullLoadEnable(false);//禁用上拉加载功能
+        mRecyclerView.setPullRefresh(true);//设置处于下拉刷新状态中
+        curPageIndex = 0;
+        position = 0;
+        //下拉刷新，需要清空集合
+        listitemList.clear();
+        //更新列表项集合
+        requestHomeList(curPageIndex);
+    }
+
+
+    /**
+     * 请求文章列表
+     */
+    private void requestHomeList(int pageNum) {
+
+        baseHomeListSubscriber= new Subscriber<HomeListBean>(){
+
+            @Override
+            public void onStart() {
+                super.onStart();
+                //此处可以显示进度条
+                ProgressDialogUtil.getInstance().mshowDialog(mContext);
+            }
+
+            @Override
+            public void onCompleted() {
+                //此处可以关闭进度条
+                ProgressDialogUtil.getInstance().mdismissDialog();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                  ToastCustomUtil.showLongToast(e.getMessage());
+            }
+
+
+            @Override
+            public void onNext(HomeListBean baseResponse) {
+                //totalPage=baseResponse.getData().getData().getData().getPageCount();
+                totalPage=baseResponse.getData().getPageCount();
+                List linkList=baseResponse.getData().getDatas();
+                for(int i =0 ;i<linkList.size();i++){
+                    listitemList.add((HomeListBean.DataBean.DatasBean) linkList.get(i));
+                }
+
+               mHandler.sendEmptyMessage(0X222);
+            }
+        };
+        homeListBeanObservable= HttpRequest.getInstance().getServiceInterface().homeList(pageNum);
+        HttpRequest.getInstance().toSubscribe(homeListBeanObservable,baseHomeListSubscriber);
+    }
+
+
+    /**
+     * 初始化SwipeRefresh刷新控件
+     */
+    private void initSwipeRefreshView() {
+        //设置进度条的颜色主题，最多能设置四种
+        swipe_container.setColorSchemeResources(R.color.swiperefresh_color_1,
+                R.color.swiperefresh_color_2,
+                R.color.swiperefresh_color_3,
+                R.color.swiperefresh_color_4);
+        //调整进度条距离屏幕顶部的距离 scale:true则下拉的时候从小变大
+        swipe_container.setProgressViewOffset(true, 0, dip2px(mContext,10));
+    }
+
+
+    /**
+     * dp转px
+     * 16dp - 48px
+     * 17dp - 51px*/
+    private int dip2px(Context context, float dpValue) {
+        float scale = context.getResources().getDisplayMetrics().density;
+        return (int)((dpValue * scale) + 0.5f);
+    }
+
+    /**
+     * 停止刷新和上拉加载
+     */
+    private void stopRefreshAndLoading() {
+        //检查是否处于刷新状态
+        if(swipe_container.isRefreshing()){
+            //显示或隐藏刷新进度条，一般是在请求数据的时候设置为true，在数据被加载到View中后，设置为false。
+            swipe_container.setRefreshing(false);
+        }
+        //如果正在加载，则获取数据后停止加载动画
+        if(mRecyclerView.ismPullLoading()){
+            mRecyclerView.stopLoadMore();//停止加载动画
+        }
+        mRecyclerView.setPullRefresh(false);//设置处于下拉刷新状态中[否]
     }
 
 

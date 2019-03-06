@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--app:cardCornerRadius 设置圆角的半径-->
+    <!--app:cardElevation 设置阴影的半径-->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_150"
+        android:id="@+id/cardview_homeitem"
+        app:cardCornerRadius="@dimen/dp_10"
+        app:cardElevation="@dimen/dp_10"
+        android:layout_margin="@dimen/dp_10"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white">
+
+            <TextView
+                android:id="@+id/tv_title_cardview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1323232322133321121233212"
+                android:textColor="@color/black"
+                android:layout_centerInParent="true"
+                />
+
+            <TextView
+                android:id="@+id/tv_author_cardview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1323232322133321121233212"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentBottom="true"
+
+                />
+
+            <TextView
+                android:id="@+id/tv_date_cardview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1323232322"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                />
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

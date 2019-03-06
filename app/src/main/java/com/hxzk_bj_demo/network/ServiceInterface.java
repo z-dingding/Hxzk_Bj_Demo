@@ -2,6 +2,7 @@ package com.hxzk_bj_demo.network;
 
 import com.google.gson.JsonObject;
 import com.hxzk_bj_demo.javabean.BannerBean;
+import com.hxzk_bj_demo.javabean.HomeListBean;
 import com.hxzk_bj_demo.javabean.InversBean;
 import com.hxzk_bj_demo.javabean.LoginBean;
 import com.hxzk_bj_demo.javabean.LoginOutBean;
@@ -10,6 +11,7 @@ import org.json.JSONObject;
 
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
 
@@ -56,8 +58,21 @@ public interface ServiceInterface {
     Observable<BaseResponse<LoginOutBean>> loginout();
 
 
+    /**
+     * 获取首页Banner接口
+     * @return
+     */
     @GET("banner/json")
     Observable<BannerBean> homeBanner();
+
+
+    /**
+     * http://www.wanandroid.com/article/list/0/json
+     * @param pageNum 页码
+     * @return
+     */
+    @GET("article/list/{pageNum}/json")
+    Observable<HomeListBean> homeList(@Path("pageNum") int pageNum );
 
 
 }

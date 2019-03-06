@@ -50,4 +50,9 @@
     <string name="photo">相册</string>
     <string name="changelanguage">中英文切换</string>
     <string name="loginout">退出登录</string>
+
+    <!-- ************自定义WRecyclerview************ -->
+    <string name="wrecyclerview_footer_hint_normal">查看更多</string>
+    <string name="wrecyclerview_footer_hint_ready">上拉加载更多</string>
+    <string name="wrecyclerview_footer_hint_loading">正在拼命加载中&#8230;</string>
 </resources>

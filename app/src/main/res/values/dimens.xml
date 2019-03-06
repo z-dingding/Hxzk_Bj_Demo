@@ -2,6 +2,11 @@
 
     <dimen name="padding_top">0dp</dimen>
 
+    <!-- ************自定义WRecyclerview************ -->
+    <dimen name="wrecyclerview_footer_margin">10dp</dimen>
+    <dimen name="wrecyclerview_footer_progressbar_WH">24dp</dimen>
+    <dimen name="wrecyclerview_footer_text_size">17sp</dimen>
+
     <!-- dp and sp values, must be defind in this file! -->
     <!-- view size,you can add if there is no one -->
     <dimen name="dp_m_60">-60dp</dimen>

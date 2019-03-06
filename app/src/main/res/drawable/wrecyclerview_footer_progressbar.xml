@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WRecyclerView上拉加载的进度条动画 -->
+    <animated-rotate xmlns:android="http://schemas.android.com/apk/res/android"
+        android:drawable="@drawable/wrecyclerview_footer_loading_rotate"
+        android:pivotX="50%"
+        android:pivotY="50%" />

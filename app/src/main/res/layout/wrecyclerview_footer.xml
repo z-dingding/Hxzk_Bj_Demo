@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <!-- WRecyclerView底部上拉加载的布局文件 -->
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/wrecyclerview_footer_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/wrecyclerview_footer_bg_color"
+        android:gravity="center" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/wrecyclerview_footer_margin"
+            android:paddingBottom="@dimen/wrecyclerview_footer_margin">
+
+            <!-- 正在加载的布局，默认隐藏 -->
+            <LinearLayout
+                android:id="@+id/wrecyclerview_footer_progressbar_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:visibility="invisible" >
+
+                <!-- 自定义圆形进度条 -->
+                <!-- android:indeterminateDrawable自定义动画图标 -->
+                <ProgressBar
+                    android:layout_width="@dimen/wrecyclerview_footer_progressbar_WH"
+                    android:layout_height="@dimen/wrecyclerview_footer_progressbar_WH"
+                    android:indeterminateDrawable="@drawable/wrecyclerview_footer_progressbar" />
+                <!-- 正在加载 -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/wrecyclerview_footer_margin"
+                    android:text="@string/wrecyclerview_footer_hint_loading"
+                    android:textColor="@color/wrecyclerview_footer_loading_text_color"
+                    android:textSize="@dimen/wrecyclerview_footer_text_size" />
+            </LinearLayout>
+
+            <!-- 上拉加载更多的布局 （用来进行提示文字展现）-->
+            <TextView
+                android:id="@+id/wrecyclerview_footer_hint_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/wrecyclerview_footer_hint_normal"
+                android:textColor="@color/wrecyclerview_footer_hint_text_color"
+                android:textSize="@dimen/wrecyclerview_footer_text_size"
+                android:drawableTop="@drawable/wrecyclerview_icon_pull"
+                />
+
+        </RelativeLayout>
+</LinearLayout>
