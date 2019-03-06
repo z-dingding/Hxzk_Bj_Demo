@@ -13,7 +13,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        //添加了javaCompileOptions,解决Annotation processors must be explicitly declared now 问题
+//        //添加了javaCompileOptions,解决Annotation processors must be explicitly declared now 问题
         javaCompileOptions {
             annotationProcessorOptions {
                 includeCompileClasspath = true
@@ -82,5 +82,7 @@ dependencies {
     //Banner
     // implementation 'com.github.LidongWen:WenldBanner:2.0.2'
     implementation project(':wenldbanner')
+    //腾讯Tbs服务
+    implementation project(':x5webview')
 }
 

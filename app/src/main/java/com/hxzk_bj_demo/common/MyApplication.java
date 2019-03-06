@@ -3,12 +3,17 @@ package com.hxzk_bj_demo.common;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+
+import com.hxzk.bj.common.X5ActionMessage;
+import com.hxzk.bj.x5webview.action.X5Action;
 import com.hxzk_bj_demo.network.AddInterceptor;
 import com.hxzk_bj_demo.network.SaveInterceptor;
 import com.hxzk_bj_demo.ui.activity.WelcomeActivity;
 import com.hxzk_bj_demo.utils.LanguageUtil;
 import com.hxzk_bj_demo.utils.SPUtils;
 import com.squareup.leakcanary.LeakCanary;
+import com.xzt.xrouter.router.Xrouter;
+
 import org.litepal.LitePalApplication;
 import java.util.HashMap;
 import java.util.List;
@@ -65,10 +70,17 @@ public class MyApplication extends LitePalApplication {
 //        //给OkttpClient添加开源库
 //        httpClientBuilder.cookieJar(cookieJar);
 
-
-
    //注册Activity生命周期监听回调
    registerActivityLifecycleCallbacks(callbacks);
+
+   //初始化路由
+   initRouter();
+
+    }
+
+    private void initRouter() {
+        Xrouter.getInstance().registerAction(X5ActionMessage.X5ACTIONNAME,new X5Action());
+
 
     }
 

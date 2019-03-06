@@ -2,11 +2,7 @@ package com.hxzk_bj_demo.ui.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.DownloadManager;
-import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -19,7 +15,6 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
-import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -27,14 +22,11 @@ import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
-import com.google.gson.JsonObject;
 import com.hxzk_bj_demo.R;
-import com.hxzk_bj_demo.common.MyApplication;
 import com.hxzk_bj_demo.javabean.LoginOutBean;
 import com.hxzk_bj_demo.mvp.view.NoteBookActivity;
 import com.hxzk_bj_demo.network.BaseResponse;
 import com.hxzk_bj_demo.network.BaseSubscriber;
-import com.hxzk_bj_demo.network.ExceptionHandle;
 import com.hxzk_bj_demo.network.HttpRequest;
 import com.hxzk_bj_demo.ui.activity.base.BaseBussActivity;
 import com.hxzk_bj_demo.ui.adapter.base.FragmentAdapter;
@@ -43,38 +35,27 @@ import com.hxzk_bj_demo.ui.fragment.InvestFragment;
 import com.hxzk_bj_demo.ui.fragment.UserFragment;
 import com.hxzk_bj_demo.ui.fragment.base.BaseFragment;
 import com.hxzk_bj_demo.utils.LanguageUtil;
-import com.hxzk_bj_demo.utils.LogUtil;
 import com.hxzk_bj_demo.utils.SPUtils;
 import com.hxzk_bj_demo.utils.activity.ActivityJump;
-import com.hxzk_bj_demo.utils.activity.ActivityManager;
 import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
 import com.tbruyelle.rxpermissions2.RxPermissions;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
-import butterknife.internal.Utils;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
-import okhttp3.Request;
-import retrofit2.Response;
 import rx.Observable;
 import rx.Subscriber;
-import rx.functions.Func1;
 
-import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO;
-import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES;
 import static com.hxzk_bj_demo.R.id.vp_main;
-import static com.hxzk_bj_demo.utils.LanguageUtil.saveLanguageSetting;
 import static com.hxzk_bj_demo.utils.LanguageUtil.setLocale;
 
 
@@ -90,6 +71,7 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
 
     @BindView(vp_main)
     ViewPager vp_Main;
+
 
     @BindView(R.id.bav_main)
     BottomNavigationView bav_Main;

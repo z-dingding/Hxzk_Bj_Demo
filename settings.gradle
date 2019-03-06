@@ -1,2 +1,2 @@
-include ':app', ':wenldbanner', ':x5webview', ':router'
+include ':app', ':wenldbanner', ':x5webview', ':router', ':common'
 

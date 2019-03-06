@@ -12,8 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.hxzk.bj.common.X5ActionMessage;
 import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.javabean.BannerBean;
 import com.hxzk_bj_demo.network.BaseResponse;
@@ -29,6 +31,9 @@ import com.wenld.wenldbanner.OnPageClickListener;
 import com.wenld.wenldbanner.helper.Holder;
 import com.wenld.wenldbanner.helper.UIContact;
 import com.wenld.wenldbanner.helper.ViewHolder;
+import com.xzt.xrouter.router.Xrouter;
+import com.xzt.xrouter.router.XrouterRequest;
+import com.xzt.xrouter.router.XrouterResponse;
 
 import java.lang.ref.WeakReference;
 import java.util.LinkedList;
@@ -205,7 +210,10 @@ public class HomeFragment extends BaseFragment {
         autoTurnViewPager.setOnItemClickListener(new OnPageClickListener() {
             @Override
             public void onItemClick(int i) {
-                ToastCustomUtil.showLongToast(bannerList.get(i).getTitle());
+                //封装传递的请求数据到XrouterRequest
+                XrouterRequest mXrouterRequest =XrouterRequest.create().putData("data",bannerList.get(i).getUrl().toString()).putActionName(X5ActionMessage.X5ACTIONNAME);
+                XrouterResponse mXrouterResponse=Xrouter.getInstance().senMessage(mContext,mXrouterRequest);
+                Toast.makeText(mContext,mXrouterResponse.getResponseResult()+"",Toast.LENGTH_LONG).show();
             }
         });
 
