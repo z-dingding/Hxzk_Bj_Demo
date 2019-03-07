@@ -3,7 +3,9 @@ package com.hxzk_bj_demo.ui.activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -97,6 +99,25 @@ public class HomeSearchActivity extends BaseBussActivity {
     @Override
     protected void initEvent() {
         super.initEvent();
+        etSeachcontent.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+               if(TextUtils.isEmpty(editable)){
+                   mSearchResultData.clear();
+                   mHomeSearchAdapter.notifyDataSetChanged();
+               }
+            }
+        });
     }
 
 
