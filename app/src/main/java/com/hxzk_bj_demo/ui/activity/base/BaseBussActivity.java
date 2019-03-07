@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
 import com.hxzk_bj_demo.R;
+import com.hxzk_bj_demo.ui.activity.HomeSearchActivity;
 import com.hxzk_bj_demo.utils.activity.ActivityJump;
 import com.hxzk_bj_demo.utils.zxing.activity.CaptureActivity;
 import com.hxzk_bj_demo.widget.XDialog;
@@ -57,8 +58,6 @@ public class BaseBussActivity extends BaseActivity {
         }
 
     }
-
-
     @Override
     protected void initEvent() {
 
@@ -187,7 +186,7 @@ public class BaseBussActivity extends BaseActivity {
             case R.id.action_notifications:
                 break;
             case R.id.toolbar_search:
-
+                addActivityToManager(this,HomeSearchActivity.class);
                 break;
             case R.id.toolbar_qrcode:
                 Intent intent = new Intent(_context, CaptureActivity.class);

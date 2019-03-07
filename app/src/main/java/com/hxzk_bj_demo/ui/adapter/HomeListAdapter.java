@@ -23,7 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class HomeListAdapter extends BaseRecycleAdapter {
 
 
-    List<HomeListBean.DataBean.DatasBean> listData;
+    List<HomeListBean.DatasBean> listData;
 
     public HomeListAdapter(Context context, List list, int resId) {
         super(context, list, resId);
@@ -69,14 +69,21 @@ public class HomeListAdapter extends BaseRecycleAdapter {
         public void initData(Context context, Object bean, int position) {
             super.initData(context, bean, position);
 
-            tvTitle.setText(((HomeListBean.DataBean.DatasBean) bean).getTitle());
-            tvAuthor.setText(((HomeListBean.DataBean.DatasBean) bean).getAuthor());
-            tvDate.setText(((HomeListBean.DataBean.DatasBean) bean).getNiceDate());
+            tvTitle.setText(((HomeListBean.DatasBean) bean).getTitle());
+            tvAuthor.setText(((HomeListBean.DatasBean) bean).getAuthor());
+            tvDate.setText(((HomeListBean.DatasBean) bean).getNiceDate());
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     mOnItemClickLitener.onItemClick(position);
+
+                }
+            });
+            cardView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
                     mOnItemClickLitener.onItemLongClick(position);
+                    return false;
                 }
             });
         }

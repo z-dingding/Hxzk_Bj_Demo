@@ -8,7 +8,7 @@
     <!--app:cardElevation 设置阴影的半径-->
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_150"
+        android:layout_height="@dimen/dp_100"
         android:id="@+id/cardview_homeitem"
         app:cardCornerRadius="@dimen/dp_10"
         app:cardElevation="@dimen/dp_10"
@@ -24,6 +24,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1323232322133321121233212"
+                android:ellipsize="middle"
+                android:singleLine="true"
                 android:textColor="@color/black"
                 android:layout_centerInParent="true"
                 />
@@ -33,9 +35,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1323232322133321121233212"
-                android:layout_alignParentLeft="true"
+                android:textColor="@color/black"
+                android:layout_alignParentStart="true"
                 android:layout_alignParentBottom="true"
-
+                android:layout_marginLeft="@dimen/dp_20"
                 />
 
             <TextView
@@ -43,8 +46,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1323232322"
-                android:layout_alignParentRight="true"
+                android:textColor="@color/black"
+                android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
+                android:layout_marginRight="@dimen/dp_20"
                 />
 
         </RelativeLayout>

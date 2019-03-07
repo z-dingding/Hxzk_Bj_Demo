@@ -1,13 +1,15 @@
 <resources>
     <string name="app_name">随意</string>
+    <!--===================================公共的=============================-->
+    <string name="content_is_empty">内容不能为空!</string>
 
 
-
+    <!--===================================网络相关=============================-->
     <string name="empty_network_error">网络错误，点击重试！</string>
     <string name="empty_no_data">没有请求到数据，点击重试...</string>
     <string name="wechat_select">微信精选</string>
     <string name="load_more_error">加载更多数据失败！</string>
-    <string name="content_is_empty">内容不能为空!</string>
+
 
 
     <!--====================================二维码相关字符=============================-->
@@ -41,6 +43,7 @@
     <string name="toast_accountlength">账号长度不符</string>
     <string name="toast_pwdlength">密码长度不符</string>
 
+
     <!--=====================================左侧滑菜单字符=============================-->
     <string name="sideslip_welcom">欢迎赵涛涛今日签到</string>
 
@@ -51,8 +54,14 @@
     <string name="changelanguage">中英文切换</string>
     <string name="loginout">退出登录</string>
 
+
     <!-- ************自定义WRecyclerview************ -->
     <string name="wrecyclerview_footer_hint_normal">查看更多</string>
     <string name="wrecyclerview_footer_hint_ready">上拉加载更多</string>
     <string name="wrecyclerview_footer_hint_loading">正在拼命加载中&#8230;</string>
+
+    <!--=====================================首页搜索按钮=============================-->
+    <string name="search_prompt">请输入搜索内容</string>
+    <string name="search_cancel">取消</string>
+
 </resources>

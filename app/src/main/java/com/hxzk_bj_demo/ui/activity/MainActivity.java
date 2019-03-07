@@ -176,13 +176,9 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
                     case R.id.loginout:
 
                         subscriber = new BaseSubscriber<BaseResponse<LoginOutBean>>(MainActivity.this) {
-                            @Override
-                            public void onError(Throwable e) {
-                                ToastCustomUtil.showLongToast(e.getMessage());
-                            }
 
                             @Override
-                            public void onNext(com.hxzk_bj_demo.network.BaseResponse<com.hxzk_bj_demo.network.BaseResponse<LoginOutBean>> baseResponse) {
+                            public void onResult(BaseResponse<LoginOutBean> baseResponse) {
                                 if (!baseResponse.isOk()) {
                                     ToastCustomUtil.showLongToast(baseResponse.getMsg());
                                 } else {
@@ -191,6 +187,11 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
                                     ActivityJump.finnishAllActivitys();
                                     ActivityJump.NormalJumpAndFinish(MainActivity.this, LoginActivity.class);
                                 }
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                ToastCustomUtil.showLongToast(e.getMessage());
                             }
 
 

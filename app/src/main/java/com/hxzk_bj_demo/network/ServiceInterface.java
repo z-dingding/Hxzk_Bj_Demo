@@ -3,6 +3,7 @@ package com.hxzk_bj_demo.network;
 import com.google.gson.JsonObject;
 import com.hxzk_bj_demo.javabean.BannerBean;
 import com.hxzk_bj_demo.javabean.HomeListBean;
+import com.hxzk_bj_demo.javabean.HomeSearchBean;
 import com.hxzk_bj_demo.javabean.InversBean;
 import com.hxzk_bj_demo.javabean.LoginBean;
 import com.hxzk_bj_demo.javabean.LoginOutBean;
@@ -72,7 +73,15 @@ public interface ServiceInterface {
      * @return
      */
     @GET("article/list/{pageNum}/json")
-    Observable<HomeListBean> homeList(@Path("pageNum") int pageNum );
+    Observable<BaseResponse<HomeListBean>> homeList(@Path("pageNum") int pageNum);
 
+
+    /**
+     * 首页请求搜索接口
+     * @param searchKey
+     * @return
+     */
+    @POST("article/query/{pageNum}/json")
+    Observable<BaseResponse<HomeSearchBean>> homeSearch(@Path("pageNum") int pageNum,@Query("k") String searchKey);
 
 }

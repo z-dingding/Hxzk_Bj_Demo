@@ -85,6 +85,8 @@
         <!-- 其他方式登录 -->
         <activity android:name=".ui.activity.OntherWayLoginActivity"
             android:configChanges="locale"/>
+        <!-- 首页搜索界面-->
+        <activity android:name=".ui.activity.HomeSearchActivity"/>
     </application>
 
 

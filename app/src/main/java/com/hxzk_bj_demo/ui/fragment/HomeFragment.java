@@ -85,15 +85,15 @@ public class HomeFragment extends BaseFragment {
 
 
 
-    Observable<HomeListBean>  homeListBeanObservable;
-    Subscriber<HomeListBean> baseHomeListSubscriber;
+    Observable<BaseResponse<HomeListBean>> homeListBeanObservable;
+    BaseSubscriber<BaseResponse<HomeListBean>> baseHomeListSubscriber;
 
 
     /**下拉刷新组件*/
     private SwipeRefreshLayout swipe_container;
 
     private WRecyclerView mRecyclerView;
-    private List<HomeListBean.DataBean.DatasBean> listitemList;
+    private List<HomeListBean.DatasBean> listitemList;
     private HomeListAdapter mHomeListAdapter;
 
     //当前页数
@@ -140,12 +140,14 @@ public class HomeFragment extends BaseFragment {
                             mHomeListAdapter.setOnItemClickLitener(new HomeListAdapter.OnItemClickLitener() {
                                 @Override
                                 public void onItemClick(int position) {
-                                    ToastCustomUtil.showLongToast(listitemList.get(position).getTitle());
+                                    //封装传递的请求数据到XrouterRequest
+                                    XrouterRequest mXrouterRequest =XrouterRequest.create().putData("data",listitemList.get(position).getLink()).putActionName(X5ActionMessage.X5ACTIONNAME);
+                                    XrouterResponse mXrouterResponse=Xrouter.getInstance().senMessage(mContext,mXrouterRequest);
                                 }
 
                                 @Override
                                 public void onItemLongClick(int position) {
-
+                                    ToastCustomUtil.showLongToast("正在开发中,敬请期待!");
                                 }
                             });
                         }else{
@@ -212,7 +214,7 @@ public class HomeFragment extends BaseFragment {
 
 
         //初始化集合
-        listitemList = new LinkedList<HomeListBean.DataBean.DatasBean>();
+        listitemList = new LinkedList<HomeListBean.DatasBean>();
         //设置布局管理器
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         mRecyclerView.setLayoutManager(linearLayoutManager);
@@ -247,44 +249,41 @@ public class HomeFragment extends BaseFragment {
      */
     private void requestHomeList(int pageNum) {
 
-        baseHomeListSubscriber= new Subscriber<HomeListBean>(){
+        baseHomeListSubscriber= new BaseSubscriber<BaseResponse<HomeListBean>>(mContext) {
 
             @Override
-            public void onStart() {
-                super.onStart();
-                //此处可以显示进度条
-                ProgressDialogUtil.getInstance().mshowDialog(mContext);
-            }
-
-            @Override
-            public void onCompleted() {
-                //此处可以关闭进度条
-                ProgressDialogUtil.getInstance().mdismissDialog();
+            public void onResult(BaseResponse<HomeListBean> homeListBeanBaseResponse) {
+                totalPage=homeListBeanBaseResponse.getData().getPageCount();
+                List linkList=homeListBeanBaseResponse.getData().getDatas();
+                for(int i =0 ;i<linkList.size();i++){
+                    listitemList.add((HomeListBean.DatasBean) linkList.get(i));
+                }
+                mHandler.sendEmptyMessage(0X222);
             }
 
             @Override
             public void onError(Throwable e) {
-                  ToastCustomUtil.showLongToast(e.getMessage());
-            }
-
-
-            @Override
-            public void onNext(HomeListBean baseResponse) {
-                //totalPage=baseResponse.getData().getData().getData().getPageCount();
-                totalPage=baseResponse.getData().getPageCount();
-                List linkList=baseResponse.getData().getDatas();
-                for(int i =0 ;i<linkList.size();i++){
-                    listitemList.add((HomeListBean.DataBean.DatasBean) linkList.get(i));
-                }
-
-               mHandler.sendEmptyMessage(0X222);
+                ToastCustomUtil.showLongToast(e.getMessage());
             }
         };
-        homeListBeanObservable= HttpRequest.getInstance().getServiceInterface().homeList(pageNum);
+
+        homeListBeanObservable = HttpRequest.getInstance().getServiceInterface().homeList(pageNum);
         HttpRequest.getInstance().toSubscribe(homeListBeanObservable,baseHomeListSubscriber);
     }
 
 
+//        @Override
+//        public void onNext(HomeListBean baseResponse) {
+//            //totalPage=baseResponse.getData().getData().getData().getPageCount();
+//            totalPage=baseResponse.getData().getPageCount();
+//            List linkList=baseResponse.getData().getDatas();
+//            for(int i =0 ;i<linkList.size();i++){
+//                listitemList.add((HomeListBean.DataBean.DatasBean) linkList.get(i));
+//            }
+//
+//            mHandler.sendEmptyMessage(0X222);
+//        }
+//    };
     /**
      * 初始化SwipeRefresh刷新控件
      */
@@ -416,9 +415,9 @@ public class HomeFragment extends BaseFragment {
             @Override
             public void onItemClick(int i) {
                 //封装传递的请求数据到XrouterRequest
-                XrouterRequest mXrouterRequest =XrouterRequest.create().putData("data",bannerList.get(i).getUrl().toString()).putActionName(X5ActionMessage.X5ACTIONNAME);
+                XrouterRequest mXrouterRequest =XrouterRequest.create().putData("data",bannerList.get(i).getUrl()).putActionName(X5ActionMessage.X5ACTIONNAME);
                 XrouterResponse mXrouterResponse=Xrouter.getInstance().senMessage(mContext,mXrouterRequest);
-                Toast.makeText(mContext,mXrouterResponse.getResponseResult()+"",Toast.LENGTH_LONG).show();
+               // Toast.makeText(mContext,mXrouterResponse.getResponseResult()+"",Toast.LENGTH_LONG).show();
             }
         });
 

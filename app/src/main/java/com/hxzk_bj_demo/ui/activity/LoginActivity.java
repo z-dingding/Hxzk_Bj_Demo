@@ -192,14 +192,8 @@ public class LoginActivity extends BaseBussActivity {
                     subscriber =new  BaseSubscriber<BaseResponse<LoginOutBean>>(LoginActivity.this){
 
 
-
                         @Override
-                        public void onError(Throwable e) {
-                            ToastCustomUtil.showLongToast(e.getMessage());
-                        }
-
-                        @Override
-                        public void onNext(BaseResponse<BaseResponse<LoginOutBean>> baseResponse) {
+                        public void onResult(BaseResponse<LoginOutBean> baseResponse) {
                             if (!baseResponse.isOk()) {
                                 ToastCustomUtil.showLongToast(baseResponse.getMsg());
                             } else {
@@ -207,6 +201,11 @@ public class LoginActivity extends BaseBussActivity {
                                 SPUtils.put(LoginActivity.this,Const.KEY_LOGIN_PWD,pwd);
                                 ActivityJump.NormalJumpAndFinish(LoginActivity.this,MainActivity.class);
                             }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            ToastCustomUtil.showLongToast(e.getMessage());
                         }
                     };
                     observable =HttpRequest.getInstance().getServiceInterface().login(account,pwd);

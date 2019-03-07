@@ -20,16 +20,13 @@ import rx.functions.Func1;
  * 描述:统一对Subscriber对网络返回进行处理和， 有无网络做判断，甚至可以根据需求显示加载进度等
  * 只处理start()和onCompleted（） ，上层处理时只处理onError（）和onNext（）
  */
-public abstract class BaseSubscriber<T> extends Subscriber<T> {
-
+public abstract class BaseSubscriber <T> extends Subscriber<T> {
 
     private Context context;
-
 
     public BaseSubscriber(Context context) {
         this.context = context;
     }
-
 
     @Override
     public void onStart() {
@@ -43,7 +40,6 @@ public abstract class BaseSubscriber<T> extends Subscriber<T> {
        }
         //此处可以显示进度条
         ProgressDialogUtil.getInstance().mshowDialog(context);
-
     }
 
     @Override
@@ -51,6 +47,15 @@ public abstract class BaseSubscriber<T> extends Subscriber<T> {
         //此处可以关闭进度条
         ProgressDialogUtil.getInstance().mdismissDialog();
     }
+
+    @Override
+    public void onNext(T t) {
+        onResult(t);
+    }
+   public abstract void onResult(T t);
+
+
+
 
 //    //如果想对Error错误统一处理，也可以在BaseSubscriber处理onError()，然后回调搭到callback上层
 //    @Override
@@ -64,12 +69,6 @@ public abstract class BaseSubscriber<T> extends Subscriber<T> {
 //    public abstract void onError(ExceptionHandle.ResponeThrowable e);
 //
 
-
-    @Override
-    public void onNext(T t) {
-        onNext((com.hxzk_bj_demo.network.BaseResponse<T>) t);
-    }
-    public abstract void onNext(BaseResponse<T> baseResponse);
 
 
 
