@@ -1,6 +1,7 @@
 package com.hxzk_bj_demo.network;
 
 import android.content.Context;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -28,6 +29,8 @@ public abstract class BaseSubscriber <T> extends Subscriber<T> {
         this.context = context;
     }
 
+
+    Handler mHandler =new Handler();
     @Override
     public void onStart() {
         super.onStart();
@@ -38,14 +41,26 @@ public abstract class BaseSubscriber <T> extends Subscriber<T> {
            //onCompleted();
             return;
        }
-        //此处可以显示进度条
-        ProgressDialogUtil.getInstance().mshowDialog(context);
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                //此处可以显示进度条
+                ProgressDialogUtil.getInstance().mshowDialog(context);
+            }
+        });
+
     }
 
     @Override
     public void onCompleted() {
-        //此处可以关闭进度条
-        ProgressDialogUtil.getInstance().mdismissDialog();
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                //此处可以关闭进度条
+                ProgressDialogUtil.getInstance().mdismissDialog();
+            }
+        });
+
     }
 
     @Override

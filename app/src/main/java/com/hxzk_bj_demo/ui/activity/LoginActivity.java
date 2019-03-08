@@ -169,7 +169,7 @@ public class LoginActivity extends BaseBussActivity {
 
 
 
-
+    BaseResponse<LoginOutBean> mBaseResponse;
     @OnClick({R.id.tv_otherwaylogin_login, R.id.btn_loginin_login,R.id.tv_register_login})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -194,18 +194,26 @@ public class LoginActivity extends BaseBussActivity {
 
                         @Override
                         public void onResult(BaseResponse<LoginOutBean> baseResponse) {
-                            if (!baseResponse.isOk()) {
-                                ToastCustomUtil.showLongToast(baseResponse.getMsg());
-                            } else {
-                                SPUtils.put(LoginActivity.this, Const.KEY_LOGIN_ACCOUNT,account);
-                                SPUtils.put(LoginActivity.this,Const.KEY_LOGIN_PWD,pwd);
-                                ActivityJump.NormalJumpAndFinish(LoginActivity.this,MainActivity.class);
-                            }
+                            mBaseResponse=baseResponse;
                         }
 
                         @Override
                         public void onError(Throwable e) {
                             ToastCustomUtil.showLongToast(e.getMessage());
+                        }
+
+                        @Override
+                        public void onCompleted() {
+                            super.onCompleted();
+                            if (!mBaseResponse.isOk()) {
+                                ToastCustomUtil.showLongToast(mBaseResponse.getMsg());
+                            } else {
+                                SPUtils.put(LoginActivity.this, Const.KEY_LOGIN_ACCOUNT,account);
+                                SPUtils.put(LoginActivity.this,Const.KEY_LOGIN_PWD,pwd);
+                                ActivityJump.NormalJump(LoginActivity.this,MainActivity.class);
+
+                            }
+
                         }
                     };
                     observable =HttpRequest.getInstance().getServiceInterface().login(account,pwd);

@@ -21,6 +21,9 @@ import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.common.Const;
 import com.hxzk_bj_demo.javabean.CollectionBean;
 import com.hxzk_bj_demo.javabean.InversBean;
+import com.hxzk_bj_demo.javabean.PublicListData;
+import com.hxzk_bj_demo.network.BaseResponse;
+import com.hxzk_bj_demo.network.BaseSubscriber;
 import com.hxzk_bj_demo.network.HttpRequest;
 import com.hxzk_bj_demo.ui.adapter.WechatItemAdapter;
 import com.hxzk_bj_demo.ui.fragment.base.BaseFragment;
@@ -88,12 +91,25 @@ public class OntherFragment extends BaseFragment implements SwipeRefreshLayout.O
     /**缓存线程池对象**/
     ExecutorService cacheThreadPool;
 
+    //区分公众号的标识
+    String publicId;
+
+
+    Observable<BaseResponse<PublicListData>> mObservable;
+    Subscriber<BaseResponse<PublicListData>>  mSubscriber;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        publicId= (String) getArguments().get("publicId");
+    }
 
 
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_onther;
     }
+
 
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
@@ -144,21 +160,13 @@ public class OntherFragment extends BaseFragment implements SwipeRefreshLayout.O
 
     }
 
-//    /**
-//     * 懒加载可见时方法,执行耗时操作
-//     */
-//    @Override
-//    public void onFragmentVisble() {
-//        super.onFragmentVisble();
-//        //创建线程池,此处建议使用ThreadPoolExecutor
-//        cacheThreadPool= Executors.newCachedThreadPool();
-//        //请求数据
-//        requestData();
-//        //初始化Banner
-//        initBanner();
-//    }
 
-
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        /** 此方法主要作用取消观察者和被观察者的引用,避免内存泄露*/
+        unsubscribe();
+    }
 
 
     /**
@@ -537,13 +545,10 @@ public class OntherFragment extends BaseFragment implements SwipeRefreshLayout.O
      * 请求获取数据
      */
     private void requestData() {
-
-        /** 此方法主要作用取消观察者和被观察者的引用,避免内存泄露*/
-        unsubscribe();
-
-        Subscriber<InversBean> subscriber = new Subscriber<InversBean>() {
+        mSubscriber =new BaseSubscriber<BaseResponse<PublicListData>>(mContext) {
             @Override
-            public void onCompleted() {
+            public void onResult(BaseResponse<PublicListData> publicListDataBaseResponse) {
+                //setNewDataAddList(inversBean);
             }
 
             @Override
@@ -558,14 +563,10 @@ public class OntherFragment extends BaseFragment implements SwipeRefreshLayout.O
                     mSwiperrlInvest.setEnabled(false);
                 }
             }
-
-            @Override
-            public void onNext(InversBean inversBean) {
-                setNewDataAddList(inversBean);
-            }
         };
-        Observable<InversBean> observable = HttpRequest.getInstance().getServiceInterface().getRefreshData(String.valueOf(mPageMark), "20", "1", "39.625", "119.632");
-        mSubscription = HttpRequest.getInstance().toSubscribe(observable, subscriber);
+
+        mObservable= HttpRequest.getInstance().getServiceInterface().publicList("","");
+        mSubscription = HttpRequest.getInstance().toSubscribe(mObservable, mSubscriber);
     }
 
     @Override

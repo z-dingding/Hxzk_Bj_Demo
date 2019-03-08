@@ -10,6 +10,7 @@
     <color name="colortoolbar">#303030</color>
 
 
+
     <color name="bg_text_wechat_item">#88000000</color>
 
 
@@ -60,4 +61,11 @@
     <color name="wrecyclerview_footer_hint_text_color">#70747E</color>
     <color name="wrecyclerview_footer_loading_text_color">#ABB1BD</color>
     <color name="wrecyclerview_divider_color">#eeeeee</color>
+
+
+    <!-- ************首页搜索界面************ -->
+    <color name="homesearch_cacel">#B46857</color>
+    <color name="homesearch_divider">#373737</color>
+    <color name="homesearch_search">#393939</color>
+    <color name="homesearch_historyText">#353535</color>
 </resources>

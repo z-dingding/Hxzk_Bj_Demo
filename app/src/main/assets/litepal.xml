@@ -12,6 +12,7 @@
     <list>
         <mapping class="com.hxzk_bj_demo.javabean.CollectionBean"></mapping>
         <mapping class="com.hxzk_bj_demo.javabean.NoteBookBean"></mapping>
+        <mapping class="com.hxzk_bj_demo.javabean.SearchTagBean"></mapping>
 
     </list>
 </litepal>

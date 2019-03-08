@@ -37,13 +37,14 @@
             android:src="@drawable/ic_search"
             android:layout_marginLeft="@dimen/dp_8"
          />
-
+          <!--  imeOptions ="actionSearch" 主要是这个属性，就是把软键盘上的回车键改成搜索按钮-->
         <EditText
             android:id="@+id/et_seachcontent"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
             android:inputType="textPersonName"
+            android:imeOptions="actionSearch"
             android:hint="@string/search_prompt"
             android:textSize="16sp"
             android:layout_margin="@dimen/dp_8"
@@ -56,20 +57,119 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="@string/search_cancel"
+            android:textColor="@color/homesearch_cacel"
             android:layout_marginLeft="@dimen/dp_8"
             android:layout_marginRight="@dimen/dp_8"
            />
     </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_result"
+    <LinearLayout
+        android:id="@+id/linear_historysearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:minHeight="@dimen/dp_70"
+        android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@+id/linear_search"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="@dimen/dp_5"
+        android:padding="@dimen/dp_5"
         >
-    </androidx.recyclerview.widget.RecyclerView>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+            <ImageView
+                android:id="@+id/iv_shrarchhistory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/search_history"
+                android:layout_alignParentStart="true"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/search_history"
+                android:layout_marginLeft="@dimen/dp_5"
+                android:layout_toRightOf="@id/iv_shrarchhistory"/>
+
+            <TextView
+                android:id="@+id/tv_clearhistory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="@string/search_clear" />
+
+        </RelativeLayout>
+        <com.google.android.flexbox.FlexboxLayout
+            android:id="@+id/flexbox_historysearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_13"
+            app:flexWrap="wrap"/>
+
+    </LinearLayout>
+    <View
+        android:id="@+id/view_divider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_2"
+        android:background="#373737"
+        app:layout_constraintTop_toBottomOf="@+id/linear_historysearch"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+    <RelativeLayout
+        android:id="@+id/realtive_searchbitch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/view_divider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="@dimen/dp_5"
+        android:padding="@dimen/dp_5">
+        <ImageView
+            android:id="@+id/iv_trend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/search_trend"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/search_trend"
+            android:layout_toRightOf="@id/iv_trend"
+            android:layout_marginLeft="@dimen/dp_5"/>
+        <ImageView
+            android:id="@+id/iv_batchSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/search_batch"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp_3"
+            android:layout_toLeftOf="@id/tv_batchSearch"
+            />
+
+        <TextView
+            android:id="@+id/tv_batchSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:text="@string/search_batch" />
+
+    </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/realtive_searchbitch"
+            >
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

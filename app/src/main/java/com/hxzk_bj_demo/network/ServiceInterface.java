@@ -7,8 +7,12 @@ import com.hxzk_bj_demo.javabean.HomeSearchBean;
 import com.hxzk_bj_demo.javabean.InversBean;
 import com.hxzk_bj_demo.javabean.LoginBean;
 import com.hxzk_bj_demo.javabean.LoginOutBean;
+import com.hxzk_bj_demo.javabean.PublicListData;
+import com.hxzk_bj_demo.javabean.PublicNumBean;
 
 import org.json.JSONObject;
+
+import java.util.List;
 
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -83,5 +87,17 @@ public interface ServiceInterface {
      */
     @POST("article/query/{pageNum}/json")
     Observable<BaseResponse<HomeSearchBean>> homeSearch(@Path("pageNum") int pageNum,@Query("k") String searchKey);
+
+
+    /**
+     * 获取公众号列表
+     * @return
+     */
+    @GET("wxarticle/chapters/json")
+    Observable<BaseResponse<List<PublicNumBean>>> publicNum();
+
+
+    @GET("wxarticle/list/{publicId}/{publicNum}/json")
+    Observable<BaseResponse<PublicListData>> publicList(@Path("publicId") String publicId, @Path("publicNum") String publicNum);
 
 }

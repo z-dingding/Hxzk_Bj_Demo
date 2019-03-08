@@ -1,14 +1,15 @@
 package com.hxzk_bj_demo.ui.fragment;
 
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
-import android.webkit.WebViewFragment;
 
 import com.google.android.material.tabs.TabLayout;
 import com.hxzk_bj_demo.R;
-import com.hxzk_bj_demo.javabean.TabItemModelBean;
+import com.hxzk_bj_demo.javabean.PublicNumBean;
+import com.hxzk_bj_demo.network.BaseResponse;
+import com.hxzk_bj_demo.network.BaseSubscriber;
+import com.hxzk_bj_demo.network.HttpRequest;
 import com.hxzk_bj_demo.ui.adapter.ContentPagerAdapter;
 import com.hxzk_bj_demo.ui.fragment.base.BaseFragment;
 import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
@@ -18,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.fragment.app.Fragment;
+import rx.Observable;
+import rx.Subscriber;
 
 /**
  * Created by leeandy007 on 2017/6/15.
@@ -29,10 +32,14 @@ public class InvestFragment extends BaseFragment {
     private TabLayout mTabLayout;
     private CustomViewPager mTabViewPager;
 
-    private List<TabItemModelBean> tabIndicators;
+    private List<PublicNumBean> tabIndicators;
     private List<Fragment> tabFragments;
 
     private ContentPagerAdapter contentAdapter;
+
+    Observable<BaseResponse<List<PublicNumBean>>> mObservable;
+    Subscriber<BaseResponse<List<PublicNumBean>>>  mSubscriber;
+
 
 
     @Override
@@ -56,32 +63,24 @@ public class InvestFragment extends BaseFragment {
     @Override
     protected void initData() {
         //初始化选项卡子项的文本、超链接model集合
-         tabIndicators = new ArrayList<TabItemModelBean>();
-        tabIndicators.add(new TabItemModelBean("百度"));
-        tabIndicators.add(new TabItemModelBean("CSDN"));
-        tabIndicators.add(new TabItemModelBean("博客园"));
-        tabIndicators.add(new TabItemModelBean("极客头条"));
-        tabIndicators.add(new TabItemModelBean("优设"));
-        tabIndicators.add(new TabItemModelBean("玩Android"));
-        tabIndicators.add(new TabItemModelBean("掘金"));
+         tabIndicators = new ArrayList<>();
     }
+
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        HttpRequest.getInstance().unsubscribe(mObservable);
+
+    }
+
 
     //当Fragemnt首次可见
     @Override
     public void onFragmentFirst() {
         super.onFragmentFirst();
-        //初始化碎片集合
-        tabFragments = new ArrayList<>();
-
-        for(int i=0;i<tabIndicators.size();i++){
-            TabItemModelBean tabItemModel = tabIndicators.get(i);
-            tabFragments.add(OntherFragment.getInstance(OntherFragment.class,null));
-        }
-        //实例化Adapter
-        contentAdapter = new ContentPagerAdapter(getActivity().getSupportFragmentManager(),tabIndicators,tabFragments);
-        mTabViewPager.setAdapter(contentAdapter);
-        //TabLayout和ViewPager相关联
-        mTabLayout.setupWithViewPager(mTabViewPager);
+        //请求公众号列表
+        requestPublicList();
     }
 
 
@@ -92,7 +91,7 @@ public class InvestFragment extends BaseFragment {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 //选中了tab的逻辑
-                ToastCustomUtil.showLongToast(tabIndicators.get(tab.getPosition()).getTabTitle().toString());
+                ToastCustomUtil.showLongToast(tabIndicators.get(tab.getPosition()).getName().toString());
 
             }
 
@@ -106,5 +105,45 @@ public class InvestFragment extends BaseFragment {
                 //再次选中了tab的逻辑
             }
         });
+    }
+
+
+    private void requestPublicList() {
+        mSubscriber =new BaseSubscriber<BaseResponse<List<PublicNumBean>>>(mContext) {
+            @Override
+            public void onResult(BaseResponse<List<PublicNumBean>> listBaseResponse) {
+                if(listBaseResponse.isOk()){
+                    for(PublicNumBean mPublicNumBean : listBaseResponse.getData()){
+                        tabIndicators.add(mPublicNumBean);
+                    }
+                    //初始化碎片集合
+                    tabFragments = new ArrayList<>();
+
+                    for(int i=0;i<tabIndicators.size();i++){
+                        Bundle mBundle =new Bundle();
+                        mBundle.putString("pulbicId",tabIndicators.get(i).getId()+"");
+                        tabFragments.add(OntherFragment.getInstance(OntherFragment.class,mBundle));
+                    }
+                    //实例化Adapter
+                    contentAdapter = new ContentPagerAdapter(getActivity().getSupportFragmentManager(),tabIndicators,tabFragments);
+                    mTabViewPager.setAdapter(contentAdapter);
+                    //TabLayout和ViewPager相关联
+                    mTabLayout.setupWithViewPager(mTabViewPager);
+                }else{
+                    ToastCustomUtil.showLongToast(listBaseResponse.getMsg());
+                }
+
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+               ToastCustomUtil.showLongToast(e.getMessage());
+            }
+        };
+
+        mObservable=HttpRequest.getInstance().getServiceInterface().publicNum();
+        HttpRequest.getInstance().toSubscribe(mObservable,mSubscriber);
+
     }
 }

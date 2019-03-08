@@ -1,8 +1,6 @@
 package com.hxzk_bj_demo.ui.adapter;
 
-import android.view.ViewGroup;
-
-import com.hxzk_bj_demo.javabean.TabItemModelBean;
+import com.hxzk_bj_demo.javabean.PublicNumBean;
 
 import java.util.List;
 
@@ -16,7 +14,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
  * 在自定义的viewpager适配器类中重写destroyItem方法，来解决重新加载的问题
  */
 public class ContentPagerAdapter extends FragmentStatePagerAdapter {
-    private List<TabItemModelBean> tabIndicators;
+    private List<PublicNumBean> tabIndicators;
     /**碎片集合*/
     private List<Fragment> fragmentList;
 
@@ -28,7 +26,7 @@ public class ContentPagerAdapter extends FragmentStatePagerAdapter {
     /**
      * 自定义构造函数：用于传递碎片集合过来
      * 一般都写上*/
-    public ContentPagerAdapter(FragmentManager fm, List<TabItemModelBean> tabIndicators, List<Fragment> fragmentList) {
+    public ContentPagerAdapter(FragmentManager fm, List<PublicNumBean> tabIndicators, List<Fragment> fragmentList) {
         super(fm);
         this.tabIndicators = tabIndicators;
         this.fragmentList = fragmentList;
@@ -46,7 +44,7 @@ public class ContentPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return tabIndicators.get(position).getTabTitle();
+        return tabIndicators.get(position).getName();
     }
 
 

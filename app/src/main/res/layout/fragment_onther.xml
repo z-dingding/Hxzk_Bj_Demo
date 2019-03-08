@@ -13,21 +13,22 @@
     <!--&lt;!&ndash;app:reverse="true" // 是否反向切换页面（切换方向）&ndash;&gt;-->
     <com.wenld.wenldbanner.WenldBanner
         android:id="@+id/commonBanner"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_180"
+        android:layout_width="@dimen/dp_340"
+        android:layout_height="@dimen/dp_120"
         app:canLoop="true"
         app:canTurn="true"
         app:autoTurnTime="2000"
         app:scrollDuration="3000"
         app:isTouchScroll="true"
-        app:reverse="true"/>
+        app:reverse="true"
+        android:layout_gravity="center_horizontal"/>
 
     <!--android:fillViewport="true" NestedScrollView的子布局不显示解决-->
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedsv_invest"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/dp_180"
+        android:layout_marginTop="@dimen/dp_120"
         android:fillViewport="true">
 
         <FrameLayout

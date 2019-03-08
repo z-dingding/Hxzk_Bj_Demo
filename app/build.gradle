@@ -84,5 +84,7 @@ dependencies {
     implementation project(':wenldbanner')
     //腾讯Tbs服务
     implementation project(':x5webview')
+    //flexbox
+    implementation 'com.google.android:flexbox:1.1.0'
 }
 
