@@ -169,7 +169,7 @@ public class LoginActivity extends BaseBussActivity {
 
 
 
-    BaseResponse<LoginOutBean> mBaseResponse;
+
     @OnClick({R.id.tv_otherwaylogin_login, R.id.btn_loginin_login,R.id.tv_register_login})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -193,18 +193,7 @@ public class LoginActivity extends BaseBussActivity {
 
 
                         @Override
-                        public void onResult(BaseResponse<LoginOutBean> baseResponse) {
-                            mBaseResponse=baseResponse;
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            ToastCustomUtil.showLongToast(e.getMessage());
-                        }
-
-                        @Override
-                        public void onCompleted() {
-                            super.onCompleted();
+                        public void onResult(BaseResponse<LoginOutBean> mBaseResponse) {
                             if (!mBaseResponse.isOk()) {
                                 ToastCustomUtil.showLongToast(mBaseResponse.getMsg());
                             } else {
@@ -213,8 +202,18 @@ public class LoginActivity extends BaseBussActivity {
                                 ActivityJump.NormalJump(LoginActivity.this,MainActivity.class);
 
                             }
-
                         }
+
+//                        @Override
+//                        public void onFail(ExceptionHandle.ResponeThrowable e) {
+//                            ToastCustomUtil.showLongToast(e.message);
+//                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            ToastCustomUtil.showLongToast(e.getMessage());
+                        }
+
                     };
                     observable =HttpRequest.getInstance().getServiceInterface().login(account,pwd);
                     //用observable提供的onErrorResumeNext 则可以将你自定义的Func1 关联到错误处理类中

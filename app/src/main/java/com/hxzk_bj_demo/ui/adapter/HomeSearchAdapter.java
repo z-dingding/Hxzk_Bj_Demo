@@ -6,19 +6,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.hxzk_bj_demo.R;
-import com.hxzk_bj_demo.javabean.HomeListBean;
 import com.hxzk_bj_demo.javabean.HomeSearchBean;
-
 import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+
 /**
  * 作者：created by ${zjt} on 2019/3/7
- * 描述:
+ * 描述:首页搜索adapter
  */
 public class HomeSearchAdapter extends RecyclerView.Adapter<HomeSearchAdapter.HomeSearchViewHolder> {
 
@@ -34,11 +31,10 @@ public class HomeSearchAdapter extends RecyclerView.Adapter<HomeSearchAdapter.Ho
     @NonNull
     @Override
     public HomeSearchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // 解决条目显示不全
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_homesearch,null);
-       // View itemView = LayoutInflater.from(mContext).inflate(R.layout.item_homesearch, parent, false);
+        View itemView = LayoutInflater.from(mContext).inflate(R.layout.item_homesearch, parent, false);
         return new HomeSearchViewHolder(itemView);
     }
+
 
     @Override
     public void onBindViewHolder(@NonNull HomeSearchViewHolder holder, int position) {
@@ -67,6 +63,8 @@ public class HomeSearchAdapter extends RecyclerView.Adapter<HomeSearchAdapter.Ho
     public int getItemViewType(int position) {
         return position;
     }
+
+
 
     public class HomeSearchViewHolder extends RecyclerView.ViewHolder {
         LinearLayout itemLinear;

@@ -27,6 +27,7 @@ import com.hxzk_bj_demo.javabean.LoginOutBean;
 import com.hxzk_bj_demo.mvp.view.NoteBookActivity;
 import com.hxzk_bj_demo.network.BaseResponse;
 import com.hxzk_bj_demo.network.BaseSubscriber;
+import com.hxzk_bj_demo.network.ExceptionHandle;
 import com.hxzk_bj_demo.network.HttpRequest;
 import com.hxzk_bj_demo.ui.activity.base.BaseBussActivity;
 import com.hxzk_bj_demo.ui.adapter.base.FragmentAdapter;
@@ -107,6 +108,7 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
     @Override
     protected void initView() {
         super.initView();
+        ActivityJump.popSpecifiedActivity(LoginActivity.class);
         //初始化DrawerLayout
         mDrawer = (DrawerLayout) findViewById(R.id.drawerlayout_main);
         initToolbar(R.drawable.back, getResources().getString(R.string.home));
@@ -189,11 +191,15 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
                                 }
                             }
 
+//                            @Override
+//                            public void onFail(ExceptionHandle.ResponeThrowable e) {
+//                                ToastCustomUtil.showLongToast(e.message);
+//                            }
+
                             @Override
                             public void onError(Throwable e) {
                                 ToastCustomUtil.showLongToast(e.getMessage());
                             }
-
 
 
 

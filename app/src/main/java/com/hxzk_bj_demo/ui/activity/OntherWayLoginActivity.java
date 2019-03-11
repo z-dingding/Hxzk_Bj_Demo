@@ -18,7 +18,8 @@ import butterknife.OnClick;
 
 /**
  * 作者：created by ${zjt} on 2019/1/3
- * 描述:
+ * 描述:其他登录方式
+ *
  */
 public class OntherWayLoginActivity extends BaseBussActivity {
 

@@ -194,6 +194,7 @@ public class HomeSearchActivity extends BaseBussActivity {
     }
 
 
+    @SuppressLint("WrongConstant")
     @Override
     protected void initData() {
         super.initData();
@@ -211,9 +212,8 @@ public class HomeSearchActivity extends BaseBussActivity {
             relativeSearchBitch.setVisibility(View.GONE);
 
 
-
         //设置为线性管理器
-        recyclerResult.setLayoutManager(new LinearLayoutManager(this));
+        recyclerResult.setLayoutManager(new LinearLayoutManager(HomeSearchActivity.this));
         //给item增加自带分割线
         recyclerResult.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         mSearchResultData = new LinkedList<>();

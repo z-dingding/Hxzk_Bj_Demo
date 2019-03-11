@@ -219,7 +219,7 @@ public class HomeFragment extends BaseFragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         mRecyclerView.setLayoutManager(linearLayoutManager);
         //首次进来默认加载第一页数据,下标为0
-        requestHomeList(0);
+        //requestHomeList(0);
     }
 
 
@@ -265,25 +265,17 @@ public class HomeFragment extends BaseFragment {
             public void onError(Throwable e) {
                 ToastCustomUtil.showLongToast(e.getMessage());
             }
+
+//            @Override
+//            public void onFail(ExceptionHandle.ResponeThrowable e) {
+//
+//            }
         };
 
         homeListBeanObservable = HttpRequest.getInstance().getServiceInterface().homeList(pageNum);
         HttpRequest.getInstance().toSubscribe(homeListBeanObservable,baseHomeListSubscriber);
     }
 
-
-//        @Override
-//        public void onNext(HomeListBean baseResponse) {
-//            //totalPage=baseResponse.getData().getData().getData().getPageCount();
-//            totalPage=baseResponse.getData().getPageCount();
-//            List linkList=baseResponse.getData().getDatas();
-//            for(int i =0 ;i<linkList.size();i++){
-//                listitemList.add((HomeListBean.DataBean.DatasBean) linkList.get(i));
-//            }
-//
-//            mHandler.sendEmptyMessage(0X222);
-//        }
-//    };
     /**
      * 初始化SwipeRefresh刷新控件
      */

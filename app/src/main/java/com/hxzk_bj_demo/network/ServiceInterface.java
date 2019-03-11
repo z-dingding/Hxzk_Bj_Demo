@@ -2,6 +2,7 @@ package com.hxzk_bj_demo.network;
 
 import com.google.gson.JsonObject;
 import com.hxzk_bj_demo.javabean.BannerBean;
+import com.hxzk_bj_demo.javabean.CollectionBean;
 import com.hxzk_bj_demo.javabean.HomeListBean;
 import com.hxzk_bj_demo.javabean.HomeSearchBean;
 import com.hxzk_bj_demo.javabean.InversBean;
@@ -97,7 +98,31 @@ public interface ServiceInterface {
     Observable<BaseResponse<List<PublicNumBean>>> publicNum();
 
 
+    /**
+     * 获取公众号列表数据
+     * @param publicId
+     * @param publicNum
+     * @return
+     */
     @GET("wxarticle/list/{publicId}/{publicNum}/json")
     Observable<BaseResponse<PublicListData>> publicList(@Path("publicId") String publicId, @Path("publicNum") String publicNum);
 
+
+
+    /**
+     * 收藏站内文章
+     * @param articalId 文章id
+     * @return
+     */
+    @POST("lg/collect/{articalId}/json")
+    Observable<JsonObject> collectArical(@Path("articalId") String articalId);
+
+
+    /**
+     *
+     * @param pageNum 页码
+     * @return
+     */
+    @GET("lg/collect/list/{pageNum}/json")
+    Observable<BaseResponse<CollectionBean>> collectArticalList(@Path("pageNum") int pageNum);
 }

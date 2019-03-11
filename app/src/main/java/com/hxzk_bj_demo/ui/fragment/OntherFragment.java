@@ -1,6 +1,7 @@
 package com.hxzk_bj_demo.ui.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -17,6 +18,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.chad.library.adapter.base.loadmore.LoadMoreView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.JsonObject;
 import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.common.Const;
 import com.hxzk_bj_demo.javabean.CollectionBean;
@@ -24,6 +26,7 @@ import com.hxzk_bj_demo.javabean.InversBean;
 import com.hxzk_bj_demo.javabean.PublicListData;
 import com.hxzk_bj_demo.network.BaseResponse;
 import com.hxzk_bj_demo.network.BaseSubscriber;
+import com.hxzk_bj_demo.network.ExceptionHandle;
 import com.hxzk_bj_demo.network.HttpRequest;
 import com.hxzk_bj_demo.ui.adapter.WechatItemAdapter;
 import com.hxzk_bj_demo.ui.fragment.base.BaseFragment;
@@ -36,6 +39,8 @@ import com.wenld.wenldbanner.WenldBanner;
 import com.wenld.wenldbanner.helper.Holder;
 import com.wenld.wenldbanner.helper.ViewHolder;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
@@ -74,7 +79,7 @@ public class OntherFragment extends BaseFragment implements SwipeRefreshLayout.O
     /**适配器*/
     WechatItemAdapter mWechatItemAdapter;
     /**只是在初始化的时候调用了,没有实际意义.相当于占位符*/
-    private List<InversBean.DataBean> mListBeanList;
+    private List<PublicListData.DatasBean> mListBeanList;
 
 
     /**加载没有数据的view*/
@@ -98,10 +103,15 @@ public class OntherFragment extends BaseFragment implements SwipeRefreshLayout.O
     Observable<BaseResponse<PublicListData>> mObservable;
     Subscriber<BaseResponse<PublicListData>>  mSubscriber;
 
+    //收藏文章
+    Observable<JsonObject> articalObservable;
+    Subscriber<JsonObject> articalSubscriber;
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        publicId= (String) getArguments().get("publicId");
+        Bundle mIntent =getArguments();
+        publicId= (String) mIntent.get("publicId");
     }
 
 
@@ -126,10 +136,6 @@ public class OntherFragment extends BaseFragment implements SwipeRefreshLayout.O
         mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                mWechatItemAdapter.setEnableLoadMore(false);
-//                mRefreshMark = true; //是否再刷新的标识
-//                mPageMark = 1;
-//                requestData();
                 if (mWechatItemAdapter != null && mWechatItemAdapter.getData() != null && mWechatItemAdapter.getData().size() > 0) {
                     mRecyclerInvest.scrollToPosition(0);
                     ToastCustomUtil.showShortToast("已经返回列表顶部");
@@ -157,15 +163,16 @@ public class OntherFragment extends BaseFragment implements SwipeRefreshLayout.O
         requestData();
         //初始化Banner
         initBanner();
-
     }
 
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        /** 此方法主要作用取消观察者和被观察者的引用,避免内存泄露*/
-        unsubscribe();
+        //此方法主要作用取消观察者和被观察者的引用,避免内存泄露
+        HttpRequest.getInstance().unsubscribe(mObservable);
+        HttpRequest.getInstance().unsubscribe(articalObservable);
+
     }
 
 
@@ -271,12 +278,10 @@ public class OntherFragment extends BaseFragment implements SwipeRefreshLayout.O
     }
 
 
-    private void setNewDataAddList(InversBean inversBean) {
-        if (inversBean != null) {
+    private void setNewDataAddList( PublicListData  publicListData) {
+        if (publicListData != null) {
             mPageMark++;
-            List<InversBean.DataBean> newData = inversBean.getData();
-            InversBean.DataBean listBean = newData.get(0);
-
+            List<PublicListData.DatasBean> newData = publicListData.getDatas();
             if (mRefreshMark) {
                 //刷新填充数据
                 mWechatItemAdapter.setNewData(newData);
@@ -430,10 +435,9 @@ public class OntherFragment extends BaseFragment implements SwipeRefreshLayout.O
         mRecyclerInvest.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
-                InversBean.DataBean mInversBean = (InversBean.DataBean) adapter.getData().get(position);
-                //注意这里的TAG并不是当前activity的TAG....
-                Toast.makeText(getActivity(), "短桉监听你点击的是:" + mInversBean.getEntName(), Toast.LENGTH_SHORT).show();
+               PublicListData.DatasBean publicListData = (PublicListData.DatasBean) adapter.getData().get(position);
 
+                ToastCustomUtil.showLongToast(publicListData.getLink());
             }
         });
 
@@ -443,9 +447,6 @@ public class OntherFragment extends BaseFragment implements SwipeRefreshLayout.O
             @Override
             public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
 
-                InversBean.DataBean mDataBean = (InversBean.DataBean) adapter.getData().get(position);
-
-                Toast.makeText(getActivity(), "长按监听你点击的是:" + mDataBean.getEntName(), Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
@@ -459,26 +460,8 @@ public class OntherFragment extends BaseFragment implements SwipeRefreshLayout.O
                         ToastCustomUtil.showShortToast("点击了item");
                         break;
                     case R.id.img_collection_invest:
-
-                        InversBean.DataBean mDataBean = (InversBean.DataBean) adapter.getItem(position);
-
-
-                        List<CollectionBean> CollectionBeansList = DataSupport.where("entName = ?", mDataBean.getEntName()).find(CollectionBean.class);
-                        if (CollectionBeansList.size() > 0) { //说明已经插入过该数据
-                            ToastCustomUtil.showShortToast("该商家已收藏");
-                        } else {
-                            CollectionBean mCollectionBean = new CollectionBean();
-                            mCollectionBean.setEntName(mDataBean.getEntName());
-                            mCollectionBean.setEntAddress(mDataBean.getEntAddress());
-                            mCollectionBean.setImgUrl(mDataBean.getUrlPath());
-                            mCollectionBean.setTiem(CalendarUtil.getInstance().getTime());
-                            if (mCollectionBean.save()) {
-                                ToastCustomUtil.showShortToast("收藏成功");
-                            } else {
-                                ToastCustomUtil.showShortToast("收藏失败");
-                            }
-
-                        }
+                        PublicListData.DatasBean datasBean = (PublicListData.DatasBean) adapter.getItem(position);
+                        collectArtical(datasBean.getId()+"");
                         break;
                 }
 
@@ -529,17 +512,6 @@ public class OntherFragment extends BaseFragment implements SwipeRefreshLayout.O
     }
 
 
-    /**
-     * 解绑定方法
-     */
-    private void unsubscribe() {
-        //使用 isUnsubscribed() 先判断一下状态
-        if (mSubscription != null && !mSubscription.isUnsubscribed()) {
-            //unsubscribe() 来解除引用关系，以避免内存泄露的发生
-            mSubscription.unsubscribe();
-        }
-    }
-
 
     /**
      * 请求获取数据
@@ -548,7 +520,8 @@ public class OntherFragment extends BaseFragment implements SwipeRefreshLayout.O
         mSubscriber =new BaseSubscriber<BaseResponse<PublicListData>>(mContext) {
             @Override
             public void onResult(BaseResponse<PublicListData> publicListDataBaseResponse) {
-                //setNewDataAddList(inversBean);
+                PublicListData  publicListData =publicListDataBaseResponse.getData();
+               setNewDataAddList(publicListData);
             }
 
             @Override
@@ -563,9 +536,16 @@ public class OntherFragment extends BaseFragment implements SwipeRefreshLayout.O
                     mSwiperrlInvest.setEnabled(false);
                 }
             }
+
+//            @Override
+//            public void onFail(ExceptionHandle.ResponeThrowable e) {
+//
+//            }
+
+
         };
 
-        mObservable= HttpRequest.getInstance().getServiceInterface().publicList("","");
+        mObservable= HttpRequest.getInstance().getServiceInterface().publicList(publicId,mPageMark+"");
         mSubscription = HttpRequest.getInstance().toSubscribe(mObservable, mSubscriber);
     }
 
@@ -582,5 +562,44 @@ public class OntherFragment extends BaseFragment implements SwipeRefreshLayout.O
         //关闭下拉刷新
         mSwiperrlInvest.setEnabled(false);
         requestData();
+    }
+
+
+    /**
+     * 收藏文章列表
+     * @param articalId
+     */
+    private void collectArtical(String articalId){
+        articalSubscriber =new Subscriber<JsonObject>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                ToastCustomUtil.showLongToast(e.getMessage());
+
+            }
+
+            @Override
+            public void onNext(JsonObject jsonObject) {
+                try {
+                    JSONObject mJSONObject =new JSONObject(jsonObject.toString());
+                    String code=mJSONObject.getString("errorCode");
+                    String message=mJSONObject.getString("errorMsg");
+                    if(!code.equals("0")){
+                        ToastCustomUtil.showLongToast(message);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        };
+
+        articalObservable =HttpRequest.getInstance().getServiceInterface().collectArical(articalId);
+        HttpRequest.getInstance().toSubscribe(articalObservable,articalSubscriber);
     }
 }

@@ -24,8 +24,9 @@
             android:layout_height="wrap_content"
             android:text="111111111111111111111111111"
             android:layout_marginLeft="@dimen/dp_40"
+            android:singleLine="true"
             android:ellipsize="middle"
-            android:singleLine="true"/>
+            />
     </LinearLayout>
 
 

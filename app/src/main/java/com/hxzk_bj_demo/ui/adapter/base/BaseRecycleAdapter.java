@@ -58,12 +58,12 @@ public abstract class BaseRecycleAdapter<T> extends RecyclerView.Adapter<BaseRec
      * @param position
      */
     public void removeRecycle(int position) {
-        list.remove(position);
-        //同时删除数据库保存的数据
-        int deleteNum =DataSupport.deleteAll(CollectionBean.class, "entName = ?",((CollectionBean)list.get(position)).getEntName());
-        if(deleteNum != 0){
-            ToastCustomUtil.showShortToast("删除了"+deleteNum+"条数据");
-        }
+//        list.remove(position);
+//        //同时删除数据库保存的数据
+//        int deleteNum =DataSupport.deleteAll(CollectionBean.class, "entName = ?",((CollectionBean)list.get(position)).getEntName());
+//        if(deleteNum != 0){
+//            ToastCustomUtil.showShortToast("删除了"+deleteNum+"条数据");
+//        }
          this.notifyDataSetChanged();
         if (list.size() == 0) {
           ToastCustomUtil.showShortToast("已经没数据啦");

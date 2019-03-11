@@ -20,7 +20,6 @@ public class ContentPagerAdapter extends FragmentStatePagerAdapter {
 
     public ContentPagerAdapter(FragmentManager fm) {
         super(fm);
-        // TODO Auto-generated constructor stub
     }
 
     /**

@@ -40,7 +40,7 @@ public class ProgressDialogUtil {
      *
      * @param context 上下文
      */
-    private static  Context mContext;
+    private  Context mContext;
     public void mshowDialog(Context context) {
         mContext=context;
         if (null == loadingDialog) {

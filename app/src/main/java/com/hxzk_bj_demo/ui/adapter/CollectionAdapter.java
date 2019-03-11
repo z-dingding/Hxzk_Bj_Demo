@@ -36,9 +36,9 @@ public class CollectionAdapter extends RecyclerView.Adapter {
 
     private Context context;
     private LayoutInflater inflater;
-    private List<CollectionBean> lists = new ArrayList<>();
+    private List<CollectionBean.DatasBean> lists = new ArrayList<>();
 
-    public CollectionAdapter(Context context, List<CollectionBean> lists) {
+    public CollectionAdapter(Context context, List<CollectionBean.DatasBean> lists) {
         this.context = context;
         this.inflater = LayoutInflater.from(context);
         this.lists = lists;
@@ -55,7 +55,7 @@ public class CollectionAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         MyViewHolder viewHolder = (MyViewHolder) holder;
-        CollectionBean collectionBean =lists.get(position);
+        CollectionBean.DatasBean collectionBean =lists.get(position);
 
         //升级到4.8版本之后的新写法
         RequestOptions requestOptions = new RequestOptions()
@@ -66,14 +66,14 @@ public class CollectionAdapter extends RecyclerView.Adapter {
 
 
         Glide.with(context.getApplicationContext())
-                .load(lists.get(position).getImgUrl()) //加载图片的地址
+                .load(R.mipmap.ic_launcher) //加载图片的地址
                .apply(requestOptions)
                 //淡入淡出动画
                 .transition(DrawableTransitionOptions.withCrossFade())
                .into(viewHolder.imgPhoto);
-        viewHolder.tvName.setText(collectionBean.getEntName());
-        viewHolder.tvTime.setText(collectionBean.getTiem());
-        viewHolder.tvAddress.setText(collectionBean.getEntAddress());
+        viewHolder.tvName.setText(collectionBean.getAuthor());
+        viewHolder.tvTime.setText(collectionBean.getNiceDate());
+        viewHolder.tvAddress.setText(collectionBean.getTitle());
 
         viewHolder.layout.scrollTo(0, 0);
 
@@ -91,10 +91,10 @@ public class CollectionAdapter extends RecyclerView.Adapter {
     public void removeRecycle(int position) {
 
         //同时删除数据库保存的数据
-        int deleteNum = DataSupport.deleteAll(CollectionBean.class, "entName = ?",(lists.get(position)).getEntName());
-        if(deleteNum != 0){
-            ToastCustomUtil.showShortToast("删除了"+deleteNum+"条数据");
-        }
+        //int deleteNum = DataSupport.deleteAll(CollectionBean.class, "entName = ?",(lists.get(position)).getEntName());
+        //if(deleteNum != 0){
+          //  ToastCustomUtil.showShortToast("删除了"+deleteNum+"条数据");
+        //}
         lists.remove(position);
        notifyDataSetChanged();
         if (lists.size() == 0) {

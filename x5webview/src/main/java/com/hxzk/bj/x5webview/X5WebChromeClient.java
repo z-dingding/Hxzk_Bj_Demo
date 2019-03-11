@@ -31,7 +31,6 @@ public class X5WebChromeClient extends WebChromeClient {
 	//throw、throws：这是用于抛出异常，区别在于throw是在语句中抛出、throws是在方法体抛出；
 	@Override
 	public void onProgressChanged(WebView view, int newProgress) throws NullPointerException {
-		// TODO Auto-generated method stub
 		super.onProgressChanged(view, newProgress);
 
 			if(newProgress == 100){

@@ -9,6 +9,7 @@ import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.javabean.PublicNumBean;
 import com.hxzk_bj_demo.network.BaseResponse;
 import com.hxzk_bj_demo.network.BaseSubscriber;
+import com.hxzk_bj_demo.network.ExceptionHandle;
 import com.hxzk_bj_demo.network.HttpRequest;
 import com.hxzk_bj_demo.ui.adapter.ContentPagerAdapter;
 import com.hxzk_bj_demo.ui.fragment.base.BaseFragment;
@@ -121,8 +122,8 @@ public class InvestFragment extends BaseFragment {
 
                     for(int i=0;i<tabIndicators.size();i++){
                         Bundle mBundle =new Bundle();
-                        mBundle.putString("pulbicId",tabIndicators.get(i).getId()+"");
-                        tabFragments.add(OntherFragment.getInstance(OntherFragment.class,mBundle));
+                        mBundle.putString("publicId",tabIndicators.get(i).getId()+"");
+                        tabFragments.add(BaseFragment.getInstance(OntherFragment.class,mBundle));
                     }
                     //实例化Adapter
                     contentAdapter = new ContentPagerAdapter(getActivity().getSupportFragmentManager(),tabIndicators,tabFragments);
@@ -140,6 +141,11 @@ public class InvestFragment extends BaseFragment {
             public void onError(Throwable e) {
                ToastCustomUtil.showLongToast(e.getMessage());
             }
+
+//            @Override
+//            public void onFail(ExceptionHandle.ResponeThrowable e) {
+//
+//            }
         };
 
         mObservable=HttpRequest.getInstance().getServiceInterface().publicNum();

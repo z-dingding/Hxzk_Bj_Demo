@@ -73,7 +73,6 @@ public abstract class BaseFragment extends LazyLoadFragment {
         if (args != null) {
             mFragment.setArguments(args);
         }
-
         return mFragment;
     }
 
