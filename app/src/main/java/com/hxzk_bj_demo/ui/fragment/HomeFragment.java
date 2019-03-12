@@ -219,7 +219,7 @@ public class HomeFragment extends BaseFragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         mRecyclerView.setLayoutManager(linearLayoutManager);
         //首次进来默认加载第一页数据,下标为0
-        //requestHomeList(0);
+       // requestHomeList(0);
     }
 
 
@@ -261,8 +261,9 @@ public class HomeFragment extends BaseFragment {
                 mHandler.sendEmptyMessage(0X222);
             }
 
+
             @Override
-            public void onError(Throwable e) {
+            public void onFail(Throwable e) {
                 ToastCustomUtil.showLongToast(e.getMessage());
             }
 

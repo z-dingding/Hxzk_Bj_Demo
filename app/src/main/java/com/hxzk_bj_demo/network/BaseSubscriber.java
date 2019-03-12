@@ -69,10 +69,17 @@ public abstract class BaseSubscriber <T> extends Subscriber<T> {
 //            onFail(new ExceptionHandle.ResponeThrowable(e, ExceptionHandle.ERROR.UNKNOWN));
 //        }
 //    }
-//    public abstract void onFail(ExceptionHandle.ResponeThrowable e);
+//   public abstract void onFail(ExceptionHandle.ResponeThrowable e);
 
 
-
+    @Override
+    public void onError(Throwable e) {
+        if(ProgressDialogUtil.getInstance().xDialogInstance().isShowing()){
+            ProgressDialogUtil.getInstance().mdismissDialog();
+        }
+        onFail(e);
+    }
+    public abstract void onFail(Throwable e);
 
 
     //通过RXJva的 Func1来进行对原始的Throwable 进行包装转换将原来Throwable 强转成自定义的 ResponeThrowable

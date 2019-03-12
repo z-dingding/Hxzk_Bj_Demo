@@ -61,7 +61,7 @@ public interface ServiceInterface {
      * @return
      */
     @GET("user/logout/json")
-    Observable<BaseResponse<LoginOutBean>> loginout();
+    Observable<BaseResponse<LoginOutBean>>loginout();
 
 
     /**
@@ -125,4 +125,15 @@ public interface ServiceInterface {
      */
     @GET("lg/collect/list/{pageNum}/json")
     Observable<BaseResponse<CollectionBean>> collectArticalList(@Path("pageNum") int pageNum);
+
+
+    /**
+     * 删除收藏
+     * @param aricalId
+     * @return
+     */
+    @POST("lg/uncollect_originId/{aricalId}/json")
+    Observable<JsonObject> deleteCollectArtical(@Path("aricalId") String aricalId);
+
+
 }

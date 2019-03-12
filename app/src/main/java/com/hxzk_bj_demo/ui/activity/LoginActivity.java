@@ -77,6 +77,7 @@ public class LoginActivity extends BaseBussActivity {
     BaseSubscriber<BaseResponse<LoginOutBean>> subscriber;
     Observable<BaseResponse<LoginOutBean>> observable;
 
+
     @Override
     protected int setLayoutId() {
         _context = LoginActivity.this;
@@ -188,10 +189,7 @@ public class LoginActivity extends BaseBussActivity {
                 account=edt_Account_Login.getText().toString();
                  pwd=edt_Pwd_Login.getText().toString();
                 if(!TextUtils.isEmpty(account) && !TextUtils.isEmpty(pwd)){
-
                     subscriber =new  BaseSubscriber<BaseResponse<LoginOutBean>>(LoginActivity.this){
-
-
                         @Override
                         public void onResult(BaseResponse<LoginOutBean> mBaseResponse) {
                             if (!mBaseResponse.isOk()) {
@@ -200,18 +198,19 @@ public class LoginActivity extends BaseBussActivity {
                                 SPUtils.put(LoginActivity.this, Const.KEY_LOGIN_ACCOUNT,account);
                                 SPUtils.put(LoginActivity.this,Const.KEY_LOGIN_PWD,pwd);
                                 ActivityJump.NormalJump(LoginActivity.this,MainActivity.class);
-
                             }
                         }
-
 //                        @Override
 //                        public void onFail(ExceptionHandle.ResponeThrowable e) {
 //                            ToastCustomUtil.showLongToast(e.message);
 //                        }
 
                         @Override
-                        public void onError(Throwable e) {
+                        public void onFail(Throwable e) {
                             ToastCustomUtil.showLongToast(e.getMessage());
+                            SPUtils.put(LoginActivity.this, Const.KEY_LOGIN_ACCOUNT,account);
+                            SPUtils.put(LoginActivity.this,Const.KEY_LOGIN_PWD,pwd);
+                            ActivityJump.NormalJump(LoginActivity.this,MainActivity.class);
                         }
 
                     };
@@ -221,7 +220,6 @@ public class LoginActivity extends BaseBussActivity {
                     HttpRequest.getInstance().toSubscribe(observable,subscriber);
 
                 }else{
-
                     ToastCustomUtil.showLongToast("请输入正确的账号密码!");
                 }
 

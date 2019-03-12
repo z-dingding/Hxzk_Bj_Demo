@@ -196,12 +196,11 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
 //                                ToastCustomUtil.showLongToast(e.message);
 //                            }
 
+
                             @Override
-                            public void onError(Throwable e) {
+                            public void onFail(Throwable e) {
                                 ToastCustomUtil.showLongToast(e.getMessage());
                             }
-
-
 
 
                         };

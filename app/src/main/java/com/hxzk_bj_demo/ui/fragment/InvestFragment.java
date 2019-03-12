@@ -137,9 +137,10 @@ public class InvestFragment extends BaseFragment {
 
             }
 
+
             @Override
-            public void onError(Throwable e) {
-               ToastCustomUtil.showLongToast(e.getMessage());
+            public void onFail(Throwable e) {
+                ToastCustomUtil.showLongToast(e.getMessage());
             }
 
 //            @Override

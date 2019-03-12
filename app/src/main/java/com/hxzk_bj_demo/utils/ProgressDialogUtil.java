@@ -58,7 +58,6 @@ public class ProgressDialogUtil {
     }
 
 
-
     /**
      * 让dialog消失
      */
@@ -67,5 +66,10 @@ public class ProgressDialogUtil {
             loadingDialog.dismiss();
             loadingDialog = null;
         }
+    }
+
+
+    public XDialog  xDialogInstance(){
+        return loadingDialog;
     }
 }

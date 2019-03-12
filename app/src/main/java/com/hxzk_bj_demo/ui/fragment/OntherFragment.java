@@ -524,8 +524,9 @@ public class OntherFragment extends BaseFragment implements SwipeRefreshLayout.O
                setNewDataAddList(publicListData);
             }
 
+
             @Override
-            public void onError(Throwable e) {
+            public void onFail(Throwable e) {
                 onErrorView();
                 //判断当前的状态是否是刷新状态
                 if (mSwiperrlInvest.isRefreshing()) {

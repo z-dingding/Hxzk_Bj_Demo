@@ -1,10 +1,12 @@
 package com.hxzk_bj_demo.ui.activity;
 import android.annotation.SuppressLint;
+import android.text.TextUtils;
 
 import com.google.gson.JsonObject;
 import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.javabean.CollectionBean;
 import com.hxzk_bj_demo.network.BaseResponse;
+import com.hxzk_bj_demo.network.BaseSubscriber;
 import com.hxzk_bj_demo.network.HttpRequest;
 import com.hxzk_bj_demo.ui.activity.base.BaseBussActivity;
 import com.hxzk_bj_demo.ui.adapter.CollectionAdapter;
@@ -33,13 +35,19 @@ public class CollectionActivity extends BaseBussActivity implements CustomRecycl
 
     @BindView(R.id.recycler_collect)
     CustomRecyclerView mRecyclerCollect;
-   //数据源
+    CollectionAdapter mAdapter;
+    //数据源
     List mData;
-
+    //获取收藏数据观察者和订阅者
     Observable<BaseResponse<CollectionBean>> mObservable;
     Subscriber<BaseResponse<CollectionBean>> mSubscriber;
-
+    //请求页码
     int pageNum;
+    //请求删除收藏的观察者和订阅者
+    Observable<JsonObject> mDelObservable;
+    Subscriber<JsonObject> mDelSubscriber;
+    int delPosition;
+
     @Override
     protected int setLayoutId() {
         _context=CollectionActivity.this;
@@ -53,15 +61,17 @@ public class CollectionActivity extends BaseBussActivity implements CustomRecycl
         initToolbar(R.drawable.back, "收藏");
     }
 
+
     @Override
     protected void initEvent() {
         mRecyclerCollect.setListener(this);
     }
 
+
     @Override
     protected void initData() {
         mData =new LinkedList<CollectionBean.DatasBean>();
-        //获取数据库中的数据
+        //获取服务器收藏数据
         requestArticalList(pageNum);
     }
 
@@ -70,7 +80,9 @@ public class CollectionActivity extends BaseBussActivity implements CustomRecycl
     protected void onDestroy() {
         super.onDestroy();
         HttpRequest.getInstance().unsubscribe(mObservable);
+        HttpRequest.getInstance().unsubscribe(mDelObservable);
     }
+
 
     @Override
     public void getPosition(int position) {
@@ -84,7 +96,54 @@ public class CollectionActivity extends BaseBussActivity implements CustomRecycl
      * @param pageNum
      */
     private void requestArticalList(int pageNum){
-        mSubscriber =new Subscriber<BaseResponse<CollectionBean>>() {
+        mSubscriber =new BaseSubscriber<BaseResponse<CollectionBean>>(CollectionActivity.this) {
+
+
+            @Override
+            public void onFail(Throwable e) {
+                ToastCustomUtil.showLongToast(e.getMessage());
+            }
+
+            @Override
+            public void onResult(BaseResponse<CollectionBean> collectionBean) {
+                mData =collectionBean.getData().getDatas();
+                if(mData.size() != 0){
+                    //给recyclerview填充数据
+                    mAdapter =new CollectionAdapter(CollectionActivity.this,mData);
+                    @SuppressLint("WrongConstant") LinearLayoutManager manager =new LinearLayoutManager(CollectionActivity.this,LinearLayoutManager.VERTICAL,false);
+                    mRecyclerCollect.addItemDecoration(new DividerItemDecoration(CollectionActivity.this, DividerItemDecoration.VERTICAL));
+                    mRecyclerCollect.setLayoutManager(manager);
+                    mRecyclerCollect.setAdapter(mAdapter);
+
+                    mAdapter.setOnItemDelListener(new CollectionAdapter.OnItemDelListener() {
+                        @Override
+                        public void delItemPos(int position) {
+                            //同时删除服务器数据
+                            delPosition =position;
+                            int articalId=((CollectionBean.DatasBean)mData.get(position)).getId();
+                           if(!TextUtils.isEmpty(articalId+"")){
+                               delCollection(articalId+"");
+                           }
+                        }
+                    });
+                }else{
+                    ToastCustomUtil.showShortToast("您还没有收藏上商家哦!");
+                }
+            }
+        };
+        mObservable =HttpRequest.getInstance().getServiceInterface().collectArticalList(pageNum);
+        HttpRequest.getInstance().toSubscribe(mObservable,mSubscriber);
+
+    }
+
+
+    /**
+     * 删除收藏
+     * @param articalId 文件id
+     */
+    private void delCollection(String articalId){
+
+        mDelSubscriber= new Subscriber<JsonObject>() {
             @Override
             public void onCompleted() {
 
@@ -92,29 +151,29 @@ public class CollectionActivity extends BaseBussActivity implements CustomRecycl
 
             @Override
             public void onError(Throwable e) {
-                String a =e.getMessage().toString();
-               ToastCustomUtil.showLongToast(e.getMessage());
+                ToastCustomUtil.showLongToast(e.getMessage());
+
             }
 
             @Override
-            public void onNext(BaseResponse<CollectionBean> collectionBean) {
-                mData =collectionBean.getData().getDatas();
-                if(mData.size() != 0){
-                    //给recyclerview填充数据
-                    CollectionAdapter mAdapter =new CollectionAdapter(CollectionActivity.this,mData);
-                    @SuppressLint("WrongConstant") LinearLayoutManager manager =new LinearLayoutManager(CollectionActivity.this,LinearLayoutManager.VERTICAL,false);
-                    mRecyclerCollect.addItemDecoration(new DividerItemDecoration(CollectionActivity.this, DividerItemDecoration.VERTICAL));
-                    mRecyclerCollect.setLayoutManager(manager);
-                    mRecyclerCollect.setAdapter(mAdapter);
-                }else{
-                    ToastCustomUtil.showShortToast("您还没有收藏上商家哦!");
+            public void onNext(JsonObject jsonObject) {
+                try {
+                    JSONObject mJSONObject =new JSONObject(jsonObject.toString());
+                    if(!mJSONObject.getString("errorCode").equals("0")){
+                        ToastCustomUtil.showLongToast(mJSONObject.getString("errorMsg"));
+                    }else{
+                        mData.remove(delPosition);
+                        mAdapter.notifyDataSetChanged();
+                        if (mData.size() == 0) {
+                            ToastCustomUtil.showShortToast("已经没数据啦");
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-
-
             }
         };
-        mObservable =HttpRequest.getInstance().getServiceInterface().collectArticalList(pageNum);
-        HttpRequest.getInstance().toSubscribe(mObservable,mSubscriber);
-
+        mDelObservable =HttpRequest.getInstance().getServiceInterface().deleteCollectArtical(articalId);
+        HttpRequest.getInstance().toSubscribe(mDelObservable,mDelSubscriber);
     }
 }

@@ -88,20 +88,23 @@ public class CollectionAdapter extends RecyclerView.Adapter {
         }
     }
 
+    /**
+     * 自定义RecyclerView的滑动删除回调
+     * @param position
+     */
     public void removeRecycle(int position) {
-
-        //同时删除数据库保存的数据
-        //int deleteNum = DataSupport.deleteAll(CollectionBean.class, "entName = ?",(lists.get(position)).getEntName());
-        //if(deleteNum != 0){
-          //  ToastCustomUtil.showShortToast("删除了"+deleteNum+"条数据");
-        //}
-        lists.remove(position);
-       notifyDataSetChanged();
-        if (lists.size() == 0) {
-            ToastCustomUtil.showShortToast("已经没数据啦");
-        }
+        mOnItemDelListener.delItemPos(position);
     }
 
+
+    OnItemDelListener  mOnItemDelListener;
+    public interface  OnItemDelListener {
+        void delItemPos(int position);
+    }
+    public void setOnItemDelListener(OnItemDelListener onItemDelListener){
+        this.mOnItemDelListener=onItemDelListener;
+
+    }
 
 
     /**
