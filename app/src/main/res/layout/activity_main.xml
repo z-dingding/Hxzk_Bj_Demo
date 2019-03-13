@@ -10,7 +10,11 @@
     tools:context="com.hxzk_bj_demo.ui.activity.MainActivity">
 
 
+
+
+
     <LinearLayout
+        android:id="@id/custom_id_app"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -22,6 +26,12 @@
             toolbar:logo="@mipmap/ic_launcher"
             toolbar:title="Title"
             toolbar:subtitle="Sub Title"-->
+
+        <View
+            android:background="?attr/custom_attr_app_toolbar_bg"
+            android:id="@id/custom_id_statusbar"
+            android:layout_width="match_parent"
+            android:layout_height="0dp" />
 
 
         <LinearLayout
@@ -77,3 +87,4 @@
         app:menu="@menu/menu_vavigationview">
     </com.google.android.material.navigation.NavigationView>
 </com.hxzk_bj_demo.widget.WidgetDrawerLayout>
+

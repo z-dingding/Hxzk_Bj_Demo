@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <color name="custom_color_statebar_day">#90FFFFFF</color>
+    <color name="custom_color_app_bg_day">#FEFEFE</color>
+    <color name="custom_color_app_toolbar_bg_day">#90FFFFFF</color>
+    <color name="custom_color_app_btn_bg_day">#90FFFFFF</color>
+
+
+
+    <color name="custom_color_statebar_night">#121212</color>
+    <color name="custom_color_app_bg_night">#303030</color>
+    <color name="custom_color_app_toolbar_bg_night">#303030</color>
+    <color name="custom_color_app_btn_layout_bg_night">#121212</color>
+</resources>

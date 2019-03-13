@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:toolbar="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -15,6 +14,7 @@
         android:focusableInTouchMode="true"
         android:id="@+id/linearLayout" />
 
+
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbarlayout_base"
         android:layout_width="match_parent"
@@ -24,15 +24,15 @@
         android:background="?attr/colorPrimary"
        toolbar:popupTheme="@style/ToolbarPopupTheme"-->
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar_main"
+            android:id="@id/custom_id_app_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:background="@color/colortoolbar"
+            android:background="?attr/custom_attr_app_toolbar_bg"
            >
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
-
+<!--    android:id="@+id/layout_contentview_base"-->
     <LinearLayout
         android:id="@+id/layout_contentview_base"
         android:layout_width="match_parent"

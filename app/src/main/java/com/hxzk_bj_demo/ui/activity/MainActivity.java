@@ -18,11 +18,13 @@ import android.text.style.StyleSpan;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.hxzk_bj_demo.R;
+import com.hxzk_bj_demo.common.MyApplication;
 import com.hxzk_bj_demo.javabean.LoginOutBean;
 import com.hxzk_bj_demo.mvp.view.NoteBookActivity;
 import com.hxzk_bj_demo.network.BaseResponse;
@@ -36,6 +38,7 @@ import com.hxzk_bj_demo.ui.fragment.InvestFragment;
 import com.hxzk_bj_demo.ui.fragment.UserFragment;
 import com.hxzk_bj_demo.ui.fragment.base.BaseFragment;
 import com.hxzk_bj_demo.utils.LanguageUtil;
+import com.hxzk_bj_demo.utils.MarioResourceHelper;
 import com.hxzk_bj_demo.utils.SPUtils;
 import com.hxzk_bj_demo.utils.activity.ActivityJump;
 import com.hxzk_bj_demo.utils.activity.ActivityManager;
@@ -48,6 +51,7 @@ import java.util.Locale;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
@@ -96,6 +100,9 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
     Observable<BaseResponse<LoginOutBean>> observable;
     Subscriber<BaseResponse<LoginOutBean>> subscriber;
 
+    LinearLayout linearContent;
+    View stateBarView;
+
     @Override
     protected int setLayoutId() {
         _context = MainActivity.this;
@@ -108,6 +115,8 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
     @Override
     protected void initView() {
         super.initView();
+         linearContent = findViewById(R.id.custom_id_app);
+        stateBarView = findViewById(R.id.custom_id_statusbar);
         ActivityJump.popSpecifiedActivity(LoginActivity.class);
         //初始化DrawerLayout
         mDrawer = (DrawerLayout) findViewById(R.id.drawerlayout_main);
@@ -163,6 +172,13 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
                 //在这里处理item的点击事件
                 switch (item.getItemId()) {
                     case R.id.theme:
+                        if(MyApplication.getAppTheme()){
+                            MyApplication.setAppTheme(false);
+                        }else{
+                            MyApplication.setAppTheme(true);
+                        }
+                        loadingCurrentTheme();
+                        ((MyApplication)getApplication()).notifyByThemeChanged();
                         break;
                     case R.id.favorite:
                         addActivityToManager(MainActivity.this, CollectionActivity.class);
@@ -227,6 +243,15 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
     }
 
 
+
+    @Override
+    public void notifyByThemeChanged() {
+        super.notifyByThemeChanged();
+        MarioResourceHelper helper = MarioResourceHelper.getInstance(MainActivity.this);
+        helper.setBackgroundResourceByAttr(linearContent, R.attr.custom_attr_app_bg);
+        helper.setBackgroundResourceByAttr(mToolbar, R.attr.custom_attr_app_toolbar_bg);
+        helper.setBackgroundResourceByAttr(stateBarView, R.attr.custom_attr_app_toolbar_bg);
+    }
 
     @Override
     protected void onDestroy() {

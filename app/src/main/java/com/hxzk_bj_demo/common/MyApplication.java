@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import com.hxzk.bj.common.X5ActionMessage;
 import com.hxzk.bj.x5webview.action.X5Action;
+import com.hxzk_bj_demo.interfaces.ThemeChangeObserver;
 import com.hxzk_bj_demo.network.AddInterceptor;
 import com.hxzk_bj_demo.network.SaveInterceptor;
 import com.hxzk_bj_demo.ui.activity.WelcomeActivity;
@@ -21,11 +22,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
+
 import androidx.appcompat.app.AppCompatDelegate;
 import okhttp3.Cookie;
 import okhttp3.CookieJar;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
+
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO;
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES;
 import static com.hxzk_bj_demo.utils.LanguageUtil.isSameWithSetting;
@@ -45,7 +48,10 @@ public class MyApplication extends LitePalApplication {
 
     //通过volatile关键字来确保安全，使用该关键字修饰的变量在被变更时会被其他变量可见
     private volatile static Context appContext = null;
-    private volatile static OkHttpClient.Builder  httpClientBuilder;
+    private volatile static OkHttpClient.Builder httpClientBuilder;
+
+    private List<ThemeChangeObserver> mThemeChangeObserverStack; //  主题切换监听栈
+
 
     @Override
     public void onCreate() {
@@ -62,7 +68,7 @@ public class MyApplication extends LitePalApplication {
         //正常程序初始化代码…
         //获取全局Context对象
         appContext = getApplicationContext();
-        httpClientBuilder=getOkHttpClientbBuild();
+        httpClientBuilder = getOkHttpClientbBuild();
 //        httpClientBuilder = new OkHttpClient.Builder();
 //       // 初始化PersistenerCookiesJar开源库
 //        ClearableCookieJar cookieJar =
@@ -72,30 +78,31 @@ public class MyApplication extends LitePalApplication {
 //        //给OkttpClient添加开源库
 //        httpClientBuilder.cookieJar(cookieJar);
 
-   //注册Activity生命周期监听回调
-   registerActivityLifecycleCallbacks(callbacks);
-
-   //初始化路由
-   initRouter();
+        //注册Activity生命周期监听回调
+        registerActivityLifecycleCallbacks(callbacks);
+        //初始化路由
+        initRouter();
 
     }
 
+
+    /**
+     * 注册路由
+     */
     private void initRouter() {
-        Xrouter.getInstance().registerAction(X5ActionMessage.X5ACTIONNAME,new X5Action());
-
-
+        Xrouter.getInstance().registerAction(X5ActionMessage.X5ACTIONNAME, new X5Action());
     }
 
     ActivityLifecycleCallbacks callbacks = new ActivityLifecycleCallbacks() {
         @Override
         public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
 
-            if (!isSameWithSetting(activity) &&  !(activity instanceof WelcomeActivity)) {
+            if (!isSameWithSetting(activity) && !(activity instanceof WelcomeActivity)) {
                 String lan = LanguageUtil.getAppLanguage(activity);
-                if(lan.equals("zh") || !lan.equals("en") ){
-                    setLocale(activity,Locale.SIMPLIFIED_CHINESE);
-                }else if(lan.equals("en") || !lan.equals("zh")){
-                    setLocale(activity,Locale.US);
+                if (lan.equals("zh") || !lan.equals("en")) {
+                    setLocale(activity, Locale.SIMPLIFIED_CHINESE);
+                } else if (lan.equals("en") || !lan.equals("zh")) {
+                    setLocale(activity, Locale.US);
                 }
             }
 
@@ -145,60 +152,96 @@ public class MyApplication extends LitePalApplication {
     }
 
 
-
     /**
      * 获取httpclient.builder对象实例
+     *
      * @return
      */
-    private static final HashMap<String,List<Cookie>> cookiestore =new HashMap<>();
+    private static final HashMap<String, List<Cookie>> cookiestore = new HashMap<>();
 
 
     public static OkHttpClient.Builder getOkHttpClientbBuild() {
-        if(httpClientBuilder == null){
-            synchronized (MyApplication.class){
-                httpClientBuilder =new OkHttpClient.Builder()
-                .connectTimeout(10, TimeUnit.SECONDS)
-                .readTimeout(10,TimeUnit.SECONDS)
-                .writeTimeout(10,TimeUnit.SECONDS)
-                //cookie的持久化添加到请求头
-                //.addInterceptor(new AddInterceptor())
-                //cookie的持久化保存到本地
-                //.addInterceptor(new SaveInterceptor());
+        if (httpClientBuilder == null) {
+            synchronized (MyApplication.class) {
+                httpClientBuilder = new OkHttpClient.Builder()
+                        .connectTimeout(10, TimeUnit.SECONDS)
+                        .readTimeout(10, TimeUnit.SECONDS)
+                        .writeTimeout(10, TimeUnit.SECONDS)
+                        //cookie的持久化添加到请求头
+                        //.addInterceptor(new AddInterceptor())
+                        //cookie的持久化保存到本地
+                        //.addInterceptor(new SaveInterceptor());
 
-                //new CookieJar属于cookie的非持久化也就是app关闭后，Cookie丢失,如果需要持久化则需要自定义
-                .cookieJar(new CookieJar() {
-                    //客户端请求成功以后，在响应头里面去存cookie
-                    @Override
-                    public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
+                        //new CookieJar属于cookie的非持久化也就是app关闭后，Cookie丢失,如果需要持久化则需要自定义
+                        .cookieJar(new CookieJar() {
+                            //客户端请求成功以后，在响应头里面去存cookie
+                            @Override
+                            public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
 
-                        cookiestore.put(url.host(),cookies);
-                    }
-                    //加载url的时候在请求头带上cookie
-                    @Override
-                    public List<Cookie> loadForRequest(HttpUrl url) {
-                        List<Cookie> cookies =cookiestore.get(url.host());
-                        return cookies != null?cookies :new ArrayList<>() ;
-                    }
-                });
+                                cookiestore.put(url.host(), cookies);
+                            }
+
+                            //加载url的时候在请求头带上cookie
+                            @Override
+                            public List<Cookie> loadForRequest(HttpUrl url) {
+                                List<Cookie> cookies = cookiestore.get(url.host());
+                                return cookies != null ? cookies : new ArrayList<>();
+                            }
+                        });
             }
         }
         return httpClientBuilder;
     }
 
 
-
     /**
-     * 默认设置app模式
+     * 默认设置app主题
      */
     public static void setAppTheme(boolean model) {
         SPUtils.put(getAppContext(), "apptheme", model);
     }
 
     /**
-     * Boolean有默认类型，是false 默认白天模式
+     * Boolean默认类型是false即默认白天模式
      */
     public static boolean getAppTheme() {
         return (boolean) SPUtils.get(getAppContext(), "apptheme", false);
+    }
+
+    /**
+     * 获得observer堆栈
+     * */
+    private List<ThemeChangeObserver> obtainThemeChangeObserverStack() {
+        if (mThemeChangeObserverStack == null)
+            mThemeChangeObserverStack = new ArrayList<>();
+        return mThemeChangeObserverStack;
+    }
+
+    /**
+     * 向堆栈中添加observer
+     * */
+    public void registerObserver(ThemeChangeObserver observer) {
+        if (observer == null || obtainThemeChangeObserverStack().contains(observer)) return ;
+        obtainThemeChangeObserverStack().add(observer);
+    }
+
+    /**
+     * 从堆栈中移除observer
+     * */
+    public void unregisterObserver(ThemeChangeObserver observer) {
+        if (observer == null || !(obtainThemeChangeObserverStack().contains(observer))) return ;
+        obtainThemeChangeObserverStack().remove(observer);
+    }
+
+    /**
+     * 向堆栈中所有对象发送更新UI的指令
+     * */
+    public void notifyByThemeChanged() {
+        List<ThemeChangeObserver> observers = obtainThemeChangeObserverStack();
+        for (ThemeChangeObserver observer : observers) {
+            observer.loadingCurrentTheme(); //
+            observer.notifyByThemeChanged(); //
+        }
     }
 
 }

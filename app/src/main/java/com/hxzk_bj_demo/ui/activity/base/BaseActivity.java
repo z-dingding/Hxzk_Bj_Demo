@@ -9,10 +9,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.hxzk_bj_demo.R;
+import com.hxzk_bj_demo.common.MyApplication;
+import com.hxzk_bj_demo.interfaces.ThemeChangeObserver;
+import com.hxzk_bj_demo.utils.MarioResourceHelper;
 import com.hxzk_bj_demo.utils.activity.ActivityJump;
 import com.hxzk_bj_demo.utils.LogUtil;
 
@@ -25,7 +30,7 @@ import butterknife.ButterKnife;
  * 作用：
  */
 
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity implements ThemeChangeObserver {
     private static final String TAG = "BaseActivity";
 
     protected  static Activity _context;
@@ -36,7 +41,17 @@ public abstract class BaseActivity extends AppCompatActivity {
     LinearLayout layout_ContentView_Base;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        //注册当前Activity主题的监听
+        setupActivityBeforeCreate();
         super.onCreate(savedInstanceState);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Window window = getWindow();
+            WindowManager.LayoutParams attributes = window.getAttributes();
+            //a|=b的意思就是把a和b按位或然后赋值给a 按位或的意思就是先把a和b都换成2进制，然后用或操作，相当于a=a|b
+            //透明状态栏
+            attributes.flags |= WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
+            window.setAttributes(attributes);
+        }
 
 
         //将当前界面子类的Activity添加到栈中
@@ -55,41 +70,65 @@ public abstract class BaseActivity extends AppCompatActivity {
         if(setLayoutId() != 0){
             View contentView = LayoutInflater.from(this).inflate(setLayoutId(),null);
             layout_ContentView_Base.addView(contentView);
-            //状态栏着色
-            addStatusBarView();
+
             //绑定Butterknife
             ButterKnife.bind(this);
 
             initView();
             initEvent();
             initData();
+            addStatusBarView();
         }
     }
 
 
+    @Override
+    protected void onDestroy() {
+        ((MyApplication) getApplication()).unregisterObserver(this);
+        super.onDestroy();
+    }
+
+
+    /**
+     * 先将当前Activity注册
+     */
+    private void setupActivityBeforeCreate() {
+        ((MyApplication) getApplication()).registerObserver(this);
+        loadingCurrentTheme();
+    }
+
+
+    @Override
+    public void loadingCurrentTheme() {
+            if(MyApplication.getAppTheme()){//夜间模式
+                setTheme(R.style.Base_CustomTheme_Night);
+            }else{//白天模式
+                setTheme(R.style.Base_CustomTheme_Day);
+            }
+    }
 
     //创建view添加到状态栏
     private void addStatusBarView() {
-        View view = new View(this);
-        view.setBackgroundColor(getResources().getColor(R.color.colorstate));
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                getStatusBarHeight(this));
-        ViewGroup decorView = (ViewGroup) findViewById(android.R.id.content);
-        decorView.addView(view, params);
+        View status = findViewById(R.id.custom_id_statusbar);
+        if (status != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            status.getLayoutParams().height = getStatusBarHeight();
+        }
     }
 
     /**
-     * 获取状态栏的高度
-     * 19API以上 读取到状态栏高度才有意义
+     * 获取状态栏高度
+     * @return
      */
-    private int getStatusBarHeight(Context context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
-            return resourceId > 0 ? context.getResources().getDimensionPixelSize(resourceId) : 0;
-        } else {
-            return 0;
+    public int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result =getResources().getDimensionPixelSize(resourceId);
         }
+        return result;
     }
+
+
     /**
      * 设置layout布局文件
      * */

@@ -2,7 +2,6 @@
 <resources>
 
     <!-- 圆角图片自定义属性 -->
-
     <declare-styleable name="CircleImageView">
         <attr name="border_width" format="dimension" />
         <attr name="border_color" format="color" />
@@ -24,15 +23,13 @@
 
 
 
-
-
     <!--corner_color 边角颜色，
     scanner_color 扫描线颜色
     possible_result_color 扫描点颜色
     frame_color 扫描框边线颜色
     mask_color 模糊区域颜色
-    label_text  框上方提示
--->
+    label_text  框上方提示-->
+
     <declare-styleable name="ViewfinderView">
         <attr name="corner_color" format="color"/>
         <attr name="laser_color" format="color"/>

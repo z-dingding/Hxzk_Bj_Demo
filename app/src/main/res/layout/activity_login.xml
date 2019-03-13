@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/layout_root"
+    android:id="@id/custom_id_app"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     >
 
+    <View
+        android:background="?attr/custom_attr_app_toolbar_bg"
+        android:id="@id/custom_id_statusbar"
+        android:layout_width="match_parent"
+        android:layout_height="0dp" />
+
     <LinearLayout
-        android:id="@+id/layout_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:layout_below="@id/custom_id_statusbar"
         >
 
         <ImageView

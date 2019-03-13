@@ -21,7 +21,7 @@ import androidx.appcompat.widget.Toolbar;
  * 作用：
  */
 
-public class BaseBussActivity extends BaseActivity {
+public abstract class BaseBussActivity extends BaseActivity {
 
     private static final String TAG = "BaseBussActivity";
 
@@ -51,7 +51,7 @@ public class BaseBussActivity extends BaseActivity {
     @Override
     protected void initView() {
         if (null == mToolbar) {
-            mToolbar = findViewById(R.id.toolbar_main);
+            mToolbar = findViewById(R.id.custom_id_app_toolbar);
             if (mAppBarLayout == null) {
                 mAppBarLayout =findViewById(R.id.appbarlayout_base);
             }
@@ -68,11 +68,11 @@ public class BaseBussActivity extends BaseActivity {
 
     }
 
+     //自定义主题刷新ui
+    @Override
+    public void notifyByThemeChanged() {
 
-
-
-
-
+    }
 
 
     /**
@@ -249,4 +249,6 @@ public class BaseBussActivity extends BaseActivity {
         super.onBackPressed();
         finishActivity();
     }
+
+
 }

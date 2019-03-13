@@ -25,6 +25,7 @@ import com.hxzk_bj_demo.network.ExceptionHandle;
 import com.hxzk_bj_demo.network.HttpRequest;
 import com.hxzk_bj_demo.ui.activity.base.BaseBussActivity;
 import com.hxzk_bj_demo.utils.KeyBoardHelperUtil;
+import com.hxzk_bj_demo.utils.MarioResourceHelper;
 import com.hxzk_bj_demo.utils.Md5Utils;
 import com.hxzk_bj_demo.utils.SPUtils;
 import com.hxzk_bj_demo.utils.activity.ActivityJump;
@@ -66,7 +67,7 @@ public class LoginActivity extends BaseBussActivity {
     private int bottomHeight;
     private KeyBoardHelperUtil boardHelper;
     private View layoutBottom;
-    private View layoutContent;
+    private RelativeLayout layoutContent;
 
     //账号
     String account;
@@ -78,6 +79,7 @@ public class LoginActivity extends BaseBussActivity {
     Observable<BaseResponse<LoginOutBean>> observable;
 
 
+    View stateBarView;
     @Override
     protected int setLayoutId() {
         _context = LoginActivity.this;
@@ -89,10 +91,13 @@ public class LoginActivity extends BaseBussActivity {
     @Override
     protected void initView() {
         super.initView();
+        stateBarView = findViewById(R.id.custom_id_statusbar);
+        layoutContent = findViewById(R.id.custom_id_app);
+
+
         initToolbar(R.drawable.back, getResources().getString(R.string.login));
         //为 Activity 指定 windowSoftInputMode
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        layoutContent = findViewById(R.id.layout_content);
         layoutBottom = findViewById(R.id.layout_bottom);
         boardHelper = new KeyBoardHelperUtil(this);
         boardHelper.onCreate();
@@ -131,6 +136,15 @@ public class LoginActivity extends BaseBussActivity {
         HttpRequest.getInstance().unsubscribe(observable);
     }
 
+
+    @Override
+    public void notifyByThemeChanged() {
+        super.notifyByThemeChanged();
+            MarioResourceHelper helper = MarioResourceHelper.getInstance(LoginActivity.this);
+            helper.setBackgroundResourceByAttr(layoutContent, R.attr.custom_attr_app_bg);
+            helper.setBackgroundResourceByAttr(mToolbar, R.attr.custom_attr_app_toolbar_bg);
+            helper.setBackgroundResourceByAttr(stateBarView, R.attr.custom_attr_app_toolbar_bg);
+    }
 
     private KeyBoardHelperUtil.OnKeyBoardStatusChangeListener onKeyBoardStatusChangeListener = new KeyBoardHelperUtil.OnKeyBoardStatusChangeListener() {
 
