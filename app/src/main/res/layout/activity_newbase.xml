@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+    <!--android:id="@id/custom_id_app"-->
+    <!--android:background="?attr/custom_attr_app_bg"-->
+    <!-- 使状态栏和标题栏分离,不让布局延伸到状态栏 fitsSystemWindows-->
+    <!-- 当之有一个EditText或者AutoCompleteTextView的时候，进入画面时是默认得到焦点的。 要想去除焦点，可以在auto之前加一个0像素的layout，并设置他先得到焦点。-->
+
+
+    <View
+   android:id="@id/custom_id_statusbar"
+   android:background="?attr/custom_attr_app_statusbar_bg"
+   android:layout_width="match_parent"
+   android:layout_height="0dp"
+   />
+
+
+<!--<com.google.android.material.appbar.AppBarLayout-->
+
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="wrap_content"-->
+<!--&gt;-->
+<!--  ?attr/这种样式允许你使用当前theme中任意的attribute
+  android:background="?attr/colorPrimary"
+ toolbar:popupTheme="@style/ToolbarPopupTheme"-->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@id/custom_id_app_toolbar"
+            android:background="?attr/custom_attr_app_toolbar_bg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            >
+        </androidx.appcompat.widget.Toolbar>
+    <!--</com.google.android.material.appbar.AppBarLayout>-->
+
+    <!--<LinearLayout-->
+    <!--android:id="@+id/layout_contentview_base"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:orientation="vertical"-->
+    <!--&gt;-->
+    <!--</LinearLayout>-->
+
+
+
+
+</LinearLayout>

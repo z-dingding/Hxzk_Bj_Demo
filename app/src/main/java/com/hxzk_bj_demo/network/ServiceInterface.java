@@ -81,6 +81,7 @@ public interface ServiceInterface {
     Observable<BaseResponse<HomeListBean>> homeList(@Path("pageNum") int pageNum);
 
 
+
     /**
      * 首页请求搜索接口
      * @param searchKey

@@ -3,18 +3,13 @@
     android:id="@+id/drawerlayout_main"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:toolbar="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.hxzk_bj_demo.ui.activity.MainActivity">
-
-
-
-
+    tools:context="com.hxzk_bj_demo.ui.activity.MainActivity"
+    >
 
     <LinearLayout
-        android:id="@id/custom_id_app"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -27,11 +22,11 @@
             toolbar:title="Title"
             toolbar:subtitle="Sub Title"-->
 
-        <View
-            android:background="?attr/custom_attr_app_toolbar_bg"
-            android:id="@id/custom_id_statusbar"
-            android:layout_width="match_parent"
-            android:layout_height="0dp" />
+        <!--<View-->
+            <!--android:background="?attr/custom_attr_app_toolbar_bg"-->
+            <!--android:id="@id/custom_id_statusbar"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="0dp" />-->
 
 
         <LinearLayout
@@ -78,6 +73,7 @@
     insetForeground 取消标题栏阴影-->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigationview_main"
+        android:background="?attr/custom_attr_app_toolbar_bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="left"

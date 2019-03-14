@@ -95,8 +95,6 @@ public class CollectionAdapter extends RecyclerView.Adapter {
     public void removeRecycle(int position) {
         mOnItemDelListener.delItemPos(position);
     }
-
-
     OnItemDelListener  mOnItemDelListener;
     public interface  OnItemDelListener {
         void delItemPos(int position);

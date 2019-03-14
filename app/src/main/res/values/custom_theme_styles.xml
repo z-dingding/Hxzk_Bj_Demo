@@ -9,16 +9,18 @@
 
 
 
-    <style name="Base.CustomTheme" parent="Theme.AppCompat.NoActionBar">
+    <style name="Base.CustomTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- API Level 22 编译要去点android -->
         <item name="windowNoTitle">true</item>
-        <item name="android:windowNoTitle">true</item>
+      <!--  <item name="android:windowNoTitle">true</item>-->
+        <item name="windowActionBar">false</item>
         <!--  避免黑色闪屏-->
-        <item name="android:windowIsTranslucent">true</item>
+        <!--<item name="android:windowIsTranslucent">true</item>-->
     </style>
 
-<style name="Base.CustomTheme.Day">
+<style name="Base.CustomTheme.Day" parent="Base.CustomTheme">
     <item name="custom_attr_app_bg">@color/custom_color_app_bg_day</item>
+    <item name="custom_attr_app_statusbar_bg">@color/custom_color_app_status_bg_day</item>
     <item name="custom_attr_app_toolbar_bg">@color/custom_color_app_toolbar_bg_day</item>
     <item name="custom_attr_app_btn_bg">@color/custom_color_app_btn_bg_day</item>
 
@@ -27,14 +29,18 @@
 
 
 
-    <style name="Base.CustomTheme.Night">
+    <style name="Base.CustomTheme.Night" parent="Base.CustomTheme">
         <item name="custom_attr_app_bg">@color/custom_color_app_bg_night</item>
+        <item name="custom_attr_app_statusbar_bg">@color/custom_color_app_status_bg_night</item>
         <item name="custom_attr_app_toolbar_bg">@color/custom_color_app_toolbar_bg_night</item>
-        <item name="custom_attr_app_btn_bg">@color/custom_color_app_btn_layout_bg_night</item>
+        <item name="custom_attr_app_btn_bg">@color/custom_color_app_btn_bg_night</item>
 
     </style>
 
 
 
+    <style name="Base.CustomTheme.Day.Preview" />
+
+    <style name="Base.CustomTheme.Night.Preview" />
 
 </resources>

@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.JsonObject;
 import com.hxzk.bj.common.X5ActionMessage;
 import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.javabean.BannerBean;
@@ -39,6 +40,9 @@ import com.wenld.wenldbanner.helper.ViewHolder;
 import com.xzt.xrouter.router.Xrouter;
 import com.xzt.xrouter.router.XrouterRequest;
 import com.xzt.xrouter.router.XrouterResponse;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -86,7 +90,8 @@ public class HomeFragment extends BaseFragment {
 
 
     Observable<BaseResponse<HomeListBean>> homeListBeanObservable;
-    BaseSubscriber<BaseResponse<HomeListBean>> baseHomeListSubscriber;
+    Subscriber<BaseResponse<HomeListBean>> baseHomeListSubscriber;
+
 
 
     /**下拉刷新组件*/
@@ -218,8 +223,8 @@ public class HomeFragment extends BaseFragment {
         //设置布局管理器
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         mRecyclerView.setLayoutManager(linearLayoutManager);
-        //首次进来默认加载第一页数据,下标为0
-       // requestHomeList(0);
+        //首次进来默认加载第一页数据,下标为1
+       // requestHomeList(1);
     }
 
 
@@ -240,7 +245,7 @@ public class HomeFragment extends BaseFragment {
         //下拉刷新，需要清空集合
         listitemList.clear();
         //更新列表项集合
-        requestHomeList(curPageIndex);
+        //requestHomeList(curPageIndex);
     }
 
 
@@ -267,10 +272,7 @@ public class HomeFragment extends BaseFragment {
                 ToastCustomUtil.showLongToast(e.getMessage());
             }
 
-//            @Override
-//            public void onFail(ExceptionHandle.ResponeThrowable e) {
-//
-//            }
+
         };
 
         homeListBeanObservable = HttpRequest.getInstance().getServiceInterface().homeList(pageNum);

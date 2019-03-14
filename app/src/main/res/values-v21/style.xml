@@ -2,9 +2,18 @@
 <resources>
 
     //values-v21
-    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
-    <item name="android:windowTranslucentStatus">true</item>
-    <item name="android:windowTranslucentNavigation">false</item>
-    <item name="android:statusBarColor">@android:color/transparent</item> //5.0
-    </style>
+    <!--<style name="AppTheme" parent="Theme.AppCompat.NoActionBar">-->
+    <!--<item name="android:windowTranslucentStatus">true</item>-->
+    <!--<item name="android:windowTranslucentNavigation">false</item>-->
+    <!--<item name="android:statusBarColor">@android:color/transparent</item> //5.0-->
+    <!--</style>-->
+
+
+    <!--<style name="Base.CustomTheme.Day.Preview" >-->
+        <!--<item name="android:statusBarColor">@color/custom_color_app_status_bg_day</item>-->
+    <!--</style>-->
+
+    <!--<style name="Base.CustomTheme.Night.Preview" >-->
+        <!--<item name="android:statusBarColor">@color/custom_color_app_status_bg_night</item>-->
+    <!--</style>-->
 </resources>

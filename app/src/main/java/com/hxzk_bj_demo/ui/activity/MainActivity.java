@@ -68,7 +68,6 @@ import static com.hxzk_bj_demo.utils.LanguageUtil.setLocale;
 //注意因为BaseFragmeng中定义了FragmentCallBack接口MainActiviyz中用到了Fragment所以要实现，否则报未知错误
 public class MainActivity extends BaseBussActivity implements BaseFragment.FragmentCallBack {
 
-
     private static final String TAG = "MainActivity";
     private static final int HOME = 0;
     private static final int INVEST = 1;
@@ -77,11 +76,8 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
 
     @BindView(vp_main)
     ViewPager vp_Main;
-
-
     @BindView(R.id.bav_main)
     BottomNavigationView bav_Main;
-
     @BindView(R.id.navigationview_main)
     NavigationView navigationview_Main;
 
@@ -100,8 +96,8 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
     Observable<BaseResponse<LoginOutBean>> observable;
     Subscriber<BaseResponse<LoginOutBean>> subscriber;
 
-    LinearLayout linearContent;
-    View stateBarView;
+//    LinearLayout linearContent;
+//    View stateBarView;
 
     @Override
     protected int setLayoutId() {
@@ -115,8 +111,8 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
     @Override
     protected void initView() {
         super.initView();
-         linearContent = findViewById(R.id.custom_id_app);
-        stateBarView = findViewById(R.id.custom_id_statusbar);
+//         linearContent = findViewById(R.id.custom_id_app);
+//        stateBarView = findViewById(R.id.custom_id_statusbar);
         ActivityJump.popSpecifiedActivity(LoginActivity.class);
         //初始化DrawerLayout
         mDrawer = (DrawerLayout) findViewById(R.id.drawerlayout_main);
@@ -248,9 +244,10 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
     public void notifyByThemeChanged() {
         super.notifyByThemeChanged();
         MarioResourceHelper helper = MarioResourceHelper.getInstance(MainActivity.this);
-        helper.setBackgroundResourceByAttr(linearContent, R.attr.custom_attr_app_bg);
+        helper.setBackgroundResourceByAttr(mRootLinear, R.attr.custom_attr_app_bg);
         helper.setBackgroundResourceByAttr(mToolbar, R.attr.custom_attr_app_toolbar_bg);
-        helper.setBackgroundResourceByAttr(stateBarView, R.attr.custom_attr_app_toolbar_bg);
+        helper.setBackgroundResourceByAttr(statebarView, R.attr.custom_attr_app_toolbar_bg);
+        helper.setBackgroundResourceByAttr(navigationview_Main, R.attr.custom_attr_app_toolbar_bg);
     }
 
     @Override
@@ -381,7 +378,7 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
 
                 case 2:
                     mToolbar.setTitle(getResources().getString(R.string.mine));
-                    toolbarVisible(View.VISIBLE);
+                    toolbarVisible(View.GONE);
                     fragmentFlag = 2;
                     isShowMenu = false;
                     getWindow().invalidatePanelMenu(Window.FEATURE_OPTIONS_PANEL);

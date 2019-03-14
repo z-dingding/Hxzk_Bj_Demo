@@ -1,28 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:gravity="center">
-<!--    <android.support.design.widget.TabLayout
-        app:tabIndicatorColor="@color/red"
-        app:tabSelectedTextColor="@color/green"
-        android:id="@+id/fm_general_tablyout"
+    android:gravity="center"
+    android:fitsSystemWindows="true">
+    <!--CoordinatorLayout可以理解为强版的FramLayout-->
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
+        <!--app:contentScrim=”?attr/colorPrimary” 当上滑到toolbar 高度期间直到达到toolbar高度时，
+        给toolbar设置的背景色，以及过渡颜色,也可以设置图片,如果不设置该属性，标题栏会过渡为以之前的图片为背景-->
+        <!--app:expandedTitleGravity=”center_horizontal” 从单词意思可以看出，这是展示后，title的位置-->
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/fm_general_viewpager"
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:contentScrim="?attr/colorPrimary"
+            app:expandedTitleGravity="center_horizontal"
+            app:layout_scrollFlags="scroll|enterAlways">
+            <!--app:layout_collapseMode="parallax"  子View可以选择在当前的布局当时是否以“视差”的方式来跟随滚动-->
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/ic_launcher"
+                app:layout_collapseMode="pin" />
+
+        <!--layout_scrollFlags="scroll" 此属性需要配合AppBarLayout使用-->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_homeuser"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="?attr/custom_attr_app_toolbar_bg"
+            >
+
+        </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/fm_general_tablyout" />-->
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <TextView
-        android:id="@+id/tv_prompt"
-        android:text="这是我的"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"/>
-</LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_content_homeuser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

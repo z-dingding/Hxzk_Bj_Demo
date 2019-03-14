@@ -9,7 +9,7 @@ import com.hxzk_bj_demo.network.BaseResponse;
 public class LoginOutBean  {
 //    private int errorCode;
 //    private String errorMsg;
-    private Object data;
+       private Object data;
 
 
 //    public int getCode() {

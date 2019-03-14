@@ -21,6 +21,7 @@ import com.hxzk_bj_demo.utils.MarioResourceHelper;
 import com.hxzk_bj_demo.utils.activity.ActivityJump;
 import com.hxzk_bj_demo.utils.LogUtil;
 
+import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import butterknife.ButterKnife;
@@ -34,8 +35,8 @@ public abstract class BaseActivity extends AppCompatActivity implements ThemeCha
     private static final String TAG = "BaseActivity";
 
     protected  static Activity _context;
-    AppBarLayout mAppBarLayout ;
 
+    //AppBarLayout mAppBarLayout ;
 
     //加载子视图内容区域
     LinearLayout layout_ContentView_Base;
@@ -63,22 +64,25 @@ public abstract class BaseActivity extends AppCompatActivity implements ThemeCha
         //竖屏
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-
+        addStatusBarView();
         setContentView(R.layout.activity_base);
         layout_ContentView_Base= findViewById(R.id.layout_contentview_base);
-        mAppBarLayout =  findViewById(R.id.appbarlayout_base);
+       // mAppBarLayout =  findViewById(R.id.appbarlayout_base);
         if(setLayoutId() != 0){
             View contentView = LayoutInflater.from(this).inflate(setLayoutId(),null);
             layout_ContentView_Base.addView(contentView);
-
             //绑定Butterknife
             ButterKnife.bind(this);
 
             initView();
             initEvent();
             initData();
-            addStatusBarView();
+
         }
+
+
+
+
     }
 
 

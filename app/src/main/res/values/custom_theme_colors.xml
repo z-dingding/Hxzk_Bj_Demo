@@ -2,15 +2,17 @@
 <resources>
 
 
-    <color name="custom_color_statebar_day">#90FFFFFF</color>
-    <color name="custom_color_app_bg_day">#FEFEFE</color>
+
+    <color name="custom_color_app_bg_day">#FBFBFB</color>
+    <color name="custom_color_app_status_bg_day">#90FFFFFF</color>
     <color name="custom_color_app_toolbar_bg_day">#90FFFFFF</color>
-    <color name="custom_color_app_btn_bg_day">#90FFFFFF</color>
+    <color name="custom_color_app_btn_bg_day">#A0C6E2</color>
 
 
 
-    <color name="custom_color_statebar_night">#121212</color>
-    <color name="custom_color_app_bg_night">#303030</color>
-    <color name="custom_color_app_toolbar_bg_night">#303030</color>
-    <color name="custom_color_app_btn_layout_bg_night">#121212</color>
+
+    <color name="custom_color_app_bg_night">#393939</color>
+    <color name="custom_color_app_status_bg_night">#000000</color>
+    <color name="custom_color_app_toolbar_bg_night">#393939</color>
+    <color name="custom_color_app_btn_bg_night">#416581</color>
 </resources>

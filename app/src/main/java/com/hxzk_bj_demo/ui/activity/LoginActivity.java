@@ -14,16 +14,20 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.gson.JsonObject;
 import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.common.Const;
+import com.hxzk_bj_demo.interfaces.ThemeChangeObserver;
 import com.hxzk_bj_demo.javabean.LoginBean;
 import com.hxzk_bj_demo.javabean.LoginOutBean;
 import com.hxzk_bj_demo.network.BaseResponse;
 import com.hxzk_bj_demo.network.BaseSubscriber;
 import com.hxzk_bj_demo.network.ExceptionHandle;
 import com.hxzk_bj_demo.network.HttpRequest;
+import com.hxzk_bj_demo.ui.activity.base.BaseActivity;
 import com.hxzk_bj_demo.ui.activity.base.BaseBussActivity;
+import com.hxzk_bj_demo.ui.activity.base.NewBaseActivity;
 import com.hxzk_bj_demo.utils.KeyBoardHelperUtil;
 import com.hxzk_bj_demo.utils.MarioResourceHelper;
 import com.hxzk_bj_demo.utils.Md5Utils;
@@ -34,6 +38,9 @@ import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -67,7 +74,7 @@ public class LoginActivity extends BaseBussActivity {
     private int bottomHeight;
     private KeyBoardHelperUtil boardHelper;
     private View layoutBottom;
-    private RelativeLayout layoutContent;
+    private LinearLayout layoutContent;
 
     //账号
     String account;
@@ -78,8 +85,6 @@ public class LoginActivity extends BaseBussActivity {
     BaseSubscriber<BaseResponse<LoginOutBean>> subscriber;
     Observable<BaseResponse<LoginOutBean>> observable;
 
-
-    View stateBarView;
     @Override
     protected int setLayoutId() {
         _context = LoginActivity.this;
@@ -91,10 +96,7 @@ public class LoginActivity extends BaseBussActivity {
     @Override
     protected void initView() {
         super.initView();
-        stateBarView = findViewById(R.id.custom_id_statusbar);
-        layoutContent = findViewById(R.id.custom_id_app);
-
-
+        layoutContent = findViewById(R.id.rootLinear_login);
         initToolbar(R.drawable.back, getResources().getString(R.string.login));
         //为 Activity 指定 windowSoftInputMode
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
@@ -105,8 +107,6 @@ public class LoginActivity extends BaseBussActivity {
 
     @Override
     protected void initEvent() {
-        super.initEvent();
-
         boardHelper.setOnKeyBoardStatusChangeListener(onKeyBoardStatusChangeListener);
         layoutBottom.post(new Runnable() {
             @Override
@@ -116,13 +116,18 @@ public class LoginActivity extends BaseBussActivity {
         });
     }
 
+    @Override
+    protected void initData() {
+
+    }
+
 
     @Override
     protected void onStart() {
         super.onStart();
-        account= (String) SPUtils.get(LoginActivity.this,Const.KEY_LOGIN_ACCOUNT,"");
-        pwd= (String) SPUtils.get(LoginActivity.this,Const.KEY_LOGIN_PWD,"");
-        if(!TextUtils.isEmpty(account) && !TextUtils.isEmpty(pwd)){
+        account = (String) SPUtils.get(LoginActivity.this, Const.KEY_LOGIN_ACCOUNT, "");
+        pwd = (String) SPUtils.get(LoginActivity.this, Const.KEY_LOGIN_PWD, "");
+        if (!TextUtils.isEmpty(account) && !TextUtils.isEmpty(pwd)) {
             edt_Account_Login.setText(account);
             edt_Pwd_Login.setText(pwd);
         }
@@ -139,11 +144,11 @@ public class LoginActivity extends BaseBussActivity {
 
     @Override
     public void notifyByThemeChanged() {
-        super.notifyByThemeChanged();
-            MarioResourceHelper helper = MarioResourceHelper.getInstance(LoginActivity.this);
-            helper.setBackgroundResourceByAttr(layoutContent, R.attr.custom_attr_app_bg);
-            helper.setBackgroundResourceByAttr(mToolbar, R.attr.custom_attr_app_toolbar_bg);
-            helper.setBackgroundResourceByAttr(stateBarView, R.attr.custom_attr_app_toolbar_bg);
+        MarioResourceHelper helper = MarioResourceHelper.getInstance(LoginActivity.this);
+        helper.setBackgroundResourceByAttr(mRootLinear, R.attr.custom_attr_app_bg);
+        helper.setBackgroundResourceByAttr(mToolbar, R.attr.custom_attr_app_toolbar_bg);
+        helper.setBackgroundResourceByAttr(statebarView, R.attr.custom_attr_app_statusbar_bg);
+        helper.setBackgroundResourceByAttr(btn_Loginin_Login, R.attr.custom_attr_app_btn_bg);
     }
 
     private KeyBoardHelperUtil.OnKeyBoardStatusChangeListener onKeyBoardStatusChangeListener = new KeyBoardHelperUtil.OnKeyBoardStatusChangeListener() {
@@ -181,11 +186,7 @@ public class LoginActivity extends BaseBussActivity {
     };
 
 
-
-
-
-
-    @OnClick({R.id.tv_otherwaylogin_login, R.id.btn_loginin_login,R.id.tv_register_login})
+    @OnClick({R.id.tv_otherwaylogin_login, R.id.btn_loginin_login, R.id.tv_register_login})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_otherwaylogin_login:
@@ -193,47 +194,44 @@ public class LoginActivity extends BaseBussActivity {
                 break;
 
 
-                case R.id.tv_register_login:
+            case R.id.tv_register_login:
                 addActivityToManager(LoginActivity.this,RegisterActivity.class);
                 break;
 
 
             case R.id.btn_loginin_login:
 
-                account=edt_Account_Login.getText().toString();
-                 pwd=edt_Pwd_Login.getText().toString();
-                if(!TextUtils.isEmpty(account) && !TextUtils.isEmpty(pwd)){
-                    subscriber =new  BaseSubscriber<BaseResponse<LoginOutBean>>(LoginActivity.this){
+                account = edt_Account_Login.getText().toString();
+                pwd = edt_Pwd_Login.getText().toString();
+                if (!TextUtils.isEmpty(account) && !TextUtils.isEmpty(pwd)) {
+                    subscriber = new BaseSubscriber<BaseResponse<LoginOutBean>>(LoginActivity.this) {
                         @Override
                         public void onResult(BaseResponse<LoginOutBean> mBaseResponse) {
                             if (!mBaseResponse.isOk()) {
                                 ToastCustomUtil.showLongToast(mBaseResponse.getMsg());
                             } else {
-                                SPUtils.put(LoginActivity.this, Const.KEY_LOGIN_ACCOUNT,account);
-                                SPUtils.put(LoginActivity.this,Const.KEY_LOGIN_PWD,pwd);
-                                ActivityJump.NormalJump(LoginActivity.this,MainActivity.class);
+                                SPUtils.put(LoginActivity.this, Const.KEY_LOGIN_ACCOUNT, account);
+                                SPUtils.put(LoginActivity.this, Const.KEY_LOGIN_PWD, pwd);
+                                ActivityJump.NormalJump(LoginActivity.this, MainActivity.class);
                             }
                         }
-//                        @Override
-//                        public void onFail(ExceptionHandle.ResponeThrowable e) {
-//                            ToastCustomUtil.showLongToast(e.message);
-//                        }
+
 
                         @Override
                         public void onFail(Throwable e) {
                             ToastCustomUtil.showLongToast(e.getMessage());
-                            SPUtils.put(LoginActivity.this, Const.KEY_LOGIN_ACCOUNT,account);
-                            SPUtils.put(LoginActivity.this,Const.KEY_LOGIN_PWD,pwd);
-                            ActivityJump.NormalJump(LoginActivity.this,MainActivity.class);
+                            SPUtils.put(LoginActivity.this, Const.KEY_LOGIN_ACCOUNT, account);
+                            SPUtils.put(LoginActivity.this, Const.KEY_LOGIN_PWD, pwd);
+                            ActivityJump.NormalJump(LoginActivity.this, MainActivity.class);
                         }
 
                     };
-                    observable =HttpRequest.getInstance().getServiceInterface().login(account,pwd);
+                    observable = HttpRequest.getInstance().getServiceInterface().login(account, pwd);
                     //用observable提供的onErrorResumeNext 则可以将你自定义的Func1 关联到错误处理类中
                     //observable.onErrorResumeNext(new BaseSubscriber.HttpResponseFunc<>());
-                    HttpRequest.getInstance().toSubscribe(observable,subscriber);
+                    HttpRequest.getInstance().toSubscribe(observable, subscriber);
 
-                }else{
+                } else {
                     ToastCustomUtil.showLongToast("请输入正确的账号密码!");
                 }
 

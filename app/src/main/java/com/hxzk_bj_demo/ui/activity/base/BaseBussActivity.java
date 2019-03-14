@@ -6,6 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
+
 import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.ui.activity.HomeSearchActivity;
 import com.hxzk_bj_demo.utils.activity.ActivityJump;
@@ -28,6 +31,8 @@ public abstract class BaseBussActivity extends BaseActivity {
     public static final int REQUEST_CODE=0x1111;
 
     public Toolbar mToolbar;
+    public LinearLayout mRootLinear;
+    public View   statebarView;
 
 
 
@@ -52,8 +57,11 @@ public abstract class BaseBussActivity extends BaseActivity {
     protected void initView() {
         if (null == mToolbar) {
             mToolbar = findViewById(R.id.custom_id_app_toolbar);
-            if (mAppBarLayout == null) {
-                mAppBarLayout =findViewById(R.id.appbarlayout_base);
+            if (mRootLinear == null) {
+                mRootLinear =findViewById(R.id.custom_id_app);
+            }
+            if(statebarView == null){
+                statebarView=findViewById(R.id.custom_id_statusbar);
             }
         }
 
