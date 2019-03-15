@@ -176,6 +176,11 @@ public class OntherFragment extends BaseFragment implements SwipeRefreshLayout.O
     }
 
 
+    @Override
+    public void notifyByThemeChanged() {
+
+    }
+
     /**
      * 初始化Banner
      */
@@ -355,6 +360,8 @@ public class OntherFragment extends BaseFragment implements SwipeRefreshLayout.O
 
 
     }
+
+
 
     /**
      * 自定义加载更多的布局

@@ -149,6 +149,9 @@ public class LoginActivity extends BaseBussActivity {
         helper.setBackgroundResourceByAttr(mToolbar, R.attr.custom_attr_app_toolbar_bg);
         helper.setBackgroundResourceByAttr(statebarView, R.attr.custom_attr_app_statusbar_bg);
         helper.setBackgroundResourceByAttr(btn_Loginin_Login, R.attr.custom_attr_app_btn_bg);
+        int color=helper.getColorByAttr(R.attr.custom_attr_app_textcolor);
+        edt_Account_Login.setTextColor(color);
+        edt_Pwd_Login.setTextColor(color);
     }
 
     private KeyBoardHelperUtil.OnKeyBoardStatusChangeListener onKeyBoardStatusChangeListener = new KeyBoardHelperUtil.OnKeyBoardStatusChangeListener() {

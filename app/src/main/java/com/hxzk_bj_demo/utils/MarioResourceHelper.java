@@ -378,7 +378,7 @@ public class MarioResourceHelper {
         view.setBackgroundResource(identifier);
     }
 
-    /**
+     /**
      * 为ImageView设置attrId对应的资源作为图片资源
      * */
     public void setImageResourceByAttr(@NonNull ImageView imageView, int attrId) {
@@ -387,6 +387,9 @@ public class MarioResourceHelper {
         if (identifier == 0) return ;
         imageView.setImageResource(identifier);
     }
+
+
+
 
     /**
      * 为View设置指定着色的Drawable作为Background

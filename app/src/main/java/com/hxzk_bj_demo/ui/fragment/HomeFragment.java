@@ -236,6 +236,12 @@ public class HomeFragment extends BaseFragment {
     }
 
 
+    @Override
+    public void notifyByThemeChanged() {
+
+    }
+
+
     /**刷新列表*/
     private void refreshList() {
         mRecyclerView.setPullLoadEnable(false);//禁用上拉加载功能

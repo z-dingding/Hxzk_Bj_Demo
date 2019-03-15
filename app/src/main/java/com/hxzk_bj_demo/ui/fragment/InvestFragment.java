@@ -75,6 +75,11 @@ public class InvestFragment extends BaseFragment {
 
     }
 
+    @Override
+    public void notifyByThemeChanged() {
+
+    }
+
 
     //当Fragemnt首次可见
     @Override

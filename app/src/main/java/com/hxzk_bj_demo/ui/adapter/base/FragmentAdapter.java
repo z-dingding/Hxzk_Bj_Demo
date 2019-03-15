@@ -48,8 +48,9 @@ public class FragmentAdapter extends FragmentPagerAdapter {
     //事务的创建是在instantiateItem和destroyItem方法中
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        Fragment fragment = (Fragment) super.instantiateItem(container, position);
-        fm.beginTransaction().show(fragment).commitAllowingStateLoss();
+        Fragment fragment  = (Fragment) super.instantiateItem(container, position);
+            fm.beginTransaction().show(fragment).commitAllowingStateLoss();
+
         return fragment;
     }
 

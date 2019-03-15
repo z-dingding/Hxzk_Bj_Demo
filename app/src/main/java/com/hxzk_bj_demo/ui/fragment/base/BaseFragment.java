@@ -1,18 +1,16 @@
 package com.hxzk_bj_demo.ui.fragment.base;
 
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.hxzk_bj_demo.R;
+import com.hxzk_bj_demo.common.MyApplication;
+import com.hxzk_bj_demo.interfaces.ThemeChangeObserver;
 import com.hxzk_bj_demo.utils.LazyLoadFragment;
-
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import butterknife.ButterKnife;
@@ -23,33 +21,35 @@ import butterknife.Unbinder;
  * 作用：基类Fragment
  */
 
-public abstract class BaseFragment extends LazyLoadFragment {
-
+public abstract class BaseFragment extends LazyLoadFragment implements ThemeChangeObserver  {
 
     private final String TAG = "BaseFragment";
-
+    /**
+     * Fragment回调Activity对象
+     */
     public FragmentCallBack mCallBack;
-
-
     /**
      * Butterknife绑定对象
      */
     private Unbinder mUnbinder;
+    /**
+     * 上下文
+     */
+    protected static Context mContext;
+    /**
+     * 布局View
+     */
+    View layoutView = null;
+
 
 
     /**
      * Activity取Fragment所传递的值时调用的回调接口
      */
     public interface FragmentCallBack {
-
-        /**
-         * 传值到activity中
-         */
-        public void setValue(Object... param);
-
+        void setValue(Object... param);
     }
 
-    protected static Context mContext;
 
     //获取布局文件ID
     protected abstract int getLayoutId();
@@ -77,40 +77,6 @@ public abstract class BaseFragment extends LazyLoadFragment {
     }
 
 
-    View view = null;
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if (getLayoutId() != 0) {
-            String name = getClass().getSimpleName();
-            if (view == null) {
-                view = inflater.inflate(getLayoutId(), null);
-            }
-            //缓存的rootView需要判断是否已经被加过parent， 如果有parent需要从parent删除。
-            ViewGroup parent = (ViewGroup) view.getParent();
-            if (parent != null) {
-                parent.removeView(view);
-            }
-            mUnbinder = ButterKnife.bind(this, view);
-            initView(view, savedInstanceState);
-            initData();
-            initEvent();
-        }
-        return view;
-    }
-
-
-
-
-
-    protected abstract void initView(View view, Bundle savedInstanceState);
-
-    protected abstract void initEvent();
-
-    protected abstract void initData();
-
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -123,42 +89,44 @@ public abstract class BaseFragment extends LazyLoadFragment {
         }
 
     }
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+         ((MyApplication) ((Activity)mContext).getApplication()).registerObserver(this);
 
-
-    protected void startActivity(Class clazz, Bundle bundle) {
-        Intent intent = new Intent(mContext, clazz);
-        if (bundle != null) {
-            intent.putExtras(bundle);
+        if (getLayoutId() != 0) {
+            if (layoutView == null) {
+                layoutView = inflater.inflate(getLayoutId(), null);
+            }
+            //缓存的rootView需要判断是否已经被加过parent， 如果有parent需要从parent删除。
+            ViewGroup parent = (ViewGroup) layoutView.getParent();
+            if (parent != null) {
+                parent.removeView(layoutView);
+            }
+            mUnbinder = ButterKnife.bind(this, layoutView);
+            initView(layoutView, savedInstanceState);
+            initData();
+            initEvent();
         }
-        startActivity(intent);
-        animNext();
+        return layoutView;
     }
 
-    protected void startActivityForResult(Class clazz, Bundle bundle, int requestCode) {
-        Intent intent = new Intent(mContext, clazz);
-        if (bundle != null) {
-            intent.putExtras(bundle);
-        }
-        startActivityForResult(intent, requestCode);
-        animNext();
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mUnbinder.unbind();
+        ((MyApplication) ((Activity) getContext()).getApplication()).unregisterObserver(this);
+
     }
 
-    /**
-     * @Desc 页面跳转动画
-     */
 
-    public void animNext() {
-        /**<<<------右入左出*/
-        ((Activity) mContext).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-    }
+    protected abstract void initView(View view, Bundle savedInstanceState);
 
-    /**
-     * @Desc 页面返回动画
-     */
-    public void animBack() {
-        /**------>>>左入右出*/
-        ((Activity) mContext).overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-    }
+    protected abstract void initEvent();
+
+    protected abstract void initData();
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -174,9 +142,7 @@ public abstract class BaseFragment extends LazyLoadFragment {
 
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        mUnbinder.unbind();
-    }
+    public void loadingCurrentTheme() {
 
+    }
 }

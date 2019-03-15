@@ -1,12 +1,16 @@
 package com.hxzk_bj_demo.ui.fragment;
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hxzk_bj_demo.R;
+import com.hxzk_bj_demo.common.MyApplication;
+import com.hxzk_bj_demo.ui.activity.LoginActivity;
 import com.hxzk_bj_demo.ui.fragment.base.BaseFragment;
+import com.hxzk_bj_demo.utils.MarioResourceHelper;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -18,15 +22,18 @@ import butterknife.BindView;
  * Created by leeandy007 on 2017/6/15.
  */
 
-public class UserFragment extends BaseFragment {
+public  class UserFragment extends BaseFragment {
 
-    @BindView(R.id.toolbar_homeuser)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.tv_content_homeuser)
     TextView tvContent;
     @BindView(R.id.nestedScrollView)
     NestedScrollView nestedScrollView;
+    @BindView(R.id.iv_collapsingbg)
+    ImageView ivCollapsingbg;
 
+    View fmLayoutView;
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_user;
@@ -34,16 +41,16 @@ public class UserFragment extends BaseFragment {
 
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
+        fmLayoutView=view;
 
     }
-
 
     @Override
     protected void initData() {
         toolbar.setTitle("我的");
         ((AppCompatActivity) mContext).setSupportActionBar(toolbar);
-        StringBuilder stringBuilder =new StringBuilder();
-        for(int i=0;i<100;i++){
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < 100; i++) {
             stringBuilder.append("这只是测试数据,别当真");
         }
         tvContent.setText(stringBuilder.toString());
@@ -59,4 +66,21 @@ public class UserFragment extends BaseFragment {
     }
 
 
+    @SuppressLint("ResourceAsColor")
+    @Override
+    public void notifyByThemeChanged() {
+        MarioResourceHelper helper = MarioResourceHelper.getInstance(mContext);
+        if(MyApplication.getAppTheme()){
+            int dayTextColor=helper.getColorByAttr(R.attr.custom_attr_app_textcolor);
+            tvContent.setTextColor(dayTextColor);
+        }else{
+            int nightTextColor=helper.getColorByAttr(R.attr.custom_attr_app_textcolor);
+            tvContent.setTextColor(nightTextColor);
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
 }

@@ -83,7 +83,7 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
 
 
     private FragmentAdapter adapter;
-    private Fragment  investFrag, homeFrag , userFrag;
+    private Fragment  investFrag, homeFrag,userFrag ;
     private MenuItem menuItem;
 
 
@@ -96,8 +96,7 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
     Observable<BaseResponse<LoginOutBean>> observable;
     Subscriber<BaseResponse<LoginOutBean>> subscriber;
 
-//    LinearLayout linearContent;
-//    View stateBarView;
+
 
     @Override
     protected int setLayoutId() {
@@ -111,8 +110,6 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
     @Override
     protected void initView() {
         super.initView();
-//         linearContent = findViewById(R.id.custom_id_app);
-//        stateBarView = findViewById(R.id.custom_id_statusbar);
         ActivityJump.popSpecifiedActivity(LoginActivity.class);
         //初始化DrawerLayout
         mDrawer = (DrawerLayout) findViewById(R.id.drawerlayout_main);
@@ -202,12 +199,6 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
                                     ActivityJump.NormalJumpAndFinish(MainActivity.this, LoginActivity.class);
                                 }
                             }
-
-//                            @Override
-//                            public void onFail(ExceptionHandle.ResponeThrowable e) {
-//                                ToastCustomUtil.showLongToast(e.message);
-//                            }
-
 
                             @Override
                             public void onFail(Throwable e) {
@@ -401,7 +392,12 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
         @Override
         public boolean onNavigationItemSelected(MenuItem item) {
             //item.getOrder()对应menu里的orderInCategory属性值
-            vp_Main.setCurrentItem(item.getOrder());
+            try{
+                vp_Main.setCurrentItem(item.getOrder());
+
+            }catch (Exception e){
+
+            }
             return true;
         }
     };

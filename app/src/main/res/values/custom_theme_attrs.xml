@@ -13,6 +13,8 @@
     <attr name="custom_attr_app_statusbar_bg" format="color|reference" />
     <!-- 控制app按钮的背景色 -->
     <attr name="custom_attr_app_btn_bg" format="color|reference" />
+    <!-- 控制app字体颜色 -->
+    <attr name="custom_attr_app_textcolor" format="color|reference" />
 
 
 </resources>
