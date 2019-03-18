@@ -19,6 +19,7 @@ import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.chad.library.adapter.base.loadmore.LoadMoreView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.JsonObject;
+import com.hxzk.bj.common.X5ActionMessage;
 import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.common.Const;
 import com.hxzk_bj_demo.javabean.CollectionBean;
@@ -38,6 +39,9 @@ import com.wenld.wenldbanner.DefaultPageIndicator;
 import com.wenld.wenldbanner.WenldBanner;
 import com.wenld.wenldbanner.helper.Holder;
 import com.wenld.wenldbanner.helper.ViewHolder;
+import com.xzt.xrouter.router.Xrouter;
+import com.xzt.xrouter.router.XrouterRequest;
+import com.xzt.xrouter.router.XrouterResponse;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -443,8 +447,9 @@ public class OntherFragment extends BaseFragment implements SwipeRefreshLayout.O
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
                PublicListData.DatasBean publicListData = (PublicListData.DatasBean) adapter.getData().get(position);
-
-                ToastCustomUtil.showLongToast(publicListData.getLink());
+                //封装传递的请求数据到XrouterRequest
+                XrouterRequest mXrouterRequest =XrouterRequest.create().putData("data",publicListData.getLink()).putActionName(X5ActionMessage.X5ACTIONNAME);
+                XrouterResponse mXrouterResponse=Xrouter.getInstance().senMessage(mContext,mXrouterRequest);
             }
         });
 

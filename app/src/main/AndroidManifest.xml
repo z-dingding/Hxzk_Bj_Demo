@@ -43,7 +43,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Base.CustomTheme.Day"
-        android:resizeableActivity="true">
+        android:resizeableActivity="true"
+         tools:replace="android:theme,name"
+         >
         <!--targetSdkVersion==24（Android 7.0）以上Google默认支持了分屏模式-->
         <!--适配19:9全面屏黑边问题：https://blog.csdn.net/darkeet/article/details/80049913-->
         <!--https://blog.csdn.net/weelyy/article/details/79284332

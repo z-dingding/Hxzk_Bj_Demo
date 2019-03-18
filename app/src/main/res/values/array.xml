@@ -7,4 +7,14 @@
         <item>活动</item>
     </array>
 
+
+
+    <array name="userframent_item">
+        <item>图案解锁</item>
+        <item>指纹解锁</item>
+        <item>投诉建议</item>
+        <item>清除缓存</item>
+        <item>关于我们</item>
+    </array>
+
 </resources>

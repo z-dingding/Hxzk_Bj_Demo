@@ -213,7 +213,7 @@ public class HomeFragment extends BaseFragment {
         // 初始化SwipeRefresh刷新控件
         initSwipeRefreshView();
         //请求Bannder数据
-        requestBanner();
+       // requestBanner();
         //创建线程池
         fixThreadPool = Executors.newFixedThreadPool(3);
 
@@ -251,7 +251,7 @@ public class HomeFragment extends BaseFragment {
         //下拉刷新，需要清空集合
         listitemList.clear();
         //更新列表项集合
-        //requestHomeList(curPageIndex);
+        requestHomeList(curPageIndex);
     }
 
 

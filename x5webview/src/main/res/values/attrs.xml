@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 控制apph状态栏栏背景色  -->
+    <attr name="custom_attr_app_statusbar_bg" format="color|reference" />
+</resources>

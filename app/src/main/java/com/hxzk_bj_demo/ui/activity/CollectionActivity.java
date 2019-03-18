@@ -1,8 +1,11 @@
 package com.hxzk_bj_demo.ui.activity;
 import android.annotation.SuppressLint;
+import android.content.res.Resources;
 import android.text.TextUtils;
+import android.view.View;
 
 import com.google.gson.JsonObject;
+import com.hxzk.bj.common.X5ActionMessage;
 import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.javabean.CollectionBean;
 import com.hxzk_bj_demo.network.BaseResponse;
@@ -12,11 +15,15 @@ import com.hxzk_bj_demo.ui.activity.base.BaseBussActivity;
 import com.hxzk_bj_demo.ui.adapter.CollectionAdapter;
 import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
 import com.hxzk_bj_demo.widget.CustomRecyclerView;
+import com.xzt.xrouter.router.Xrouter;
+import com.xzt.xrouter.router.XrouterRequest;
+import com.xzt.xrouter.router.XrouterResponse;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.litepal.crud.DataSupport;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -89,7 +96,13 @@ public class CollectionActivity extends BaseBussActivity implements CustomRecycl
 
     }
 
-
+    @Override
+    public void notifyByThemeChanged() {
+        super.notifyByThemeChanged();
+        if(mAdapter != null){
+            mAdapter.notifyByThemeChanged();
+        }
+    }
 
     /**
      * 请求收藏列表
@@ -129,6 +142,16 @@ public class CollectionActivity extends BaseBussActivity implements CustomRecycl
                 }else{
                     ToastCustomUtil.showShortToast("您还没有收藏上商家哦!");
                 }
+
+
+                mAdapter.setOnItemClickListener(new CollectionAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClickPosition(int pos) {
+                        String  linkUrl=((CollectionBean.DatasBean)mData.get(pos)).getLink();
+                        XrouterRequest mXrouterRequest =XrouterRequest.create().putData("data",linkUrl).putActionName(X5ActionMessage.X5ACTIONNAME);
+                        XrouterResponse mXrouterResponse=Xrouter.getInstance().senMessage(CollectionActivity.this,mXrouterRequest);
+                    }
+                });
             }
         };
         mObservable =HttpRequest.getInstance().getServiceInterface().collectArticalList(pageNum);

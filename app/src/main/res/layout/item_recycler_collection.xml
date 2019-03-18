@@ -16,6 +16,7 @@
         android:layout_height="60dp"/>
     <TextView
         android:id="@+id/tvitem_entname_colleciton"
+        android:textColor="?attr/custom_attr_app_textcolor"
         android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:singleLine="false"
@@ -29,12 +30,15 @@
             android:id="@+id/tvitem_showtime_collection"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="?attr/custom_attr_app_textcolor"
             android:layout_weight="1"
             android:singleLine="true"
             android:ellipsize="end"/>
         <TextView
             android:id="@+id/tvitem_entaddress_collection"
             android:layout_below="@id/tvitem_showtime_collection"
+            android:textColor="?attr/custom_attr_app_textcolor"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -50,10 +54,10 @@
             android:id="@+id/item_delete_txt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="?attr/custom_attr_app_textcolor"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:text="不再显示"
-            android:textColor="#ffffff"
             android:textSize="20dp" />
 
         <ImageView

@@ -5,6 +5,6 @@
     <color name="colorAccent">#D81B60</color>
 
 
-    <color name="colorstate">#121212</color>
-    <color name="colortoolbar">#303030</color>
+    <color name="custom_color_app_status_bg_day">#FF1D1D1D</color>
+    <color name="custom_color_app_status_bg_night">#CFD8DC</color>
 </resources>

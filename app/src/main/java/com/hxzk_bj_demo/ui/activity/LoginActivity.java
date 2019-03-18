@@ -215,7 +215,7 @@ public class LoginActivity extends BaseBussActivity {
                             } else {
                                 SPUtils.put(LoginActivity.this, Const.KEY_LOGIN_ACCOUNT, account);
                                 SPUtils.put(LoginActivity.this, Const.KEY_LOGIN_PWD, pwd);
-                                ActivityJump.NormalJump(LoginActivity.this, MainActivity.class);
+                                ActivityJump.NormalJumpAndFinish(LoginActivity.this, MainActivity.class);
                             }
                         }
 
@@ -223,9 +223,6 @@ public class LoginActivity extends BaseBussActivity {
                         @Override
                         public void onFail(Throwable e) {
                             ToastCustomUtil.showLongToast(e.getMessage());
-                            SPUtils.put(LoginActivity.this, Const.KEY_LOGIN_ACCOUNT, account);
-                            SPUtils.put(LoginActivity.this, Const.KEY_LOGIN_PWD, pwd);
-                            ActivityJump.NormalJump(LoginActivity.this, MainActivity.class);
                         }
 
                     };

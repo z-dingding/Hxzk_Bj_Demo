@@ -97,7 +97,7 @@ public class InvestFragment extends BaseFragment {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 //选中了tab的逻辑
-                ToastCustomUtil.showLongToast(tabIndicators.get(tab.getPosition()).getName().toString());
+               // ToastCustomUtil.showLongToast(tabIndicators.get(tab.getPosition()).getName().toString());
 
             }
 

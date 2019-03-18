@@ -17,10 +17,10 @@
 
 
     <color name="custom_color_app_bg_day">#FFEDEFF2</color>
-    <color name="custom_color_app_status_bg_day">#FF1D1D1D</color>
+    <color name="custom_color_app_status_bg_day">#CFD8DC</color>
     <color name="custom_color_app_toolbar_bg_day">#CFD8DC</color>
     <color name="custom_color_app_btn_bg_day">#A0C6E2</color>
-    <color name="custom_color_app_textcolor_day">#FCFCFC</color>
+    <color name="custom_color_app_textcolor_day">#828282</color>
 
 
 
@@ -29,5 +29,5 @@
     <color name="custom_color_app_status_bg_night">#FF1D1D1D</color>
     <color name="custom_color_app_toolbar_bg_night">#FF1D1D1D</color>
     <color name="custom_color_app_btn_bg_night">#416581</color>
-    <color name="custom_color_app_textcolor_night">#828282</color>
+    <color name="custom_color_app_textcolor_night">#FCFCFC</color>
 </resources>

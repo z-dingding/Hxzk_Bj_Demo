@@ -65,6 +65,7 @@ public class ProgressDialogUtil {
         if (null != loadingDialog && loadingDialog.isShowing()) {
             loadingDialog.dismiss();
             loadingDialog = null;
+            mContext=null;
         }
     }
 

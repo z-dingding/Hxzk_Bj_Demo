@@ -46,4 +46,12 @@
     <string name="photo">photo album</string>
     <string name="changelanguage">Switch between Chinese and English</string>
     <string name="loginout">loginout</string>
+
+
+    <!--=====================================我的Fragment相关字符=============================-->
+    <string name="recommended_artical">recommended artical</string>
+    <string name="recommended_video">recommended video</string>
+    <string name="recommended_music"></string>
+    <string name="recommended_statistical">recommended statistical</string>
+    <string name="more">more</string>
 </resources>

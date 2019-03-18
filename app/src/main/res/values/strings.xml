@@ -71,4 +71,14 @@
     <string name="search_endbatch">最后一批</string>
     <string name="search_noresult">很抱歉,没有查到相关结果!</string>
 
+
+    <!--=====================================我的Fragment相关字符=============================-->
+    <string name="recommended_artical">推荐文章</string>
+    <string name="recommended_video">推荐视频</string>
+    <string name="recommended_music">推荐音乐</string>
+    <string name="recommended_statistical">统计预览</string>
+    <string name="more">更多服务</string>
+
+
+
 </resources>

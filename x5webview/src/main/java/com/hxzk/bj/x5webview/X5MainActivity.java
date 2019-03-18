@@ -3,33 +3,68 @@ package com.hxzk.bj.x5webview;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 public class X5MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
+    public static final String FILE_NAME = "share_data";
 
     X5WebView mX5WebView;
+    RelativeLayout relativeLayout;
     //内容显示区域
     private FrameLayout center_layout;
     ImageView ivShare,ivBack;
+
+    View viewState;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        SharedPreferences sp = getSharedPreferences(FILE_NAME,
+                Context.MODE_PRIVATE);
+        boolean theme =sp.getBoolean("apptheme", false);
+        if(theme){//夜间模式
+            setTheme(R.style.AppTheme_Night);
+        }else{//白天模式
+            setTheme(R.style.AppTheme_Day);
+        }
         super.onCreate(savedInstanceState);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Window window = getWindow();
+            WindowManager.LayoutParams attributes = window.getAttributes();
+            //a|=b的意思就是把a和b按位或然后赋值给a 按位或的意思就是先把a和b都换成2进制，然后用或操作，相当于a=a|b
+            //透明状态栏
+            attributes.flags |= WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
+            window.setAttributes(attributes);
+        }
+        View status = findViewById(R.id.custom_id_statusbar);
+        if (status != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            status.getLayoutParams().height = getStatusBarHeight();
+        }
+
         setContentView(R.layout.activity_x5main);
-        //状态栏着色
-        addStatusBarView();
+        viewState=findViewById(R.id.custom_id_statusbar);
+        relativeLayout=findViewById(R.id.linear_x5share);
+        MarioResourceHelper helper = MarioResourceHelper.getInstance(X5MainActivity.this);
+        helper.setBackgroundResourceByAttr(viewState, R.attr.custom_attr_app_statusbar_bg);
+        helper.setBackgroundResourceByAttr(relativeLayout, R.attr.custom_attr_app_statusbar_bg);
+
+
         center_layout = findViewById(R.id.center_layout);
         ivShare=findViewById(R.id.iv_x5share);
         ivBack=findViewById(R.id.iv_x5back);
+
+
         String webUrl =getIntent().getStringExtra("data");
         if(!TextUtils.isEmpty(webUrl)){
             loadUrl(webUrl);
@@ -72,26 +107,19 @@ public class X5MainActivity extends AppCompatActivity {
     }
 
 
-
-    //创建view添加到状态栏
-    private void addStatusBarView() {
-        View view = new View(this);
-        view.setBackgroundColor(getResources().getColor(R.color.colorstate));
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                getStatusBarHeight(this));
-        ViewGroup decorView = (ViewGroup) findViewById(android.R.id.content);
-        decorView.addView(view, params);
-    }
     /**
-     * 获取状态栏的高度
-     * 19API以上 读取到状态栏高度才有意义
+     * 获取状态栏高度
+     * @return
      */
-    private int getStatusBarHeight(Context context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
-            return resourceId > 0 ? context.getResources().getDimensionPixelSize(resourceId) : 0;
-        } else {
-            return 0;
+    public int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result =getResources().getDimensionPixelSize(resourceId);
         }
+        return result;
     }
+
+
+
 }

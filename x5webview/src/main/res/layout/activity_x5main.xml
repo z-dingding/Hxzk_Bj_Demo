@@ -1,17 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:fitsSystemWindows="true">
-<RelativeLayout
+    android:fitsSystemWindows="true"
+   >
+
+    <View
+        android:id="@id/custom_id_statusbar"
+        android:background="?attr/custom_attr_app_statusbar_bg"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        />
+
+
+    <RelativeLayout
     android:id="@+id/linear_x5share"
     android:layout_width="match_parent"
     android:orientation="horizontal"
     android:layout_height="56dp"
-    android:background="@color/colortoolbar">
+        android:background="?attr/custom_attr_app_statusbar_bg"
+        >
     <ImageView
         android:id="@+id/iv_x5back"
         android:layout_width="wrap_content"

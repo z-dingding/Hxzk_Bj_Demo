@@ -16,6 +16,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.javabean.CollectionBean;
+import com.hxzk_bj_demo.utils.MarioResourceHelper;
 import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
 
 import org.litepal.crud.DataSupport;
@@ -71,11 +72,24 @@ public class CollectionAdapter extends RecyclerView.Adapter {
                 //淡入淡出动画
                 .transition(DrawableTransitionOptions.withCrossFade())
                .into(viewHolder.imgPhoto);
+        viewHolder.tvTime.setTextColor(textColor);
+        viewHolder.tvName.setTextColor(textColor);
+        viewHolder.tvAddress.setTextColor(textColor);
+
         viewHolder.tvName.setText(collectionBean.getAuthor());
         viewHolder.tvTime.setText(collectionBean.getNiceDate());
         viewHolder.tvAddress.setText(collectionBean.getTitle());
 
+
+
         viewHolder.layout.scrollTo(0, 0);
+
+        viewHolder.layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mOnItemClickListener.onItemClickPosition(position);
+            }
+        });
 
     }
 
@@ -104,6 +118,29 @@ public class CollectionAdapter extends RecyclerView.Adapter {
 
     }
 
+
+    /**
+     *自定义RecylcerVie的item监听
+     */
+    OnItemClickListener mOnItemClickListener;
+    public interface  OnItemClickListener{
+        void  onItemClickPosition(int pos);
+    }
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener){
+        mOnItemClickListener=onItemClickListener;
+        notifyByThemeChanged();
+    }
+
+
+    /**
+     * 刷新item的主题
+     */
+    private int textColor = Color.parseColor("#00000000");
+    public  void notifyByThemeChanged() {
+        MarioResourceHelper helper = MarioResourceHelper.getInstance(context);
+        textColor = helper.getColorByAttr(R.attr.custom_attr_app_textcolor);
+
+    }
 
     /**
      * Created by tangyangkai on 16/6/12.
