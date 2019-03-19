@@ -150,8 +150,11 @@ public class LoginActivity extends BaseBussActivity {
         helper.setBackgroundResourceByAttr(statebarView, R.attr.custom_attr_app_statusbar_bg);
         helper.setBackgroundResourceByAttr(btn_Loginin_Login, R.attr.custom_attr_app_btn_bg);
         int color=helper.getColorByAttr(R.attr.custom_attr_app_textcolor);
+        mToolbar.setTitleTextColor(color);
         edt_Account_Login.setTextColor(color);
         edt_Pwd_Login.setTextColor(color);
+        tv_otherWayLogin.setTextColor(color);
+        tv_rigister_login.setTextColor(color);
     }
 
     private KeyBoardHelperUtil.OnKeyBoardStatusChangeListener onKeyBoardStatusChangeListener = new KeyBoardHelperUtil.OnKeyBoardStatusChangeListener() {

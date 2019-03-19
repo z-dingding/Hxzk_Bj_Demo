@@ -1,4 +1,4 @@
-package com.hxzk_bj_demo.utils;
+package com.hxzk.bj.x5webview.statusbartextcolor;
 
 import android.os.Build;
 import android.os.Environment;

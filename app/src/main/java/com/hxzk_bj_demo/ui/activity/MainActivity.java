@@ -237,6 +237,8 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
         MarioResourceHelper helper = MarioResourceHelper.getInstance(MainActivity.this);
         helper.setBackgroundResourceByAttr(mRootLinear, R.attr.custom_attr_app_bg);
         helper.setBackgroundResourceByAttr(mToolbar, R.attr.custom_attr_app_toolbar_bg);
+        int color=helper.getColorByAttr(R.attr.custom_attr_app_textcolor);
+        mToolbar.setTitleTextColor(color);
         helper.setBackgroundResourceByAttr(statebarView, R.attr.custom_attr_app_toolbar_bg);
         helper.setBackgroundResourceByAttr(navigationview_Main, R.attr.custom_attr_app_toolbar_bg);
     }

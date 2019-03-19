@@ -18,6 +18,7 @@ import androidx.core.graphics.drawable.DrawableCompat;
 
 /**
  * Created by Mario on 2017-02-08.
+ * 将自定义属性转化为对应资源
  */
 
 public class MarioResourceHelper {

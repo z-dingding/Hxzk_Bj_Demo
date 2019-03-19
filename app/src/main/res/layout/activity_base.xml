@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@id/custom_id_app"
     android:background="?attr/custom_attr_app_bg"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
- >
+    android:fitsSystemWindows="true">
 
     <!--android:id="@id/custom_id_app"-->
     <!--android:background="?attr/custom_attr_app_bg"-->
@@ -42,6 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
+            app:titleTextColor="?attr/custom_attr_app_textcolor"
            >
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>

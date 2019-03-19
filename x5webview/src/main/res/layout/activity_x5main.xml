@@ -20,21 +20,23 @@
     android:layout_width="match_parent"
     android:orientation="horizontal"
     android:layout_height="56dp"
-        android:background="?attr/custom_attr_app_statusbar_bg"
+    android:background="?attr/custom_attr_app_statusbar_bg"
         >
     <ImageView
         android:id="@+id/iv_x5back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/back"
+        android:layout_width="40dp"
+        android:layout_height="30dp"
+        android:scaleType="centerCrop"
+        android:src="?attr/custom_attr_app_back"
         android:layout_alignParentLeft="true"
         android:layout_centerInParent="true"
         android:layout_marginLeft="5dp"/>
     <ImageView
         android:id="@+id/iv_x5share"
-        android:layout_width="60dp"
+        android:layout_width="50dp"
         android:layout_height="40dp"
-        android:src="@mipmap/share"
+        android:scaleType="fitCenter"
+        android:src="?attr/custom_attr_app_more"
         android:layout_alignParentRight="true"
         android:layout_centerInParent="true"/>
 

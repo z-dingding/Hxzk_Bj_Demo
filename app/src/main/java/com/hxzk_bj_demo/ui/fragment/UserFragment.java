@@ -4,10 +4,12 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.javabean.UserItemBean;
-import com.hxzk_bj_demo.ui.activity.CollectionActivity;
 import com.hxzk_bj_demo.ui.adapter.UserAdapter;
+import com.hxzk_bj_demo.ui.adapter.UserFunAdapter;
 import com.hxzk_bj_demo.ui.fragment.base.BaseFragment;
 import com.hxzk_bj_demo.utils.MarioResourceHelper;
 import java.util.ArrayList;
@@ -30,10 +32,15 @@ public  class UserFragment extends BaseFragment {
     Toolbar toolbar;
     @BindView(R.id.recycler_user)
     RecyclerView mRecycler;
+    @BindView(R.id.recyclerfun_user)
+    RecyclerView mRecyclerFun;
     @BindView(R.id.nestedScrollView)
     NestedScrollView nestedScrollView;
     @BindView(R.id.iv_collapsingbg)
     ImageView ivCollapsingbg;
+    @BindView(R.id.collapsingtabl)
+    CollapsingToolbarLayout collapsingToolbarLayout;
+
 
     View fmLayoutView;
     /**
@@ -50,9 +57,11 @@ public  class UserFragment extends BaseFragment {
      * 功能部分数据（包括本地图片地址数组和标题数组的内容）
      */
     List mFunction;
+    List mDetail;
 
 
     UserAdapter mUserAdapter;
+    UserFunAdapter mUserFunAdapter;
 
     @Override
     protected int getLayoutId() {
@@ -65,20 +74,20 @@ public  class UserFragment extends BaseFragment {
 
     }
 
+    @SuppressLint("WrongConstant")
     @Override
     protected void initData() {
         toolbar.setTitle("我的");
         ((AppCompatActivity) mContext).setSupportActionBar(toolbar);
         mFunction=new ArrayList<UserItemBean>();
+        mDetail=new ArrayList<UserItemBean>();
+
         localtitle= new String[]{mContext.getResources().getString(R.string.recommended_artical), mContext.getResources().getString(R.string.recommended_video), mContext.getResources().getString(R.string.recommended_music), mContext.getResources().getString(R.string.recommended_statistical), mContext.getResources().getString(R.string.more)};
-
-
         for(int i=0;i<localPhoto.length;i++){
             UserItemBean userItemBean =new UserItemBean();
             userItemBean.setTitle(localtitle[i]);
             userItemBean.setDes("");
             userItemBean.setLocaImg(localPhoto[i]);
-            userItemBean.setItemViewType(UserAdapter.FUNCTIONITEMVIEWTYPE);
             mFunction.add(userItemBean);
 
         }
@@ -89,15 +98,23 @@ public  class UserFragment extends BaseFragment {
             userItemBean.setTitle(languages[i]);
             userItemBean.setDes("");
             userItemBean.setLocaImg(R.drawable.forward);
-            userItemBean.setItemViewType(UserAdapter.DETAILITEMVIEWTYPE);
-            mFunction.add(userItemBean);
+            mDetail.add(userItemBean);
         }
+
+
+        LinearLayoutManager detailLayoutManager = new LinearLayoutManager(mContext);
+        detailLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        mRecyclerFun.setLayoutManager(detailLayoutManager);
+        mUserFunAdapter =new UserFunAdapter(mContext,mFunction);
+        mRecyclerFun.setAdapter(mUserFunAdapter);
+
+
         //设置布局管理器
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
-        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecycler.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL));
         mRecycler.setLayoutManager(linearLayoutManager);
-        mUserAdapter =new UserAdapter(mContext,mFunction);
+        mUserAdapter =new UserAdapter(mContext,mDetail);
         mRecycler.setAdapter(mUserAdapter);
     }
 
@@ -115,7 +132,8 @@ public  class UserFragment extends BaseFragment {
     @Override
     public void notifyByThemeChanged() {
         MarioResourceHelper helper = MarioResourceHelper.getInstance(mContext);
-
+        int color =helper.getColorByAttr(R.attr.custom_attr_app_statusbar_bg);
+        collapsingToolbarLayout.setContentScrimColor(color);
     }
 
     @Override

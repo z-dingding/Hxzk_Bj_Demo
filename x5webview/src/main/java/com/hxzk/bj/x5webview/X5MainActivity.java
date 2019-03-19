@@ -2,18 +2,26 @@ package com.hxzk.bj.x5webview;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+
+import com.hxzk.bj.x5webview.statusbartextcolor.StatebusTextColorUtil;
+
+import static com.hxzk.bj.x5webview.statusbartextcolor.StatebusTextColorUtil.setLightStatusBar;
+import static com.hxzk.bj.x5webview.statusbartextcolor.StatebusTextColorUtil.transparencyBar;
 
 public class X5MainActivity extends AppCompatActivity {
 
@@ -29,35 +37,28 @@ public class X5MainActivity extends AppCompatActivity {
     View viewState;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        super.onCreate(savedInstanceState);
         SharedPreferences sp = getSharedPreferences(FILE_NAME,
                 Context.MODE_PRIVATE);
-        boolean theme =sp.getBoolean("apptheme", false);
+        boolean theme =sp.getBoolean("apptheme", true);
         if(theme){//夜间模式
             setTheme(R.style.AppTheme_Night);
+            StatebusTextColorUtil.setStatusBarColor(this, R.color.custom_color_app_status_bg_night);
+            setLightStatusBar(this, false);
         }else{//白天模式
             setTheme(R.style.AppTheme_Day);
-        }
-        super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window window = getWindow();
-            WindowManager.LayoutParams attributes = window.getAttributes();
-            //a|=b的意思就是把a和b按位或然后赋值给a 按位或的意思就是先把a和b都换成2进制，然后用或操作，相当于a=a|b
-            //透明状态栏
-            attributes.flags |= WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
-            window.setAttributes(attributes);
-        }
-        View status = findViewById(R.id.custom_id_statusbar);
-        if (status != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            status.getLayoutParams().height = getStatusBarHeight();
+            StatebusTextColorUtil.setStatusBarColor(this,  R.color.custom_color_app_status_bg_day);
+            setLightStatusBar(this, true);
         }
 
+
         setContentView(R.layout.activity_x5main);
-        viewState=findViewById(R.id.custom_id_statusbar);
         relativeLayout=findViewById(R.id.linear_x5share);
         MarioResourceHelper helper = MarioResourceHelper.getInstance(X5MainActivity.this);
-        helper.setBackgroundResourceByAttr(viewState, R.attr.custom_attr_app_statusbar_bg);
+       // helper.setBackgroundResourceByAttr(viewState, R.attr.custom_attr_app_statusbar_bg);
         helper.setBackgroundResourceByAttr(relativeLayout, R.attr.custom_attr_app_statusbar_bg);
+        helper.setImageResourceByAttr(ivShare, R.attr.custom_attr_app_more);
+        helper.setImageResourceByAttr(ivBack, R.attr.custom_attr_app_back);
 
 
         center_layout = findViewById(R.id.center_layout);
@@ -84,6 +85,25 @@ public class X5MainActivity extends AppCompatActivity {
 
     }
 
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mX5WebView != null) {
+            mX5WebView.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
+            mX5WebView.removeAllViews();
+            mX5WebView.clearHistory();
+            ViewParent parent = mX5WebView.getParent();
+            if (parent != null) {
+                ((ViewGroup) parent).removeView(mX5WebView);
+            }
+            mX5WebView.destroy();
+        }
+    }
+
+
+
     private void loadUrl(String url) {
         if(mX5WebView == null){
             mX5WebView = new X5WebView(this, null);
@@ -107,18 +127,8 @@ public class X5MainActivity extends AppCompatActivity {
     }
 
 
-    /**
-     * 获取状态栏高度
-     * @return
-     */
-    public int getStatusBarHeight() {
-        int result = 0;
-        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0) {
-            result =getResources().getDimensionPixelSize(resourceId);
-        }
-        return result;
-    }
+
+
 
 
 
