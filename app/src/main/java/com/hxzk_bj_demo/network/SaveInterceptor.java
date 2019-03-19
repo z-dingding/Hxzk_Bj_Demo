@@ -30,17 +30,10 @@ public class SaveInterceptor implements Interceptor {
             saveCookie(request.url().toString(),request.url().host(),cookie);
         }
 
-        List<String> cookies = response.headers("Set-Cookie");
-        String cookieStr = "";
-        if (cookies != null && cookies.size() > 0) {
-            for (int i = 0; i < cookies.size(); i++) {
-                cookieStr += cookies.get(i);
-            }
-            saveCookie(request.url().toString(),request.url().host(),cookieStr);
-        }
-
         return response;
     }
+
+
 
 
     /**

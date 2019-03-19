@@ -72,9 +72,12 @@ public class CollectionAdapter extends RecyclerView.Adapter {
                 //淡入淡出动画
                 .transition(DrawableTransitionOptions.withCrossFade())
                .into(viewHolder.imgPhoto);
-        viewHolder.tvTime.setTextColor(textColor);
-        viewHolder.tvName.setTextColor(textColor);
-        viewHolder.tvAddress.setTextColor(textColor);
+
+        if(helper != null){
+            helper.setTextColorByAttr( viewHolder.tvTime,R.attr.custom_attr_app_textcolor);
+            helper.setTextColorByAttr( viewHolder.tvName,R.attr.custom_attr_app_textcolor);
+            helper.setTextColorByAttr( viewHolder.tvAddress,R.attr.custom_attr_app_textcolor);
+        }
 
         viewHolder.tvName.setText(collectionBean.getAuthor());
         viewHolder.tvTime.setText(collectionBean.getNiceDate());
@@ -128,18 +131,16 @@ public class CollectionAdapter extends RecyclerView.Adapter {
     }
     public void setOnItemClickListener(OnItemClickListener onItemClickListener){
         mOnItemClickListener=onItemClickListener;
-        notifyByThemeChanged();
     }
 
 
     /**
      * 刷新item的主题
      */
-    private int textColor = Color.parseColor("#00000000");
+    MarioResourceHelper helper;
     public  void notifyByThemeChanged() {
-        MarioResourceHelper helper = MarioResourceHelper.getInstance(context);
-        textColor = helper.getColorByAttr(R.attr.custom_attr_app_textcolor);
-
+       helper = MarioResourceHelper.getInstance(context);
+        notifyDataSetChanged();
     }
 
     /**

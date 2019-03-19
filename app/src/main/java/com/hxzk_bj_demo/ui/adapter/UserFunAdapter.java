@@ -2,6 +2,7 @@ package com.hxzk_bj_demo.ui.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.javabean.UserItemBean;
+import com.hxzk_bj_demo.utils.MarioResourceHelper;
 
 import java.util.List;
 
@@ -52,6 +54,9 @@ public class UserFunAdapter extends RecyclerView.Adapter{
             UserFunAdapter.FunctionViewHolder functionViewHolder = (UserFunAdapter.FunctionViewHolder) holder;
             Glide.with(mContext).load(mDatas.get(position).getLocaImg()).into(functionViewHolder.ivFun);
             functionViewHolder.tvTitle.setText(mDatas.get(position).getTitle());
+            if(helper != null){
+             helper.setTextColorByAttr(functionViewHolder.tvTitle,R.attr.custom_attr_app_textcolor);
+            }
         }
     }
 
@@ -63,8 +68,8 @@ public class UserFunAdapter extends RecyclerView.Adapter{
 
 
     public class FunctionViewHolder extends RecyclerView.ViewHolder {
-            ImageView ivFun;
-            TextView tvTitle;
+            public ImageView ivFun;
+        public TextView tvTitle;
 
             public FunctionViewHolder(@NonNull View itemView) {
                 super(itemView);
@@ -75,6 +80,15 @@ public class UserFunAdapter extends RecyclerView.Adapter{
 
 
 
+
+    /**
+     * 刷新item的主题
+     */
+    MarioResourceHelper helper;
+    public  void notifyByThemeChanged() {
+         helper = MarioResourceHelper.getInstance(mContext);
+        notifyDataSetChanged();
+    }
 
     }
 

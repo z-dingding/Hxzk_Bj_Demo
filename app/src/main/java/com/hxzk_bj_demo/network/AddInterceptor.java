@@ -48,39 +48,9 @@ public class AddInterceptor implements Interceptor {
         if(!TextUtils.isEmpty(cookie)){
             builder.addHeader("Cookie",cookie);
         }
-
-                            /*   公共缓存部分先注释*/
-//        builder.cacheControl(CacheControl.FORCE_CACHE).url(chain.request().url())
-//                .build();
-//        if (!NetWorkUtil.isNetworkAvailable(context)) {
-//
-//            ((Activity)context).runOnUiThread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    Toast.makeText(context, "当前无网络!", Toast.LENGTH_SHORT).show();
-//                }
-//            });
-//        }        if (headers != null && headers.size() > 0) {
-//            Set<String> keys = headers.keySet();
-//            for (String headerKey : keys) {
-//                builder.addHeader(headerKey, headers.get(headerKey)).build();
-//            }
-//        }
-//        if (NetWorkUtil.isNetworkAvailable(context)) {
-//            int maxAge = 60; // read from cache for 60 s
-//            builder
-//                    .removeHeader("Pragma")
-//                    .addHeader("Cache-Control", "public, max-age=" + maxAge)
-//                    .build();
-//        } else {
-//            int maxStale = 60 * 60 * 24 * 14; // tolerate 2-weeks stale
-//            builder
-//                    .removeHeader("Pragma")
-//                    .addHeader("Cache-Control", "public, only-if-cached, max-stale=" + maxStale)
-//                    .build();
-//        }
         return chain.proceed(builder.build());
     }
+
 
 
     private String getCookie(String url,String domain) {

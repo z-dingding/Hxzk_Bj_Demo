@@ -212,19 +212,17 @@ public class HomeFragment extends BaseFragment {
     protected void initData() {
         // 初始化SwipeRefresh刷新控件
         initSwipeRefreshView();
-        //请求Bannder数据
-       // requestBanner();
         //创建线程池
         fixThreadPool = Executors.newFixedThreadPool(3);
-
-
         //初始化集合
         listitemList = new LinkedList<HomeListBean.DatasBean>();
         //设置布局管理器
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         mRecyclerView.setLayoutManager(linearLayoutManager);
         //首次进来默认加载第一页数据,下标为1
-       // requestHomeList(1);
+        requestHomeList(1);
+        //请求Bannder数据
+        requestBanner();
     }
 
 

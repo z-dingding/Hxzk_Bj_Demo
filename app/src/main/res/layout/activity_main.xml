@@ -80,7 +80,8 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/header_layout"
         app:insetForeground="@android:color/transparent"
-        app:menu="@menu/menu_vavigationview">
+        app:menu="@menu/menu_vavigationview"
+        app:itemTextColor="?attr/custom_attr_app_textcolor">
     </com.google.android.material.navigation.NavigationView>
 </com.hxzk_bj_demo.widget.WidgetDrawerLayout>
 

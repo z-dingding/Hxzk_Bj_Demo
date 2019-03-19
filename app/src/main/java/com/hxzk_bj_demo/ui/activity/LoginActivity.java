@@ -27,20 +27,12 @@ import com.hxzk_bj_demo.network.ExceptionHandle;
 import com.hxzk_bj_demo.network.HttpRequest;
 import com.hxzk_bj_demo.ui.activity.base.BaseActivity;
 import com.hxzk_bj_demo.ui.activity.base.BaseBussActivity;
-import com.hxzk_bj_demo.ui.activity.base.NewBaseActivity;
 import com.hxzk_bj_demo.utils.KeyBoardHelperUtil;
 import com.hxzk_bj_demo.utils.MarioResourceHelper;
 import com.hxzk_bj_demo.utils.Md5Utils;
 import com.hxzk_bj_demo.utils.SPUtils;
 import com.hxzk_bj_demo.utils.activity.ActivityJump;
 import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;

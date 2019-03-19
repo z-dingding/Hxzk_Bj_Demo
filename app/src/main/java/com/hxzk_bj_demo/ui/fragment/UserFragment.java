@@ -12,6 +12,9 @@ import com.hxzk_bj_demo.ui.adapter.UserAdapter;
 import com.hxzk_bj_demo.ui.adapter.UserFunAdapter;
 import com.hxzk_bj_demo.ui.fragment.base.BaseFragment;
 import com.hxzk_bj_demo.utils.MarioResourceHelper;
+import com.hxzk_bj_demo.utils.recyclerview_itemlistener.RecyclerItemTouchListener;
+import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 import androidx.appcompat.app.AppCompatActivity;
@@ -125,6 +128,35 @@ public  class UserFragment extends BaseFragment {
         mBundle.putInt("fragmentflag", 2);
         mCallBack.setValue(mBundle);
 
+        mRecyclerFun.addOnItemTouchListener(new RecyclerItemTouchListener(mRecyclerFun){
+
+            @Override
+            public void onShortItemListener(RecyclerView.ViewHolder viewHolder) {
+                UserFunAdapter.FunctionViewHolder myViewHolder= (UserFunAdapter.FunctionViewHolder) viewHolder;
+                String title = (String) myViewHolder.tvTitle.getText();
+                ToastCustomUtil.showLongToast(title);
+            }
+
+            @Override
+            public void onLongItemListener(RecyclerView.ViewHolder viewHolder) {
+
+            }
+        });
+
+        mRecycler.addOnItemTouchListener(new RecyclerItemTouchListener(mRecycler){
+
+            @Override
+            public void onShortItemListener(RecyclerView.ViewHolder viewHolder) {
+                UserAdapter.DetailViewHolder myViewHolder= (UserAdapter.DetailViewHolder) viewHolder;
+                String title = (String) myViewHolder.tvDetail.getText();
+                ToastCustomUtil.showLongToast(title);
+            }
+
+            @Override
+            public void onLongItemListener(RecyclerView.ViewHolder viewHolder) {
+
+            }
+        }) ;
     }
 
 
@@ -134,6 +166,12 @@ public  class UserFragment extends BaseFragment {
         MarioResourceHelper helper = MarioResourceHelper.getInstance(mContext);
         int color =helper.getColorByAttr(R.attr.custom_attr_app_statusbar_bg);
         collapsingToolbarLayout.setContentScrimColor(color);
+        if(mUserAdapter != null){
+            mUserAdapter.notifyByThemeChanged();
+        }
+        if(mUserFunAdapter != null){
+            mUserFunAdapter.notifyByThemeChanged();
+        }
     }
 
     @Override

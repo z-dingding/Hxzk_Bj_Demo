@@ -168,26 +168,26 @@ public class MyApplication extends LitePalApplication {
                         .readTimeout(10, TimeUnit.SECONDS)
                         .writeTimeout(10, TimeUnit.SECONDS)
                         //cookie的持久化添加到请求头
-                        //.addInterceptor(new AddInterceptor())
+                        .addInterceptor(new AddInterceptor())
                         //cookie的持久化保存到本地
-                        //.addInterceptor(new SaveInterceptor());
+                        .addInterceptor(new SaveInterceptor());
 
                         //new CookieJar属于cookie的非持久化也就是app关闭后，Cookie丢失,如果需要持久化则需要自定义
-                        .cookieJar(new CookieJar() {
-                            //客户端请求成功以后，在响应头里面去存cookie
-                            @Override
-                            public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
-
-                                cookiestore.put(url.host(), cookies);
-                            }
-
-                            //加载url的时候在请求头带上cookie
-                            @Override
-                            public List<Cookie> loadForRequest(HttpUrl url) {
-                                List<Cookie> cookies = cookiestore.get(url.host());
-                                return cookies != null ? cookies : new ArrayList<>();
-                            }
-                        });
+//                        .cookieJar(new CookieJar() {
+//                            //客户端请求成功以后，在响应头里面去存cookie
+//                            @Override
+//                            public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
+//
+//                                cookiestore.put(url.host(), cookies);
+//                            }
+//
+//                            //加载url的时候在请求头带上cookie
+//                            @Override
+//                            public List<Cookie> loadForRequest(HttpUrl url) {
+//                                List<Cookie> cookies = cookiestore.get(url.host());
+//                                return cookies != null ? cookies : new ArrayList<>();
+//                            }
+//                        });
             }
         }
         return httpClientBuilder;

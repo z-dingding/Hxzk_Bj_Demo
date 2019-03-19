@@ -3,6 +3,7 @@ package com.hxzk_bj_demo.ui.activity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -241,6 +242,8 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
         mToolbar.setTitleTextColor(color);
         helper.setBackgroundResourceByAttr(statebarView, R.attr.custom_attr_app_toolbar_bg);
         helper.setBackgroundResourceByAttr(navigationview_Main, R.attr.custom_attr_app_toolbar_bg);
+
+        navigationview_Main.setItemTextColor(ColorStateList.valueOf(color));
     }
 
     @Override

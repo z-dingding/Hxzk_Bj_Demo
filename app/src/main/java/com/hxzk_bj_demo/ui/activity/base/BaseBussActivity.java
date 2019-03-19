@@ -95,7 +95,7 @@ public abstract class BaseBussActivity extends BaseActivity {
         setSupportActionBar(mToolbar);
         //设置导航图标要在setSupportActionBar方法之后
         mToolbar.setNavigationIcon(resId);
-     //   mToolbar.setTitleTextColor(Color.WHITE);
+        mToolbar.inflateMenu(R.menu.menu_main);
         //设置左上角的图标响应
         getSupportActionBar().setHomeButtonEnabled(true);
         //Toolbar的空间监听有两种方式，一种是 Toolbar.OnMenuItemClickListener，另一种是onOptionsItemSelected
@@ -119,7 +119,6 @@ public abstract class BaseBussActivity extends BaseActivity {
     /**
      * 重写onCreateOptionsMenu()方法，把这个Toolbar菜单加载进去：
      * 创建Activity是回调方法用于填充Menu的布局，只会执行一次
-     *
      * @param menu
      * @return
      */
