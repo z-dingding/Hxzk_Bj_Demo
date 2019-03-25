@@ -1,2 +1,2 @@
-include ':app', ':wenldbanner', ':x5webview', ':router', ':common'
+include ':app', ':wenldbanner', ':x5webview', ':router', ':common', ':patternlockview', ':patternlockview-reactive'
 

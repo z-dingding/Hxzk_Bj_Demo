@@ -5,6 +5,8 @@
       <module fileurl="file://$PROJECT_DIR$/Hxzk_Bj_Demo.iml" filepath="$PROJECT_DIR$/Hxzk_Bj_Demo.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/common/common.iml" filepath="$PROJECT_DIR$/common/common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/patternlockview/patternlockview.iml" filepath="$PROJECT_DIR$/patternlockview/patternlockview.iml" />
+      <module fileurl="file://$PROJECT_DIR$/patternlockview-reactive/patternlockview-reactive.iml" filepath="$PROJECT_DIR$/patternlockview-reactive/patternlockview-reactive.iml" />
       <module fileurl="file://$PROJECT_DIR$/router/router.iml" filepath="$PROJECT_DIR$/router/router.iml" />
       <module fileurl="file://$PROJECT_DIR$/wenldbanner/wenldbanner.iml" filepath="$PROJECT_DIR$/wenldbanner/wenldbanner.iml" />
       <module fileurl="file://$PROJECT_DIR$/x5webview/x5webview.iml" filepath="$PROJECT_DIR$/x5webview/x5webview.iml" />

@@ -89,6 +89,8 @@
             android:configChanges="locale"/>
         <!-- 首页搜索界面-->
         <activity android:name=".ui.activity.HomeSearchActivity"/>
+        <!--图案解锁界面-->
+        <activity android:name=".ui.activity.PatternLockActivity"/>
     </application>
 
 

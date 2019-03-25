@@ -86,5 +86,8 @@ dependencies {
     implementation project(':x5webview')
     //flexbox
     implementation 'com.google.android:flexbox:1.1.0'
+    //图案解锁
+    implementation project(':patternlockview')
+    implementation project(':patternlockview-reactive')
 }
 

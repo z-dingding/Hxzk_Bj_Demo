@@ -8,10 +8,12 @@ import android.widget.ImageView;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.javabean.UserItemBean;
+import com.hxzk_bj_demo.ui.activity.PatternLockActivity;
 import com.hxzk_bj_demo.ui.adapter.UserAdapter;
 import com.hxzk_bj_demo.ui.adapter.UserFunAdapter;
 import com.hxzk_bj_demo.ui.fragment.base.BaseFragment;
 import com.hxzk_bj_demo.utils.MarioResourceHelper;
+import com.hxzk_bj_demo.utils.activity.ActivityJump;
 import com.hxzk_bj_demo.utils.recyclerview_itemlistener.RecyclerItemTouchListener;
 import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
 
@@ -149,7 +151,14 @@ public  class UserFragment extends BaseFragment {
             public void onShortItemListener(RecyclerView.ViewHolder viewHolder) {
                 UserAdapter.DetailViewHolder myViewHolder= (UserAdapter.DetailViewHolder) viewHolder;
                 String title = (String) myViewHolder.tvDetail.getText();
-                ToastCustomUtil.showLongToast(title);
+                switch (title){
+                   case "图案解锁":
+                       ActivityJump.NormalJump(mContext,PatternLockActivity.class);
+                       break;
+                  default:
+                      ToastCustomUtil.showLongToast(getString(R.string.inDevelopment));
+                      break;
+                }
             }
 
             @Override

@@ -54,6 +54,11 @@ ext {
     glideVersion="4.8.0"
     //constraint版本
      constraintVersion="1.1.2"
+    //RxJava版本
+    rxJava="2.0.2"
+    //RxAndroid版本
+    rxAndroid="2.0.0"
+
 
 
     androidDependencies = [
@@ -61,7 +66,9 @@ ext {
             appcompat: "com.android.support:appcompat-v7:${supportLibraryVersion}",
             glide:"com.github.bumptech.glide:glide:${glideVersion}",
             glideAnnotationProcessor:"com.github.bumptech.glide:compiler:${glideVersion}",
-            constraint:"com.android.support.constraint:constraint-layout:${constraintVersion}"
+            constraint:"com.android.support.constraint:constraint-layout:${constraintVersion}",
+            rxJava :"io.reactivex.rxjava2:rxjava:${rxJava}",
+            rxAndroid :"io.reactivex.rxjava2:rxandroid:${rxAndroid}"
     ]
 
 }

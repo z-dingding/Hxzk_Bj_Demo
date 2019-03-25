@@ -20,6 +20,7 @@ public class UserItemBean {
     /**
      * item类型
      */
+
     int itemViewType;
 
     public int getItemViewType() {
