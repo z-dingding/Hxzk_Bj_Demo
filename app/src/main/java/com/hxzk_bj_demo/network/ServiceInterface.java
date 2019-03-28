@@ -15,6 +15,7 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -53,7 +54,7 @@ public interface ServiceInterface {
      * @return
      */
     @POST("user/login")
-    Observable<BaseResponse<LoginOutBean>> login(@Query("username") String username , @Query("password") String password);
+    Observable<BaseResponse<LoginOutBean>> login(@Field("username") String username , @Field("password") String password);
 
 
     /**

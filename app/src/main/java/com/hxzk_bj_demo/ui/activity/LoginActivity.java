@@ -1,45 +1,30 @@
 package com.hxzk_bj_demo.ui.activity;
 
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.android.material.appbar.AppBarLayout;
-import com.google.gson.JsonObject;
 import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.common.Const;
-import com.hxzk_bj_demo.interfaces.ThemeChangeObserver;
-import com.hxzk_bj_demo.javabean.LoginBean;
 import com.hxzk_bj_demo.javabean.LoginOutBean;
 import com.hxzk_bj_demo.network.BaseResponse;
 import com.hxzk_bj_demo.network.BaseSubscriber;
-import com.hxzk_bj_demo.network.ExceptionHandle;
 import com.hxzk_bj_demo.network.HttpRequest;
-import com.hxzk_bj_demo.ui.activity.base.BaseActivity;
 import com.hxzk_bj_demo.ui.activity.base.BaseBussActivity;
 import com.hxzk_bj_demo.utils.KeyBoardHelperUtil;
 import com.hxzk_bj_demo.utils.MarioResourceHelper;
-import com.hxzk_bj_demo.utils.Md5Utils;
 import com.hxzk_bj_demo.utils.SPUtils;
 import com.hxzk_bj_demo.utils.activity.ActivityJump;
 import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
+
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observable;
-import rx.Observer;
-import rx.Subscriber;
-import rx.Subscription;
 
 /**
  * Created by ${赵江涛} on 2017-12-26.
@@ -214,7 +199,6 @@ public class LoginActivity extends BaseBussActivity {
                             }
                         }
 
-
                         @Override
                         public void onFail(Throwable e) {
                             ToastCustomUtil.showLongToast(e.getMessage());
@@ -222,15 +206,20 @@ public class LoginActivity extends BaseBussActivity {
 
                     };
                     observable = HttpRequest.getInstance().getServiceInterface().login(account, pwd);
-                    //用observable提供的onErrorResumeNext 则可以将你自定义的Func1 关联到错误处理类中
-                    //observable.onErrorResumeNext(new BaseSubscriber.HttpResponseFunc<>());
-                    HttpRequest.getInstance().toSubscribe(observable, subscriber);
 
+                    //用observable提供的onErrorResumeNext 则可以将你自定义的Func1 关联到错误处理类中
+                    //observable.onErrorResumeNext(new BaseSubscriber.HttpResponseFunc<BaseResponse<LoginOutBean>>());
+                    //observable.filter(new BaseSubscriber.HttpResponseFunc());
+                     //observable.map(new BaseSubscriber.HttpResponseFunc());
+                    HttpRequest.getInstance().toSubscribe(observable, subscriber);
                 } else {
                     ToastCustomUtil.showLongToast("请输入正确的账号密码!");
                 }
 
                 break;
+
+
+
         }
     }
 }

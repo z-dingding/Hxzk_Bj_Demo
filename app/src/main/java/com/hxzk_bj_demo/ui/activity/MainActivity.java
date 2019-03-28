@@ -209,8 +209,6 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
 
                         };
                         observable = HttpRequest.getInstance().getServiceInterface().loginout();
-                        //用observable提供的onErrorResumeNext 则可以将你自定义的Func1 关联到错误处理类中
-                         observable.onErrorResumeNext(new BaseSubscriber.HttpResponseFunc<>());
                          HttpRequest.getInstance().toSubscribe(observable, subscriber);
                         break;
 

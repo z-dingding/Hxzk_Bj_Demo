@@ -12,6 +12,10 @@ import com.hxzk_bj_demo.utils.ProgressDialogUtil;
 import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
 import com.hxzk_bj_demo.widget.XDialog;
 
+import io.reactivex.ObservableSource;
+import io.reactivex.ObservableTransformer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Func1;
@@ -83,12 +87,28 @@ public abstract class BaseSubscriber <T> extends Subscriber<T> {
 
 
     //通过RXJva的 Func1来进行对原始的Throwable 进行包装转换将原来Throwable 强转成自定义的 ResponeThrowable
-    public static class HttpResponseFunc<T> implements Func1<Throwable, Observable<T>> {
+    public static class HttpResponseFunc<T> implements Func1<Throwable, Observable> {
         @Override public Observable<T> call(Throwable t) {
             return Observable.error(ExceptionHandle.handleException(t));
         }
 
     }
 
+
+    /**
+     * 统一线程处理
+     *
+     * @param <T> 指定的泛型类型
+     * @return ObservableTransformer
+     */
+    public static <T> ObservableTransformer<T, T> Obs_io_main() {
+        return new ObservableTransformer<T, T>() {
+            @Override
+            public ObservableSource<T> apply(io.reactivex.Observable<T> upstream) {
+                return upstream.subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread());
+            }
+        };
+    }
 
 }

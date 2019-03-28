@@ -1,0 +1,45 @@
+apply plugin: 'com.android.library'
+
+//ext {
+//    bintrayRepo = 'maven'
+//    bintrayName = 'patternlockview'
+//
+//    publishedGroupId = 'com.andrognito.patternlockview'
+//    libraryName = 'patternlockview'
+//    artifact = 'patternlockview'
+//
+//    libraryDescription = 'An easy-to-use, customizable, Material Design complaint Pattern Lock ' +
+//            'view for Android'
+//
+//    siteUrl = 'https://github.com/aritraroy/PatternLockView'
+//    gitUrl = 'https://github.com/aritraroy/PatternLockView.git'
+//
+//    libraryVersion = '1.0.0'
+//
+//    developerId = 'aritraroy'
+//    developerName = 'Aritra Roy'
+//    developerEmail = 'aritra.roy.in@gmail.com'
+//
+//    licenseName = 'The Apache Software License, Version 2.0'
+//    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+//    allLicenses = ["Apache-2.0"]
+//}
+
+android {
+    compileSdkVersion rootProject.ext.globalCompileSdkVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.globalMinSdkVersion
+        targetSdkVersion rootProject.ext.globalTargetSdkVersion
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+}
+
+dependencies {
+    implementation androidDependencies.appcompat
+}
+
+//apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
+//apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
