@@ -54,7 +54,7 @@ public interface ServiceInterface {
      * @return
      */
     @POST("user/login")
-    Observable<BaseResponse<LoginOutBean>> login(@Field("username") String username , @Field("password") String password);
+    Observable<BaseResponse<LoginOutBean>> login(@Query("username") String username , @Query("password") String password);
 
 
     /**

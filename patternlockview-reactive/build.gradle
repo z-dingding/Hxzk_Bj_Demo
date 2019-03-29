@@ -25,6 +25,10 @@ apply plugin: 'com.android.library'
 //    allLicenses = ["Apache-2.0"]
 //}
 
+
+
+
+
 android {
     compileSdkVersion rootProject.ext.globalCompileSdkVersion
 

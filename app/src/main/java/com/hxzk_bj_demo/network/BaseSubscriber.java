@@ -1,17 +1,10 @@
 package com.hxzk_bj_demo.network;
 
 import android.content.Context;
-import android.os.Handler;
-import android.util.Log;
-import android.widget.Toast;
-
 import com.hxzk_bj_demo.R;
-import com.hxzk_bj_demo.ui.activity.base.BaseActivity;
 import com.hxzk_bj_demo.utils.NetWorkUtil;
 import com.hxzk_bj_demo.utils.ProgressDialogUtil;
 import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
-import com.hxzk_bj_demo.widget.XDialog;
-
 import io.reactivex.ObservableSource;
 import io.reactivex.ObservableTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;

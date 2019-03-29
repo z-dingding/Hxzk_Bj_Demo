@@ -54,15 +54,15 @@ ext {
     glideVersion="4.8.0"
     //constraint版本
      constraintVersion="1.1.2"
-//    //RxJava版本
-//    rxJava="2.1.12"
-//    //RxAndroid版本
-//    rxAndroid="2.0.2"
-
     //RxJava版本
-    rxJava="2.0.2"
+    rxJava="2.1.12"
     //RxAndroid版本
-    rxAndroid="2.0.0"
+    rxAndroid="2.0.2"
+
+//    //RxJava版本
+//    rxJava="2.0.2"
+//    //RxAndroid版本
+//    rxAndroid="2.0.0"
 
 
 

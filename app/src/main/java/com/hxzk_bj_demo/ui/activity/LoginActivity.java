@@ -11,10 +11,14 @@ import android.widget.TextView;
 
 import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.common.Const;
+import com.hxzk_bj_demo.javabean.LoginBean;
 import com.hxzk_bj_demo.javabean.LoginOutBean;
 import com.hxzk_bj_demo.network.BaseResponse;
 import com.hxzk_bj_demo.network.BaseSubscriber;
 import com.hxzk_bj_demo.network.HttpRequest;
+import com.hxzk_bj_demo.newmvp.base.BaseMvpActivity;
+import com.hxzk_bj_demo.newmvp.constract.LoginConstract;
+import com.hxzk_bj_demo.newmvp.presenter.LoginPreseneter;
 import com.hxzk_bj_demo.ui.activity.base.BaseBussActivity;
 import com.hxzk_bj_demo.utils.KeyBoardHelperUtil;
 import com.hxzk_bj_demo.utils.MarioResourceHelper;
@@ -31,7 +35,7 @@ import rx.Observable;
  * 作用:登录界面
  */
 
-public class LoginActivity extends BaseBussActivity {
+public class LoginActivity extends BaseMvpActivity<LoginPreseneter> implements LoginConstract.LoginView {
 
     private static final String TAG = "LoginActivity";
 
@@ -59,8 +63,7 @@ public class LoginActivity extends BaseBussActivity {
     String pwd;
 
 
-    BaseSubscriber<BaseResponse<LoginOutBean>> subscriber;
-    Observable<BaseResponse<LoginOutBean>> observable;
+
 
     @Override
     protected int setLayoutId() {
@@ -95,7 +98,8 @@ public class LoginActivity extends BaseBussActivity {
 
     @Override
     protected void initData() {
-
+        presenter  =new LoginPreseneter(LoginActivity.this);
+        presenter.onAttachView(this);
     }
 
 
@@ -115,7 +119,7 @@ public class LoginActivity extends BaseBussActivity {
     protected void onDestroy() {
         super.onDestroy();
         //视图消亡后，无需RxJava再执行，可以直接取消订阅
-        HttpRequest.getInstance().unsubscribe(observable);
+        // HttpRequest.getInstance().unsubscribe(observable);
     }
 
 
@@ -187,31 +191,34 @@ public class LoginActivity extends BaseBussActivity {
                 account = edt_Account_Login.getText().toString();
                 pwd = edt_Pwd_Login.getText().toString();
                 if (!TextUtils.isEmpty(account) && !TextUtils.isEmpty(pwd)) {
-                    subscriber = new BaseSubscriber<BaseResponse<LoginOutBean>>(LoginActivity.this) {
-                        @Override
-                        public void onResult(BaseResponse<LoginOutBean> mBaseResponse) {
-                            if (!mBaseResponse.isOk()) {
-                                ToastCustomUtil.showLongToast(mBaseResponse.getMsg());
-                            } else {
-                                SPUtils.put(LoginActivity.this, Const.KEY_LOGIN_ACCOUNT, account);
-                                SPUtils.put(LoginActivity.this, Const.KEY_LOGIN_PWD, pwd);
-                                ActivityJump.NormalJumpAndFinish(LoginActivity.this, MainActivity.class);
-                            }
-                        }
 
-                        @Override
-                        public void onFail(Throwable e) {
-                            ToastCustomUtil.showLongToast(e.getMessage());
-                        }
+                    presenter.login(account,pwd);
 
-                    };
-                    observable = HttpRequest.getInstance().getServiceInterface().login(account, pwd);
+//                    subscriber = new BaseSubscriber<BaseResponse<LoginOutBean>>(LoginActivity.this) {
+//                        @Override
+//                        public void onResult(BaseResponse<LoginOutBean> mBaseResponse) {
+//                            if (!mBaseResponse.isOk()) {
+//                                ToastCustomUtil.showLongToast(mBaseResponse.getMsg());
+//                            } else {
+//                                SPUtils.put(LoginActivity.this, Const.KEY_LOGIN_ACCOUNT, account);
+//                                SPUtils.put(LoginActivity.this, Const.KEY_LOGIN_PWD, pwd);
+//                                ActivityJump.NormalJumpAndFinish(LoginActivity.this, MainActivity.class);
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onFail(Throwable e) {
+//                            ToastCustomUtil.showLongToast(e.getMessage());
+//                        }
+//
+//                    };
+                   // observable = HttpRequest.getInstance().getServiceInterface().login(account, pwd);
 
                     //用observable提供的onErrorResumeNext 则可以将你自定义的Func1 关联到错误处理类中
                     //observable.onErrorResumeNext(new BaseSubscriber.HttpResponseFunc<BaseResponse<LoginOutBean>>());
                     //observable.filter(new BaseSubscriber.HttpResponseFunc());
                      //observable.map(new BaseSubscriber.HttpResponseFunc());
-                    HttpRequest.getInstance().toSubscribe(observable, subscriber);
+                    //HttpRequest.getInstance().toSubscribe(observable, subscriber);
                 } else {
                     ToastCustomUtil.showLongToast("请输入正确的账号密码!");
                 }
@@ -221,5 +228,19 @@ public class LoginActivity extends BaseBussActivity {
 
 
         }
+    }
+
+
+
+    @Override
+    public void onFail(Throwable throwable) {
+        ToastCustomUtil.showLongToast(throwable.getMessage());
+    }
+
+    @Override
+    public void onResult(BaseResponse<LoginOutBean> loginBean) {
+        SPUtils.put(LoginActivity.this, Const.KEY_LOGIN_ACCOUNT, account);
+        SPUtils.put(LoginActivity.this, Const.KEY_LOGIN_PWD, pwd);
+        ActivityJump.NormalJumpAndFinish(LoginActivity.this, MainActivity.class);
     }
 }

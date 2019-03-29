@@ -2,20 +2,14 @@ package com.hxzk_bj_demo.network;
 
 import com.google.gson.GsonBuilder;
 import com.hxzk_bj_demo.common.MyApplication;
-
-import java.util.concurrent.TimeUnit;
-
 import retrofit2.CallAdapter;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.converter.protobuf.ProtoConverterFactory;
-import retrofit2.converter.scalars.ScalarsConverterFactory;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
@@ -55,8 +49,8 @@ public class HttpRequest {
                         .setLenient()
                         .create()))//转Gson
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .addConverterFactory(ProtoConverterFactory.create())//转jsonObject
-                .addConverterFactory(ScalarsConverterFactory.create())//转string
+//                .addConverterFactory(ProtoConverterFactory.create())//转jsonObject
+//                .addConverterFactory(ScalarsConverterFactory.create())//转string
                 .addConverterFactory(gsonConverterFactory)
                 .addCallAdapterFactory(rxJavaCallAdapterFactory)
                 .baseUrl(BASE_URL);
@@ -99,8 +93,9 @@ public class HttpRequest {
                // .delay(2, TimeUnit.SECONDS)
                 //取消发生在IO线程
                 .unsubscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                //.observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
+
         return mSubscription;
     }
 
