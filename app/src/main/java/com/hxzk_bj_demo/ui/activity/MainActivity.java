@@ -19,7 +19,6 @@ import android.text.style.StyleSpan;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -30,7 +29,6 @@ import com.hxzk_bj_demo.javabean.LoginOutBean;
 import com.hxzk_bj_demo.mvp.view.NoteBookActivity;
 import com.hxzk_bj_demo.network.BaseResponse;
 import com.hxzk_bj_demo.network.BaseSubscriber;
-import com.hxzk_bj_demo.network.ExceptionHandle;
 import com.hxzk_bj_demo.network.HttpRequest;
 import com.hxzk_bj_demo.ui.activity.base.BaseBussActivity;
 import com.hxzk_bj_demo.ui.adapter.base.FragmentAdapter;
@@ -42,7 +40,6 @@ import com.hxzk_bj_demo.utils.LanguageUtil;
 import com.hxzk_bj_demo.utils.MarioResourceHelper;
 import com.hxzk_bj_demo.utils.SPUtils;
 import com.hxzk_bj_demo.utils.activity.ActivityJump;
-import com.hxzk_bj_demo.utils.activity.ActivityManager;
 import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
@@ -50,9 +47,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
@@ -188,6 +183,16 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
                     case R.id.loginout:
 
                         subscriber = new BaseSubscriber<BaseResponse<LoginOutBean>>(MainActivity.this) {
+
+                            @Override
+                            public void onShowLoading() {
+
+                            }
+
+                            @Override
+                            public void onHiddenLoading() {
+
+                            }
 
                             @Override
                             public void onResult(BaseResponse<LoginOutBean> baseResponse) {

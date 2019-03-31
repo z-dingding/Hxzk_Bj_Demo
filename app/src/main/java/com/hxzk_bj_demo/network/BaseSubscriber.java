@@ -1,10 +1,11 @@
 package com.hxzk_bj_demo.network;
 
 import android.content.Context;
+
 import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.utils.NetWorkUtil;
-import com.hxzk_bj_demo.utils.ProgressDialogUtil;
 import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
+
 import io.reactivex.ObservableSource;
 import io.reactivex.ObservableTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -21,11 +22,11 @@ import rx.functions.Func1;
  */
 public abstract class BaseSubscriber <T> extends Subscriber<T> {
 
-    private Context context;
+    private Context mContext;
 
 
     public BaseSubscriber(Context context) {
-        this.context = context;
+        this.mContext = context;
 
     }
 
@@ -33,23 +34,27 @@ public abstract class BaseSubscriber <T> extends Subscriber<T> {
     @Override
     public void onStart() {
         super.onStart();
-       if (!NetWorkUtil.isNetworkAvailable(context)) {
+       if (!NetWorkUtil.isNetworkAvailable(mContext)) {
             // 当前网络不可用，请检查网络情况",
-            ToastCustomUtil.showLongToast(context.getResources().getString(R.string.empty_network_error));
+            ToastCustomUtil.showLongToast(mContext.getResources().getString(R.string.empty_network_error));
             return;
        }
-        //此处可以打开加载框
-        ProgressDialogUtil.getInstance().mshowDialog(context);
+        onShowLoading();
     }
+    public abstract void onShowLoading();
+
 
     @Override
     public void onCompleted() {
-         //此处可以关闭进度条
-        ProgressDialogUtil.getInstance().mdismissDialog();
+         //此处可以关闭进度条(但可能会存在执行onError后不执行该方法)
+       // onHiddenLoading();
     }
+    public abstract void onHiddenLoading();
+
 
     @Override
     public void onNext(T t) {
+        onHiddenLoading();
         onResult(t);
     }
      public abstract void onResult(T t);
@@ -71,9 +76,7 @@ public abstract class BaseSubscriber <T> extends Subscriber<T> {
 
     @Override
     public void onError(Throwable e) {
-        if(ProgressDialogUtil.getInstance().xDialogInstance().isShowing()){
-            ProgressDialogUtil.getInstance().mdismissDialog();
-        }
+        onHiddenLoading();
         onFail(e);
     }
     public abstract void onFail(Throwable e);

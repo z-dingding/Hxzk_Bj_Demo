@@ -11,24 +11,20 @@ import android.widget.TextView;
 
 import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.common.Const;
-import com.hxzk_bj_demo.javabean.LoginBean;
 import com.hxzk_bj_demo.javabean.LoginOutBean;
 import com.hxzk_bj_demo.network.BaseResponse;
-import com.hxzk_bj_demo.network.BaseSubscriber;
-import com.hxzk_bj_demo.network.HttpRequest;
 import com.hxzk_bj_demo.newmvp.base.BaseMvpActivity;
 import com.hxzk_bj_demo.newmvp.constract.LoginConstract;
 import com.hxzk_bj_demo.newmvp.presenter.LoginPreseneter;
-import com.hxzk_bj_demo.ui.activity.base.BaseBussActivity;
 import com.hxzk_bj_demo.utils.KeyBoardHelperUtil;
 import com.hxzk_bj_demo.utils.MarioResourceHelper;
+import com.hxzk_bj_demo.utils.ProgressDialogUtil;
 import com.hxzk_bj_demo.utils.SPUtils;
 import com.hxzk_bj_demo.utils.activity.ActivityJump;
 import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import rx.Observable;
 
 /**
  * Created by ${赵江涛} on 2017-12-26.
@@ -115,13 +111,6 @@ public class LoginActivity extends BaseMvpActivity<LoginPreseneter> implements L
     }
 
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        //视图消亡后，无需RxJava再执行，可以直接取消订阅
-        // HttpRequest.getInstance().unsubscribe(observable);
-    }
-
 
     @Override
     public void notifyByThemeChanged() {
@@ -187,38 +176,10 @@ public class LoginActivity extends BaseMvpActivity<LoginPreseneter> implements L
 
 
             case R.id.btn_loginin_login:
-
                 account = edt_Account_Login.getText().toString();
                 pwd = edt_Pwd_Login.getText().toString();
                 if (!TextUtils.isEmpty(account) && !TextUtils.isEmpty(pwd)) {
-
                     presenter.login(account,pwd);
-
-//                    subscriber = new BaseSubscriber<BaseResponse<LoginOutBean>>(LoginActivity.this) {
-//                        @Override
-//                        public void onResult(BaseResponse<LoginOutBean> mBaseResponse) {
-//                            if (!mBaseResponse.isOk()) {
-//                                ToastCustomUtil.showLongToast(mBaseResponse.getMsg());
-//                            } else {
-//                                SPUtils.put(LoginActivity.this, Const.KEY_LOGIN_ACCOUNT, account);
-//                                SPUtils.put(LoginActivity.this, Const.KEY_LOGIN_PWD, pwd);
-//                                ActivityJump.NormalJumpAndFinish(LoginActivity.this, MainActivity.class);
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onFail(Throwable e) {
-//                            ToastCustomUtil.showLongToast(e.getMessage());
-//                        }
-//
-//                    };
-                   // observable = HttpRequest.getInstance().getServiceInterface().login(account, pwd);
-
-                    //用observable提供的onErrorResumeNext 则可以将你自定义的Func1 关联到错误处理类中
-                    //observable.onErrorResumeNext(new BaseSubscriber.HttpResponseFunc<BaseResponse<LoginOutBean>>());
-                    //observable.filter(new BaseSubscriber.HttpResponseFunc());
-                     //observable.map(new BaseSubscriber.HttpResponseFunc());
-                    //HttpRequest.getInstance().toSubscribe(observable, subscriber);
                 } else {
                     ToastCustomUtil.showLongToast("请输入正确的账号密码!");
                 }
@@ -231,6 +192,15 @@ public class LoginActivity extends BaseMvpActivity<LoginPreseneter> implements L
     }
 
 
+    @Override
+    public void onShowLoading() {
+        ProgressDialogUtil.getInstance().mshowDialog(LoginActivity.this);
+    }
+
+    @Override
+    public void onHiddenLoading() {
+        ProgressDialogUtil.getInstance().mdismissDialog();
+    }
 
     @Override
     public void onFail(Throwable throwable) {

@@ -36,10 +36,20 @@ public class LoginPreseneter extends BasePreseneter<LoginActivity> implements Lo
     @Override
     public void login(String name, String pwd) {
 
-
         observable=loginModel.login(name,pwd);
-
         subscriber = new BaseSubscriber<BaseResponse<LoginOutBean>>(mContext) {
+
+            @Override
+            public void onShowLoading() {
+
+            }
+
+            @Override
+            public void onHiddenLoading() {
+
+            }
+
+
             @Override
             public void onResult(BaseResponse<LoginOutBean> mBaseResponse) {
                 if (!mBaseResponse.isOk()) {
@@ -47,7 +57,6 @@ public class LoginPreseneter extends BasePreseneter<LoginActivity> implements Lo
                 }
                 mView.onResult(mBaseResponse);
             }
-
             @Override
             public void onFail(Throwable e) {
                 mView.onFail(e);

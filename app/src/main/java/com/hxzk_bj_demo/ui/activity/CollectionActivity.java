@@ -1,8 +1,6 @@
 package com.hxzk_bj_demo.ui.activity;
 import android.annotation.SuppressLint;
-import android.content.res.Resources;
 import android.text.TextUtils;
-import android.view.View;
 
 import com.google.gson.JsonObject;
 import com.hxzk.bj.common.X5ActionMessage;
@@ -21,11 +19,10 @@ import com.xzt.xrouter.router.XrouterResponse;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.litepal.crud.DataSupport;
 
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import butterknife.BindView;
@@ -115,6 +112,16 @@ public class CollectionActivity extends BaseBussActivity implements CustomRecycl
             @Override
             public void onFail(Throwable e) {
                 ToastCustomUtil.showLongToast(e.getMessage());
+            }
+
+            @Override
+            public void onShowLoading() {
+
+            }
+
+            @Override
+            public void onHiddenLoading() {
+
             }
 
             @Override

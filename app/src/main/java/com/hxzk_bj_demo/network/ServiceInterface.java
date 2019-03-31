@@ -6,16 +6,12 @@ import com.hxzk_bj_demo.javabean.CollectionBean;
 import com.hxzk_bj_demo.javabean.HomeListBean;
 import com.hxzk_bj_demo.javabean.HomeSearchBean;
 import com.hxzk_bj_demo.javabean.InversBean;
-import com.hxzk_bj_demo.javabean.LoginBean;
 import com.hxzk_bj_demo.javabean.LoginOutBean;
 import com.hxzk_bj_demo.javabean.PublicListData;
 import com.hxzk_bj_demo.javabean.PublicNumBean;
 
-import org.json.JSONObject;
-
 import java.util.List;
 
-import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;

@@ -9,10 +9,10 @@ import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.javabean.PublicNumBean;
 import com.hxzk_bj_demo.network.BaseResponse;
 import com.hxzk_bj_demo.network.BaseSubscriber;
-import com.hxzk_bj_demo.network.ExceptionHandle;
 import com.hxzk_bj_demo.network.HttpRequest;
 import com.hxzk_bj_demo.ui.adapter.ContentPagerAdapter;
 import com.hxzk_bj_demo.ui.fragment.base.BaseFragment;
+import com.hxzk_bj_demo.utils.ProgressDialogUtil;
 import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
 import com.hxzk_bj_demo.widget.CustomViewPager;
 
@@ -116,6 +116,16 @@ public class InvestFragment extends BaseFragment {
 
     private void requestPublicList() {
         mSubscriber =new BaseSubscriber<BaseResponse<List<PublicNumBean>>>(mContext) {
+            @Override
+            public void onShowLoading() {
+                ProgressDialogUtil.getInstance().mshowDialog(mContext);
+            }
+
+            @Override
+            public void onHiddenLoading() {
+                ProgressDialogUtil.getInstance().mdismissDialog();
+            }
+
             @Override
             public void onResult(BaseResponse<List<PublicNumBean>> listBaseResponse) {
                 if(listBaseResponse.isOk()){

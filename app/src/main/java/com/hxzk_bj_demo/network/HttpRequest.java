@@ -2,6 +2,9 @@ package com.hxzk_bj_demo.network;
 
 import com.google.gson.GsonBuilder;
 import com.hxzk_bj_demo.common.MyApplication;
+
+import java.util.concurrent.TimeUnit;
+
 import retrofit2.CallAdapter;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
@@ -11,6 +14,7 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.schedulers.Schedulers;
+
 
 /**
  * Created by ${赵江涛} on 2018-1-18.
@@ -90,7 +94,7 @@ public class HttpRequest {
     public  <T>  Subscription toSubscribe(Observable<T> observable, Subscriber<T> subscriber) {
         mSubscription= observable.subscribeOn(Schedulers.io())
                 //需要UI绘制后再进行订阅的场景，防止阻塞UI，我们需要延迟订阅执行
-               // .delay(2, TimeUnit.SECONDS)
+                .delay(2, TimeUnit.SECONDS)
                 //取消发生在IO线程
                 .unsubscribeOn(Schedulers.io())
                 //.observeOn(AndroidSchedulers.mainThread())

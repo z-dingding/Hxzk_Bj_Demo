@@ -19,6 +19,7 @@ import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.widget.NestedScrollView;
@@ -153,7 +154,7 @@ public  class UserFragment extends BaseFragment {
                 String title = (String) myViewHolder.tvDetail.getText();
                 switch (title){
                    case "图案解锁":
-                       ActivityJump.NormalJump(mContext,PatternLockActivity.class);
+                      ActivityJump.NormalJump(mContext,PatternLockActivity.class);
                        break;
                   default:
                       ToastCustomUtil.showLongToast(getString(R.string.inDevelopment));

@@ -95,7 +95,7 @@ dependencies {
     //flexbox
     implementation 'com.google.android:flexbox:1.1.0'
     //图案解锁
-    implementation project(':patternlockview')
+   implementation project(':patternlockview')
     implementation project(':patternlockview-reactive')
     //AutoDispose解决RxJava内存泄漏
     implementation 'com.uber.autodispose:autodispose:0.7.0'

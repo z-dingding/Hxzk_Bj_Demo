@@ -1,6 +1,5 @@
 package com.hxzk_bj_demo.newmvp.constract;
 
-import com.hxzk_bj_demo.javabean.LoginBean;
 import com.hxzk_bj_demo.javabean.LoginOutBean;
 import com.hxzk_bj_demo.network.BaseResponse;
 import com.hxzk_bj_demo.newmvp.base.BaseView;
@@ -14,6 +13,12 @@ import rx.Observable;
 public interface LoginConstract {
 
     interface LoginView extends BaseView {
+        @Override
+        void onShowLoading();
+
+        @Override
+        void onHiddenLoading();
+
         @Override
         void onFail(Throwable throwable);
 

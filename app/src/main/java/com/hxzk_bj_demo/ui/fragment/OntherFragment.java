@@ -1,7 +1,6 @@
 package com.hxzk_bj_demo.ui.fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -10,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -22,16 +20,12 @@ import com.google.gson.JsonObject;
 import com.hxzk.bj.common.X5ActionMessage;
 import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.common.Const;
-import com.hxzk_bj_demo.javabean.CollectionBean;
-import com.hxzk_bj_demo.javabean.InversBean;
 import com.hxzk_bj_demo.javabean.PublicListData;
 import com.hxzk_bj_demo.network.BaseResponse;
 import com.hxzk_bj_demo.network.BaseSubscriber;
-import com.hxzk_bj_demo.network.ExceptionHandle;
 import com.hxzk_bj_demo.network.HttpRequest;
 import com.hxzk_bj_demo.ui.adapter.WechatItemAdapter;
 import com.hxzk_bj_demo.ui.fragment.base.BaseFragment;
-import com.hxzk_bj_demo.utils.CalendarUtil;
 import com.hxzk_bj_demo.utils.PixelUtil;
 import com.hxzk_bj_demo.utils.SPUtils;
 import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
@@ -45,7 +39,6 @@ import com.xzt.xrouter.router.XrouterResponse;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -530,6 +523,16 @@ public class OntherFragment extends BaseFragment implements SwipeRefreshLayout.O
      */
     private void requestData() {
         mSubscriber =new BaseSubscriber<BaseResponse<PublicListData>>(mContext) {
+            @Override
+            public void onShowLoading() {
+
+            }
+
+            @Override
+            public void onHiddenLoading() {
+
+            }
+
             @Override
             public void onResult(BaseResponse<PublicListData> publicListDataBaseResponse) {
                 PublicListData  publicListData =publicListDataBaseResponse.getData();

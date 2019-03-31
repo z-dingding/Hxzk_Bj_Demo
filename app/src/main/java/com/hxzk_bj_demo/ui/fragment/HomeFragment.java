@@ -1,10 +1,8 @@
 package com.hxzk_bj_demo.ui.fragment;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -16,19 +14,16 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.google.gson.JsonObject;
 import com.hxzk.bj.common.X5ActionMessage;
 import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.javabean.BannerBean;
 import com.hxzk_bj_demo.javabean.HomeListBean;
 import com.hxzk_bj_demo.network.BaseResponse;
 import com.hxzk_bj_demo.network.BaseSubscriber;
-import com.hxzk_bj_demo.network.ExceptionHandle;
 import com.hxzk_bj_demo.network.HttpRequest;
 import com.hxzk_bj_demo.other.ZoomOutPageTransformer;
 import com.hxzk_bj_demo.ui.adapter.HomeListAdapter;
 import com.hxzk_bj_demo.ui.fragment.base.BaseFragment;
-import com.hxzk_bj_demo.utils.ProgressDialogUtil;
 import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
 import com.hxzk_bj_demo.widget.xrecyclerview.WRecyclerView;
 import com.wenld.wenldbanner.AutoTurnViewPager;
@@ -41,14 +36,8 @@ import com.xzt.xrouter.router.Xrouter;
 import com.xzt.xrouter.router.XrouterRequest;
 import com.xzt.xrouter.router.XrouterResponse;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -259,6 +248,16 @@ public class HomeFragment extends BaseFragment {
     private void requestHomeList(int pageNum) {
 
         baseHomeListSubscriber= new BaseSubscriber<BaseResponse<HomeListBean>>(mContext) {
+
+            @Override
+            public void onShowLoading() {
+
+            }
+
+            @Override
+            public void onHiddenLoading() {
+
+            }
 
             @Override
             public void onResult(BaseResponse<HomeListBean> homeListBeanBaseResponse) {

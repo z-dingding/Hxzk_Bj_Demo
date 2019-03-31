@@ -3,31 +3,24 @@ package com.hxzk_bj_demo.ui.activity.base;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
 
 import com.hxzk.bj.x5webview.statusbartextcolor.StatebusTextColorUtil;
 import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.common.MyApplication;
 import com.hxzk_bj_demo.interfaces.ThemeChangeObserver;
-import com.hxzk_bj_demo.utils.statusbartextcolor.RomUtils;
-import com.hxzk_bj_demo.utils.activity.ActivityJump;
 import com.hxzk_bj_demo.utils.LogUtil;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
+import com.hxzk_bj_demo.utils.activity.ActivityJump;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 import static com.hxzk.bj.x5webview.statusbartextcolor.StatebusTextColorUtil.setLightStatusBar;
-import static com.hxzk.bj.x5webview.statusbartextcolor.StatebusTextColorUtil.transparencyBar;
 
 /**
  * Created by Ding on 2017/12/24
@@ -41,6 +34,7 @@ public abstract class BaseActivity extends AppCompatActivity implements ThemeCha
     //加载子视图内容区域
     LinearLayout layout_ContentView_Base;
 
+    Unbinder unbinder;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,7 +56,7 @@ public abstract class BaseActivity extends AppCompatActivity implements ThemeCha
             View contentView = LayoutInflater.from(this).inflate(setLayoutId(),null);
             layout_ContentView_Base.addView(contentView);
             //绑定Butterknife
-            ButterKnife.bind(this);
+            unbinder=ButterKnife.bind(this);
 
             initView();
             initEvent();
@@ -75,6 +69,7 @@ public abstract class BaseActivity extends AppCompatActivity implements ThemeCha
     protected void onDestroy() {
         ((MyApplication) getApplication()).unregisterObserver(this);
         super.onDestroy();
+        unbinder.unbind();
     }
 
 

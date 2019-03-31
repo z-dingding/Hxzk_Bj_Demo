@@ -6,5 +6,7 @@ package com.hxzk_bj_demo.newmvp.base;
  */
 public interface BaseView {
 
+    void onShowLoading();
+    void onHiddenLoading();
     void onFail(Throwable throwable);
 }
