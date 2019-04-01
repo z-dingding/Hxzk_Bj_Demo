@@ -41,12 +41,12 @@ public class LoginPreseneter extends BasePreseneter<LoginActivity> implements Lo
 
             @Override
             public void onShowLoading() {
-
+                mView.onShowLoading();
             }
 
             @Override
             public void onHiddenLoading() {
-
+             mView.onHiddenLoading();
             }
 
 

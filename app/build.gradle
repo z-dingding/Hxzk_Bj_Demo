@@ -58,9 +58,12 @@ dependencies {
     //添加Rx相关的依赖
     implementation androidDependencies.rxJava
     implementation androidDependencies.rxAndroid
+    implementation 'com.lzy.net:okgo:3.0.1'
+    implementation 'com.lzy.net:okrx2:2.0.1'
+    implementation 'com.lzy.net:okserver:2.0.1'
     //okhttp3
-    implementation 'com.squareup.okhttp3:okhttp:3.2.0'
-    implementation "com.squareup.okhttp3:logging-interceptor:3.10.0"
+    implementation 'com.squareup.okhttp3:okhttp:3.3.1'
+    implementation "com.squareup.okhttp3:logging-interceptor:3.3.1"
     //retrofit2
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
