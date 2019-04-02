@@ -39,6 +39,7 @@ import com.hxzk_bj_demo.ui.fragment.base.BaseFragment;
 import com.hxzk_bj_demo.utils.LanguageUtil;
 import com.hxzk_bj_demo.utils.MarioResourceHelper;
 import com.hxzk_bj_demo.utils.SPUtils;
+import com.hxzk_bj_demo.utils.ScreenUtil;
 import com.hxzk_bj_demo.utils.activity.ActivityJump;
 import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
 import com.tbruyelle.rxpermissions2.RxPermissions;
@@ -136,7 +137,6 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
     @Override
     protected void initEvent() {
         super.initEvent();
-
         vp_Main.addOnPageChangeListener(mOnPageChangeListener);
         bav_Main.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 

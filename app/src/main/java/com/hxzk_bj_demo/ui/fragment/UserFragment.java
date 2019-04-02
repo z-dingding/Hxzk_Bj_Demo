@@ -12,6 +12,7 @@ import com.hxzk_bj_demo.ui.activity.PatternLockActivity;
 import com.hxzk_bj_demo.ui.adapter.UserAdapter;
 import com.hxzk_bj_demo.ui.adapter.UserFunAdapter;
 import com.hxzk_bj_demo.ui.fragment.base.BaseFragment;
+import com.hxzk_bj_demo.utils.ClearCacheUtil;
 import com.hxzk_bj_demo.utils.MarioResourceHelper;
 import com.hxzk_bj_demo.utils.activity.ActivityJump;
 import com.hxzk_bj_demo.utils.recyclerview_itemlistener.RecyclerItemTouchListener;
@@ -102,7 +103,15 @@ public  class UserFragment extends BaseFragment {
         for(int i =0;i<languages.length;i++){
             UserItemBean userItemBean =new UserItemBean();
             userItemBean.setTitle(languages[i]);
-            userItemBean.setDes("");
+            if(languages[i].equals("清除缓存")){
+                try {
+                    String totalSize =ClearCacheUtil.getTotalCacheSize(mContext);
+                    userItemBean.setDes(totalSize);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
             userItemBean.setLocaImg(R.drawable.forward);
             mDetail.add(userItemBean);
         }
@@ -156,7 +165,14 @@ public  class UserFragment extends BaseFragment {
                    case "图案解锁":
                       ActivityJump.NormalJump(mContext,PatternLockActivity.class);
                        break;
-                  default:
+                       case "清除缓存":
+                          ClearCacheUtil.clearAllCache(mContext);
+                           myViewHolder.tvPromptDetail.setText("");
+                           ToastCustomUtil.showLongToast(getString(R.string.clearCacheSuccess));
+
+                           break;
+
+                    default:
                       ToastCustomUtil.showLongToast(getString(R.string.inDevelopment));
                       break;
                 }

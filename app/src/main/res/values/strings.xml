@@ -4,6 +4,7 @@
     <string name="content_is_empty">内容不能为空!</string>
     <string name="avoidClickAgain">请勿重复操作!</string>
     <string name="inDevelopment">正在开发,敬请期待!</string>
+    <string name="clearCacheSuccess">清除缓存成功!</string>
 
 
     <!--===================================网络相关=============================-->

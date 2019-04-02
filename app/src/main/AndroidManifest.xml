@@ -54,6 +54,14 @@
             android:name="android.max_aspect"
             android:value="2.2"/>
 
+        <!--AndroidAutoSize的适配需要先填写效果图的宽高单位dp-->
+        <meta-data
+            android:name="design_width_in_dp"
+            android:value="360"/>
+        <meta-data
+            android:name="design_height_in_dp"
+            android:value="640"/>
+
         <!--android:theme="@style/TranslucentTheme">-->
         <activity android:name=".ui.activity.WelcomeActivity"
             android:theme="@style/welcometheme">

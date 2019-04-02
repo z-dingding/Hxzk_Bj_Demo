@@ -91,8 +91,8 @@ dependencies {
     //ZXing
     implementation 'com.google.zxing:core:3.2.0'
     //Banner
-    // implementation 'com.github.LidongWen:WenldBanner:2.0.2'
-    implementation project(':wenldbanner')
+     implementation 'com.github.LidongWen:WenldBanner:2.0.2'
+    //implementation project(':wenldbanner')
     //腾讯Tbs服务
     implementation project(':x5webview')
     //flexbox
@@ -104,5 +104,7 @@ dependencies {
     implementation 'com.uber.autodispose:autodispose:0.7.0'
     implementation 'com.uber.autodispose:autodispose-android:0.7.0'
     implementation 'com.uber.autodispose:autodispose-android-archcomponents:0.7.0'
+    //采用AndroidAutoSize适配
+    implementation 'me.jessyan:autosize:1.1.2'
 }
 

@@ -3,6 +3,7 @@ package com.hxzk_bj_demo.ui.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,6 +54,12 @@ public class UserAdapter extends RecyclerView.Adapter {
             DetailViewHolder detailViewHolder = (DetailViewHolder) holder;
             Glide.with(mContext).load(mDatas.get(position).getLocaImg()).into(detailViewHolder.ivDetail);
             detailViewHolder.tvDetail.setText(mDatas.get(position).getTitle());
+            if(!TextUtils.isEmpty(mDatas.get(position).getDes())){
+                detailViewHolder.tvPromptDetail.setVisibility(View.VISIBLE);
+                detailViewHolder.tvPromptDetail.setText(mDatas.get(position).getDes());
+            }
+
+
            if(helper != null){
                helper.setTextColorByAttr(detailViewHolder.tvDetail,R.attr.custom_attr_app_textcolor);
            }
@@ -73,11 +80,13 @@ public class UserAdapter extends RecyclerView.Adapter {
 
    public class DetailViewHolder extends RecyclerView.ViewHolder{
        public TextView tvDetail;
+       public TextView tvPromptDetail;
        public ImageView ivDetail;
 
         public DetailViewHolder(@NonNull View itemView) {
            super(itemView);
             tvDetail=itemView.findViewById(R.id.tv_detail);
+            tvPromptDetail=itemView.findViewById(R.id.tv_promptdetail);
             ivDetail=itemView.findViewById(R.id.iv_detail);
        }
    }
