@@ -3,7 +3,7 @@
 
     <item android:drawable="@color/white"/>
     <item>
-        <bitmap android:src="@drawable/welcome_bg"/>
+        <bitmap android:src="@drawable/welcome"/>
     </item>
 
 </layer-list>

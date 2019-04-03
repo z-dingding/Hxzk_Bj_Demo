@@ -14,6 +14,7 @@ import com.hxzk_bj_demo.common.MyApplication;
 import com.hxzk_bj_demo.interfaces.ThemeChangeObserver;
 import com.hxzk_bj_demo.utils.LogUtil;
 import com.hxzk_bj_demo.utils.activity.ActivityJump;
+import com.umeng.analytics.MobclickAgent;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -64,6 +65,20 @@ public abstract class BaseActivity extends AppCompatActivity implements ThemeCha
 
         }
     }
+    //Session启动、App使用时长等基础数据统计接口API：
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
 
     @Override
     protected void onDestroy() {

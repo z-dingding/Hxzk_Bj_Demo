@@ -4,6 +4,8 @@ buildscript {
         google()
         mavenCentral()
         jcenter()
+        //友盟新maven仓库地址
+        maven { url 'https://dl.bintray.com/umsdk/release' }
     }
 
     dependencies {
@@ -21,6 +23,9 @@ allprojects {
         google()
         mavenCentral()
         jcenter()
+        //友盟新maven仓库地址
+        maven { url 'https://dl.bintray.com/umsdk/release' }
+
 
         //BRVAH 框架引入
         maven { url "https://jitpack.io" }

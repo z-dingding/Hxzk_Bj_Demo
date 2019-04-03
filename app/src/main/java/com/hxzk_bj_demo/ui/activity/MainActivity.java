@@ -43,6 +43,8 @@ import com.hxzk_bj_demo.utils.ScreenUtil;
 import com.hxzk_bj_demo.utils.activity.ActivityJump;
 import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
 import com.tbruyelle.rxpermissions2.RxPermissions;
+import com.umeng.analytics.MobclickAgent;
+import com.umeng.socialize.UMShareAPI;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -202,6 +204,8 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
                                     //清空保存在本地的cookie
                                     SPUtils.remove(MainActivity.this, "ygcy.drugwebcn.com");
                                     ActivityJump.finnishAllActivitys();
+                                    //登出
+                                    MobclickAgent.onProfileSignOff();
                                     ActivityJump.NormalJumpAndFinish(MainActivity.this, LoginActivity.class);
                                 }
                             }
@@ -473,6 +477,7 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
     @Override
     protected void doActivityResult(int requestCode, int resultCode, Intent data) {
         super.doActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
         /**
          * 处理二维码扫描结果
          */

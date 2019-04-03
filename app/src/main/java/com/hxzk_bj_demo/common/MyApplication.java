@@ -13,6 +13,8 @@ import com.hxzk_bj_demo.ui.activity.WelcomeActivity;
 import com.hxzk_bj_demo.utils.LanguageUtil;
 import com.hxzk_bj_demo.utils.SPUtils;
 import com.squareup.leakcanary.LeakCanary;
+import com.umeng.commonsdk.UMConfigure;
+import com.umeng.socialize.PlatformConfig;
 import com.xzt.xrouter.router.Xrouter;
 
 import org.litepal.LitePalApplication;
@@ -82,6 +84,26 @@ public class MyApplication extends LitePalApplication {
         registerActivityLifecycleCallbacks(callbacks);
         //初始化路由
         initRouter();
+        //友盟相关
+        initUMeng();
+
+
+    }
+
+    /**
+     * 初始化友盟相关
+     */
+    private void initUMeng() {
+        //接口控制【友盟+】LOG的输出
+        UMConfigure.setLogEnabled(true);
+        //添加初始化方法:上下文,AppKey,Channel,设备类型，Push推送业务的secret
+        UMConfigure.init(this,UMConfigure.DEVICE_TYPE_PHONE, "");
+        PlatformConfig.setWeixin("wxdc1e388c3822c80b", "3baf1193c85774b3fd9d18447d76cab0");
+
+        PlatformConfig.setWeixin("wxdc1e388c3822c80b", "3baf1193c85774b3fd9d18447d76cab0");
+        PlatformConfig.setSinaWeibo("3921700954", "04b48b094faeb16683c32669824ebdad","http://sns.whalecloud.com");
+        PlatformConfig.setQQZone("100424468", "c7394704798a158208a74ab60104f0ba");
+
 
     }
 

@@ -22,6 +22,7 @@ import com.hxzk_bj_demo.utils.ProgressDialogUtil;
 import com.hxzk_bj_demo.utils.SPUtils;
 import com.hxzk_bj_demo.utils.activity.ActivityJump;
 import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
+import com.umeng.analytics.MobclickAgent;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -211,6 +212,8 @@ public class LoginActivity extends BaseMvpActivity<LoginPreseneter> implements L
     public void onResult(BaseResponse<LoginOutBean> loginBean) {
         SPUtils.put(LoginActivity.this, Const.KEY_LOGIN_ACCOUNT, account);
         SPUtils.put(LoginActivity.this, Const.KEY_LOGIN_PWD, pwd);
+        //当用户使用自有账号登录时，可以这样统计：
+        MobclickAgent.onProfileSignIn(account);
         ActivityJump.NormalJumpAndFinish(LoginActivity.this, MainActivity.class);
     }
 }

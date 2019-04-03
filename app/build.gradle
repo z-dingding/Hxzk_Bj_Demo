@@ -19,12 +19,42 @@ android {
                 includeCompileClasspath = true
             }
         }
+        //必须要保证所有的flavor 都属于同一个维度
+        flavorDimensions "default"
+        //此段代码解决的是因为引入了第三方jar包，而项目里方法数过多，需要分包，android项目有方法数限制，最多64K。
+        multiDexEnabled true
+        //添加如下配置解决Butterknife 引起的Annotation processors must be explicitly declared now.
+        javaCompileOptions { annotationProcessorOptions { includeCompileClasspath = true } }
+    }
+    signingConfigs {
+        release {
+            storeFile file('suiyi.jks')
+            storePassword "hxzk123456"
+            keyAlias "suiyi"
+            keyPassword "hxzk123456"
+        }
+        debug {
+            storeFile file('suiyi.jks')
+            storePassword "hxzk123456"
+            keyAlias "suiyi"
+            keyPassword "hxzk123456"
+        }
     }
     buildTypes {
-        release {
+
+        debug {
+
             minifyEnabled false
+            signingConfig signingConfigs.debug
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        release {
+
+            minifyEnabled false
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
     }
 
     packagingOptions { //解决倒包冲突
@@ -35,6 +65,17 @@ android {
         sourceCompatibility 1.8
         targetCompatibility 1.8
     }
+
+    productFlavors {
+        yingyongbao {}
+        sanxing {}
+        huawei {}
+    }
+    //多渠道打包支持
+    productFlavors.all {
+        flavor -> flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
+    }
+
 }
 
 dependencies {
@@ -43,68 +84,108 @@ dependencies {
     implementation androidDependencies.design
     implementation androidDependencies.appcompat
     implementation androidDependencies.constraint
+
     //Glide版本
     implementation androidDependencies.glide
+
     //annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
     implementation androidDependencies.glideAnnotationProcessor
+
     //Butterknife
     implementation 'com.jakewharton:butterknife:10.0.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
+
     //leakcanary内存检测
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+
     //BRVAH是一个强大的RecyclerAdapter框架
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
+
     //添加Rx相关的依赖
     implementation androidDependencies.rxJava
     implementation androidDependencies.rxAndroid
     implementation 'com.lzy.net:okgo:3.0.1'
     implementation 'com.lzy.net:okrx2:2.0.1'
     implementation 'com.lzy.net:okserver:2.0.1'
+
     //okhttp3
     implementation 'com.squareup.okhttp3:okhttp:3.3.1'
-    implementation "com.squareup.okhttp3:logging-interceptor:3.3.1"
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.3.1'
+
     //retrofit2
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
-//    //Retrofit2所需要的Gson包所需要的包
-//    implementation 'com.google.code.gson:gson:2.8.1'
-//    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
-//    //GsonConverterFactory和RxJavaCallAdapterFactory
-//    implementation 'com.squareup.retrofit2:converter-protobuf:2.0.2'
-//    implementation 'com.squareup.retrofit2:converter-gson:2.0.2'
-//    implementation 'com.squareup.retrofit2:converter-scalars:2.0.2'
-//    implementation 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
-//    implementation 'com.squareup.okhttp3:okhttp:3.2.0'
-//    implementation 'com.squareup.okio:okio:1.8.0'
+
+    //    //Retrofit2所需要的Gson包所需要的包
+
+    //    implementation 'com.google.code.gson:gson:2.8.1'
+
+    //    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+
+    //    //GsonConverterFactory和RxJavaCallAdapterFactory
+
+    //    implementation 'com.squareup.retrofit2:converter-protobuf:2.0.2'
+
+    //    implementation 'com.squareup.retrofit2:converter-gson:2.0.2'
+
+    //    implementation 'com.squareup.retrofit2:converter-scalars:2.0.2'
+
+    //    implementation 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
+
+    //    implementation 'com.squareup.okhttp3:okhttp:3.2.0'
+
+    //    implementation 'com.squareup.okio:okio:1.8.0'
+
     //Cookies持久化库
+
     // implementation 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
+
     //添加litepal依赖
     implementation 'org.litepal.android:core:1.6.0'
+
     //进度dialog
     implementation 'com.wang.avi:library:2.1.3'
+
     //运行时权限
     implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar'
+
     //implementation 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
+
     //implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
+
     //ZXing
     implementation 'com.google.zxing:core:3.2.0'
+
     //Banner
-     implementation 'com.github.LidongWen:WenldBanner:2.0.2'
+    implementation 'com.github.LidongWen:WenldBanner:2.0.2'
+
     //implementation project(':wenldbanner')
+
     //腾讯Tbs服务
     implementation project(':x5webview')
+
     //flexbox
     implementation 'com.google.android:flexbox:1.1.0'
+
     //图案解锁
-   implementation project(':patternlockview')
+    implementation project(':patternlockview')
     implementation project(':patternlockview-reactive')
+
     //AutoDispose解决RxJava内存泄漏
     implementation 'com.uber.autodispose:autodispose:0.7.0'
     implementation 'com.uber.autodispose:autodispose-android:0.7.0'
     implementation 'com.uber.autodispose:autodispose-android-archcomponents:0.7.0'
+
     //采用AndroidAutoSize适配
     implementation 'me.jessyan:autosize:1.1.2'
+
+    //基础组件库和统计SDK库依赖
+    implementation 'com.umeng.umsdk:analytics:8.0.0'
+    implementation 'com.umeng.umsdk:common:2.0.0'
+    implementation files('libs/umeng-share-core-6.9.4.jar')
+    implementation files('libs/umeng-share-QQ-simplify-6.9.4.jar')
+    implementation files('libs/umeng-shareboard-widget-6.9.4.jar')
 }
 
