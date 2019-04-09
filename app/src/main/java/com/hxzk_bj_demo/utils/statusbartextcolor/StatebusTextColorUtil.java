@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.hxzk_bj_demo.R;
+import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -42,23 +42,26 @@ public class StatebusTextColorUtil {
     }
 
     /**
-     * // 在setContentView之前执行
+     *  在setContentView之前执行
+     * 从Android4.4开始，才可以实现状态栏着色
      * 修改状态栏颜色，支持4.4以上版本
      * @param activity
      * @param colorId
      */
     public static void setStatusBarColor(Activity activity, int colorId) {
+        //5.0版本以上可以直接从主题或代码设置状态栏颜色
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = activity.getWindow();
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(activity.getResources().getColor(colorId));
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            //使用SystemBarTint库使4.4版本状态栏变色，需要先将状态栏设置为透明
+            //先将4.4-5.0版本将状态栏设置为透明
             transparencyBar(activity);
-//            SystemBarTintManager tintManager = new SystemBarTintManager(activity);
-//            tintManager.setStatusBarTintEnabled(true);
-//            tintManager.setStatusBarTintResource(colorId);
+            //然后用SystemBarTintManager三方库实现状态栏着色
+            SystemBarTintManager tintManager = new SystemBarTintManager(activity);
+            tintManager.setStatusBarTintEnabled(true);
+            tintManager.setStatusBarTintResource(colorId);
         }
     }
 

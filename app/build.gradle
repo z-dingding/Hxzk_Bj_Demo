@@ -87,7 +87,6 @@ dependencies {
 
     //Glide版本
     implementation androidDependencies.glide
-
     //annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
     implementation androidDependencies.glideAnnotationProcessor
 
@@ -187,5 +186,7 @@ dependencies {
     implementation files('libs/umeng-share-core-6.9.4.jar')
     implementation files('libs/umeng-share-QQ-simplify-6.9.4.jar')
     implementation files('libs/umeng-shareboard-widget-6.9.4.jar')
+    //状态栏着色库
+    implementation 'com.readystatesoftware.systembartint:systembartint:1.0.3'
 }
 

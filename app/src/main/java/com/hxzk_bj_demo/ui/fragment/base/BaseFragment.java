@@ -89,6 +89,8 @@ public abstract class BaseFragment extends LazyLoadFragment implements ThemeChan
         }
 
     }
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
