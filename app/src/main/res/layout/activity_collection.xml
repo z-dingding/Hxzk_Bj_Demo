@@ -6,11 +6,11 @@
               android:orientation="vertical">
 
 
-    <com.hxzk_bj_demo.widget.CustomRecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_collect"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    </com.hxzk_bj_demo.widget.CustomRecyclerView>
+    </androidx.recyclerview.widget.RecyclerView>
 
 
 

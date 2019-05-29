@@ -11,6 +11,7 @@ import com.hxzk_bj_demo.network.BaseSubscriber;
 import com.hxzk_bj_demo.network.HttpRequest;
 import com.hxzk_bj_demo.ui.activity.base.BaseBussActivity;
 import com.hxzk_bj_demo.ui.adapter.CollectionAdapter;
+import com.hxzk_bj_demo.widget.SwipeItemLayout;
 import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
 import com.hxzk_bj_demo.widget.CustomRecyclerView;
 import com.xzt.xrouter.router.Xrouter;
@@ -25,6 +26,8 @@ import java.util.List;
 
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import butterknife.BindView;
 import rx.Observable;
 import rx.Subscriber;
@@ -32,13 +35,14 @@ import rx.Subscriber;
 /**
  * Created by ${赵江涛} on 2018-1-24.
  * 作用:
+ * implements CustomRecyclerView.onGetListener
  */
 
-public class CollectionActivity extends BaseBussActivity implements CustomRecyclerView.onGetListener{
+public class CollectionActivity extends BaseBussActivity  {
 
-
+    //CustomRecyclerView mRecyclerCollect;
     @BindView(R.id.recycler_collect)
-    CustomRecyclerView mRecyclerCollect;
+     RecyclerView mRecyclerCollect;
     CollectionAdapter mAdapter;
     //数据源
     List mData;
@@ -61,14 +65,14 @@ public class CollectionActivity extends BaseBussActivity implements CustomRecycl
 
     @Override
     protected void initView() {
-       super.initView();
+        super.initView();
         initToolbar(R.drawable.back, "收藏");
     }
 
 
     @Override
     protected void initEvent() {
-        mRecyclerCollect.setListener(this);
+        //mRecyclerCollect.setListener(this);
     }
 
 
@@ -88,10 +92,10 @@ public class CollectionActivity extends BaseBussActivity implements CustomRecycl
     }
 
 
-    @Override
-    public void getPosition(int position) {
-
-    }
+//    @Override
+//    public void getPosition(int position) {
+//
+//    }
 
     @Override
     public void notifyByThemeChanged() {
@@ -134,18 +138,20 @@ public class CollectionActivity extends BaseBussActivity implements CustomRecycl
                     mRecyclerCollect.addItemDecoration(new DividerItemDecoration(CollectionActivity.this, DividerItemDecoration.VERTICAL));
                     mRecyclerCollect.setLayoutManager(manager);
                     mRecyclerCollect.setAdapter(mAdapter);
+                    //添加侧滑监听
+                    mRecyclerCollect.addOnItemTouchListener(new SwipeItemLayout.OnSwipeItemTouchListener(CollectionActivity.this));
 
                     mAdapter.setOnItemDelListener(new CollectionAdapter.OnItemDelListener() {
                         @Override
                         public void delItemPos(int position) {
                             //同时删除服务器数据
-                            delPosition =position;
-                            int articalId=((CollectionBean.DatasBean)mData.get(position)).getId();
-                           if(!TextUtils.isEmpty(articalId+"")){
-                               delCollection(articalId+"");
-                           }
+                            delPosition = position;
+                            int articalId = ((CollectionBean.DatasBean) mData.get(position)).getId();
+                            if (!TextUtils.isEmpty(articalId + "")) {
+                                delCollection(articalId + "");
+                            }
                         }
-                    });
+                        });
                 }else{
                     ToastCustomUtil.showShortToast("您还没有收藏上商家哦!");
                 }

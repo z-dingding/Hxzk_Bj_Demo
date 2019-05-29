@@ -10,6 +10,11 @@ import android.view.inputmethod.InputMethodManager;
  */
 public class KeyboardUtil {
 
+
+    /**
+     * 软键盘显示
+     * @param view
+     */
     public static void showKeyboard(View view) {
         InputMethodManager imm = (InputMethodManager) view.getContext()
                 .getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -19,6 +24,10 @@ public class KeyboardUtil {
         }
     }
 
+    /**
+     * 软键盘隐藏
+     * @param view
+     */
     public static void hideKeyboard(View view){
         InputMethodManager imm = (InputMethodManager) view.getContext()
                 .getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -26,11 +35,5 @@ public class KeyboardUtil {
             imm.hideSoftInputFromWindow(view.getWindowToken(),0);
         }
     }
-    public static void  toggleSoftInput(View view){
-        InputMethodManager imm = (InputMethodManager) view.getContext()
-                .getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (imm != null) {
-            imm.toggleSoftInput(0,0);
-        }
-    }
+
 }

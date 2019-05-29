@@ -134,4 +134,11 @@ public interface ServiceInterface {
     Observable<JsonObject> deleteCollectArtical(@Path("aricalId") String aricalId);
 
 
+    /**
+     * 获取首页Banner接口
+     * @return
+     */
+    @GET("query?siteCode=bm35000001&database=all&method=json&qt=%E8%8D%AF%E5%93%81&page=1&pageSize=10")
+    Observable<JsonObject> testMethod();
+
 }

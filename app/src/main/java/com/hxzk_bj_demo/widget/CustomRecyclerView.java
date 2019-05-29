@@ -110,8 +110,9 @@ public class CustomRecyclerView extends RecyclerView {
                 View view = getChildAt(pos - mFirstPosition);
                 CollectionAdapter.MyViewHolder viewHolder = (CollectionAdapter.MyViewHolder) getChildViewHolder(view);
                 itemLayout = viewHolder.layout;
-                textView = (TextView) itemLayout.findViewById(R.id.item_delete_txt);
-                imageView = (ImageView) itemLayout.findViewById(R.id.item_delete_img);
+                //变动二
+                //textView = (TextView) itemLayout.findViewById(R.id.item_delete_txt);
+                //imageView = (ImageView) itemLayout.findViewById(R.id.item_delete_img);
             }
             break;
 
@@ -168,7 +169,8 @@ public class CustomRecyclerView extends RecyclerView {
                         imageView.setOnClickListener(new OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                ((CollectionAdapter) getAdapter()).removeRecycle(pos);
+                                //变动一
+                              //  ((CollectionAdapter) getAdapter()).removeRecycle(pos);
                             }
                         });
 

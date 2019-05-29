@@ -168,6 +168,7 @@ public  class UserFragment extends BaseFragment {
                        case "清除缓存":
                           ClearCacheUtil.clearAllCache(mContext);
                            myViewHolder.tvPromptDetail.setText("");
+
                            ToastCustomUtil.showLongToast(getString(R.string.clearCacheSuccess));
 
                            break;

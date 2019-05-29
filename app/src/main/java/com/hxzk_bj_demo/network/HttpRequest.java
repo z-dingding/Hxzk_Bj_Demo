@@ -2,12 +2,8 @@ package com.hxzk_bj_demo.network;
 
 import com.google.gson.GsonBuilder;
 import com.hxzk_bj_demo.common.MyApplication;
-
-
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import retrofit2.CallAdapter;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
@@ -17,7 +13,6 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.schedulers.Schedulers;
-
 import static com.lzy.okgo.utils.HttpUtils.runOnUiThread;
 
 
@@ -33,6 +28,7 @@ public class HttpRequest {
     private volatile static HttpRequest sHttpRequest = null;
     //请求服务器ip或域名>
     public static String BASE_URL="https://www.wanandroid.com/";
+    //public static String BASE_URL="http://so.kaipuyun.cn/";
     /*public static String BASE_URL="http://ygcy.drugwebcn.com/";*/
 
 

@@ -2,6 +2,7 @@ package com.hxzk_bj_demo.utils;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.View;
 
 import java.util.List;
 
@@ -46,16 +47,17 @@ public abstract class LazyLoadFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        isViewCreated=true;//在onCreateView执行完毕，将isViewCreated改为true; 
+        //在onCreateView执行完毕，将isViewCreated改为true;
+        isViewCreated=true;
     }
 
     @Override
     public void onStart() {
         super.onStart();
-     //LogUtil.e(getClass().getSimpleName(),"------>onStart");
         //isHidden()是Fragment是否处于隐藏状态和isVisible()有区别
         //getUserVisibleHint(),Fragement是否可见
-        if(!isHidden()&& getUserVisibleHint()){//如果Fragment没有隐藏且可见
+        //如果Fragment没有隐藏且可见
+        if(!isHidden()&& getUserVisibleHint()){
             //执行分发的方法,三种结果对应自Fragment的三个回调，对应的操作，Fragment首次加载，可见，不可见
             disPatchFragment(true);
         }
@@ -66,7 +68,6 @@ public abstract class LazyLoadFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        //LogUtil.e(getClass().getSimpleName(),"------>onResume");
         if(!mIsFirstVisible){
             //表示点击home键又返回操作,设置可见状态为ture
             if(!isHidden()&& !getUserVisibleHint() && currentVisibleState){
@@ -80,7 +81,6 @@ public abstract class LazyLoadFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        //LogUtil.e(getClass().getSimpleName(),"------>onPause");
         //表示点击home键,原来可见的Fragment要走该方法，更改Fragment的状态为不可见
         if(!isHidden()&& getUserVisibleHint()){
             disPatchFragment(false);
@@ -91,7 +91,6 @@ public abstract class LazyLoadFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        //LogUtil.e(getClass().getSimpleName(),"------>onDestroyView");
         //当 View 被销毁的时候我们需要重新设置 isViewCreated mIsFirstVisible 的状态
         isViewCreated = false;
         mIsFirstVisible = true;
@@ -113,9 +112,12 @@ public abstract class LazyLoadFragment extends Fragment {
         }
 
         currentVisibleState=visible;
-        if(visible){//Fragment可见
-            if(mIsFirstVisible){//可见又是第一次
-                mIsFirstVisible=false;//改变首次可见的状态
+        //Fragment可见
+        if(visible){
+            //可见又是第一次
+            if(mIsFirstVisible){
+                //改变首次可见的状态
+                mIsFirstVisible=false;
                 onFragmentFirst();
             }//可见但不是第一次
             onFragmentVisble();

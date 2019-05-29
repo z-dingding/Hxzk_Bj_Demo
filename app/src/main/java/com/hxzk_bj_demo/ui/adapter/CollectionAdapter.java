@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -94,6 +95,13 @@ public class CollectionAdapter extends RecyclerView.Adapter {
             }
         });
 
+        viewHolder.btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mOnItemDelListener.delItemPos(position);
+            }
+        });
+
     }
 
     @Override
@@ -109,9 +117,9 @@ public class CollectionAdapter extends RecyclerView.Adapter {
      * 自定义RecyclerView的滑动删除回调
      * @param position
      */
-    public void removeRecycle(int position) {
-        mOnItemDelListener.delItemPos(position);
-    }
+//    public void removeRecycle(int position) {
+//        mOnItemDelListener.delItemPos(position);
+//    }
     OnItemDelListener  mOnItemDelListener;
     public interface  OnItemDelListener {
         void delItemPos(int position);
@@ -153,15 +161,16 @@ public class CollectionAdapter extends RecyclerView.Adapter {
         TextView  tvAddress;
 
 
-        public ImageView img;
+        //public ImageView img;
+        Button btnDelete ;
         public LinearLayout layout;
 
         public MyViewHolder(View itemView) {
             super(itemView);
 
-            img= (ImageView) itemView.findViewById(R.id.item_delete_img);
+            //img= (ImageView) itemView.findViewById(R.id.item_delete_img);
             layout= (LinearLayout) itemView.findViewById(R.id.item_recycler_ll);
-
+            btnDelete=itemView.findViewById(R.id.delete);
 
             imgPhoto= (ImageView) itemView.findViewById(R.id.imgitem_photo_colleciton);
             tvName= (TextView) itemView.findViewById(R.id.tvitem_entname_colleciton);

@@ -29,7 +29,8 @@ public class CustomViewPager extends ViewPager {
     @Override
     public void setCurrentItem(int item) {
         //super.setCurrentItem(item);源码
-        super.setCurrentItem(item,false);//smoothScroll false表示切换的时候,不经过两个页面的中间页
+        //smoothScroll false表示切换的时候,不经过两个页面的中间页
+        super.setCurrentItem(item,false);
     }
 
     /**
