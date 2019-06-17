@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -76,7 +77,9 @@ public abstract class BaseBussActivity extends BaseActivity {
 
     }
 
-     //自定义主题刷新ui
+    /**
+     *  自定义主题刷新ui
+     */
     @Override
     public void notifyByThemeChanged() {
 
@@ -137,7 +140,8 @@ public abstract class BaseBussActivity extends BaseActivity {
      */
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        if (isShowMenu) {//显示菜单
+        //显示菜单
+        if (isShowMenu) {
             switch (fragmentFlag) {
                 case 0:
                     menu.findItem(R.id.toolbar_search).setVisible(true);
@@ -164,7 +168,9 @@ public abstract class BaseBussActivity extends BaseActivity {
         return super.onPrepareOptionsMenu(menu);
     }
 
-    //Google已经不支持在Toolbar的menu中显示图标了，如果要显示，就必须运用反射，强制显示icon
+    /**
+     *  Google已经不支持在Toolbar的menu中显示图标了，如果要显示，就必须运用反射，强制显示icon
+     */
     @Override
     public boolean onMenuOpened(int featureId, Menu menu) {
         if (menu != null) {
@@ -200,25 +206,32 @@ public abstract class BaseBussActivity extends BaseActivity {
                 startActivityForResult(intent,REQUEST_CODE);
                 break;
             case android.R.id.home:
-
                 finishActivity();
                 break;
-
         }
-
         return super.onOptionsItemSelected(item);
     }
 
 
     /**
-     * 页面跳转,将当前activity添加到栈中
+     * 页面跳转动画,将当前activity添加到栈中
      */
     public void addActivityToManager(Context context, Class clazz) {
         ActivityJump.NormalJump(context, clazz);
+        animNext();
     }
 
+
+
     /**
-     * finish掉当前的activity
+     * 返回上一页面退出动画,关闭当前界面
+     */
+    public void jumpFinishCurrentActivity(Activity mActivity, Class cls) {
+        ActivityJump.NormalJumpAndFinish(mActivity, cls);
+        animNext();
+    }
+    /**
+     * finish掉当前的页面动画
      */
     public void finishActivity() {
         ActivityJump.Back(this);
@@ -226,14 +239,16 @@ public abstract class BaseBussActivity extends BaseActivity {
     }
 
     /**
-     * 页面跳转,关闭当前界面
+     * Bundle携参跳转带动画效果
+     * @param mContext
+     * @param cls
+     * @param bundle
      */
-    public void jumpFinishCurrentActivity(Activity mActivity, Class cls) {
-        ActivityJump.NormalJumpAndFinish(mActivity, cls);
+    public void jumpBundleActivity(Context mContext, Class<?> cls, Bundle bundle){
+        ActivityJump.BundleJump(mContext, cls, bundle);
         animNext();
+
     }
-
-
     /**
      * @Desc 页面跳转动画
      */

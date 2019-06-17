@@ -1,23 +1,17 @@
 package com.hxzk_bj_demo.ui.activity;
 
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
-
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.JsonObject;
 import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.network.HttpRequest;
 import com.hxzk_bj_demo.ui.activity.base.BaseBussActivity;
 import com.hxzk_bj_demo.utils.activity.ActivityJump;
-import com.hxzk_bj_demo.utils.toastutil.ToastCustom;
 import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observable;
 import rx.Subscriber;

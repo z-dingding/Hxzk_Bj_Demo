@@ -1,6 +1,7 @@
 package com.hxzk_bj_demo.ui.activity.base;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -31,7 +32,7 @@ import static com.hxzk.bj.x5webview.statusbartextcolor.StatebusTextColorUtil.set
 public abstract class BaseActivity extends AppCompatActivity implements ThemeChangeObserver {
     private static final String TAG = "BaseActivity";
 
-    protected  static Activity _context;
+    protected Context _context;
     //加载子视图内容区域
     LinearLayout layout_ContentView_Base;
 
@@ -99,7 +100,8 @@ public abstract class BaseActivity extends AppCompatActivity implements ThemeCha
 
     @Override
     public void loadingCurrentTheme() {
-            if(MyApplication.getAppTheme()){//夜间模式
+               //夜间模式
+            if(MyApplication.getAppTheme()){
                 setTheme(R.style.Base_CustomTheme_Night);
                 StatebusTextColorUtil.setStatusBarColor(this,R.color.custom_color_app_status_bg_night);
                 setLightStatusBar(this, false);
