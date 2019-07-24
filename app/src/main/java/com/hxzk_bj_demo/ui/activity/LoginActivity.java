@@ -1,5 +1,8 @@
 package com.hxzk_bj_demo.ui.activity;
 
+import android.content.ComponentName;
+import android.content.Intent;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,6 +83,16 @@ public class LoginActivity extends BaseMvpActivity<LoginPreseneter> implements L
         layoutBottom = findViewById(R.id.layout_bottom);
         boardHelper = new KeyBoardHelperUtil(this);
         boardHelper.onCreate();
+
+        String data = getIntent().getStringExtra("type");
+        if(!TextUtils.isEmpty(data)){
+            ToastCustomUtil.showLongToast(data);
+        }else {
+            Uri uri = getIntent().getData();
+            if (!TextUtils.isEmpty(uri+"")) {
+                ToastCustomUtil.showLongToast(uri + "");
+            }
+        }
     }
 
     @Override
@@ -184,7 +197,6 @@ public class LoginActivity extends BaseMvpActivity<LoginPreseneter> implements L
                 } else {
                     ToastCustomUtil.showLongToast("请输入正确的账号密码!");
                 }
-
                 break;
 
 

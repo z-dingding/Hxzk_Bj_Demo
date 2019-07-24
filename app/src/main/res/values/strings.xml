@@ -27,6 +27,9 @@
     <string name="investment">投资</string>
     <string name="mine">我的</string>
 
+    <!--=====================================登录界面字符=============================-->
+    <string name="splash_animationone">我们很</string>
+    <string name="splash_animationtwo">不随意</string>
 
     <!--=====================================登录界面字符=============================-->
 

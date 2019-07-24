@@ -85,9 +85,20 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <!--  登录界面  -->
+        <!--  登录界面定义intent-filter是为了测试 -->
         <activity android:name=".ui.activity.LoginActivity"
-            android:configChanges="locale"/>
+            android:configChanges="locale"
+            android:exported="true"
+            >
+            <intent-filter>
+                    <data
+                        android:host="host"
+                        android:path="/path"
+                        android:scheme="scheme" />
+                    <action android:name="android.intent.action.VIEW" />
+                    <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <!--  注册界面  -->
         <activity android:name=".ui.activity.RegisterActivity"
             android:configChanges="locale"/>
@@ -171,6 +182,16 @@
             android:name="com.tencent.connect.common.AssistActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:configChanges="orientation|keyboardHidden|screenSize"/>
+
+
+        <!--拨号中输入暗码:*#*#1010#*#*就能启动相应的应用程序-->
+        <receiver
+            android:name=".receiver.SecretCodeReceiver">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SECRET_CODE" />
+                <data android:scheme="android_secret_code" android:host="110"  />
+            </intent-filter>
+        </receiver>
     </application>
 
 

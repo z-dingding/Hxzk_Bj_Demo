@@ -28,8 +28,7 @@ public class HttpRequest {
     private volatile static HttpRequest sHttpRequest = null;
     //请求服务器ip或域名>
     public static String BASE_URL="https://www.wanandroid.com/";
-    //public static String BASE_URL="http://so.kaipuyun.cn/";
-    /*public static String BASE_URL="http://ygcy.drugwebcn.com/";*/
+
 
 
     //Rotrofit

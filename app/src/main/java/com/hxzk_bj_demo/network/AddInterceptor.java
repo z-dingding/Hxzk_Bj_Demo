@@ -48,16 +48,18 @@ public class AddInterceptor implements Interceptor {
         if(!TextUtils.isEmpty(cookie)){
             builder.addHeader("Cookie",cookie);
         }
+        //拦截器实现关键部分是调用chain.proceed(request)。这个方法是所有HTTP工作发生的地方，以满足请求和响应的需求。
         return chain.proceed(builder.build());
     }
 
 
 
     private String getCookie(String url,String domain) {
-        if(!TextUtils.isEmpty(url) && !TextUtils.isEmpty((String) SPUtils.get(MyApplication.getAppContext(),domain,""))){
-          return (String) SPUtils.get(MyApplication.getAppContext(),domain,"");
+        if(!TextUtils.isEmpty(url) && !TextUtils.isEmpty((String) SPUtils.get(MyApplication.getAppContext(),domain,""))) {
+            return (String) SPUtils.get(MyApplication.getAppContext(), domain, "");
         }
         return null;
+
     }
 
 

@@ -1,7 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-   android:layout_width="match_parent"
-   android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:gravity="center_horizontal">
+    <TextView
+        android:id="@+id/tv_animationone"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:gravity="right|center_vertical"
+        android:text="@string/splash_animationone"
+        android:textSize="25sp"
+        android:textColor="@color/black"/>
+    <TextView
+        android:id="@+id/tv_animationtwo"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:gravity="left|center_vertical"
+        android:text="@string/splash_animationtwo"
+        android:textSize="25sp"
+        android:textColor="@color/black"/>
+
+
+
 
 </LinearLayout>
