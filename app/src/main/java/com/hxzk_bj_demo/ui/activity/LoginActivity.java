@@ -84,15 +84,6 @@ public class LoginActivity extends BaseMvpActivity<LoginPreseneter> implements L
         boardHelper = new KeyBoardHelperUtil(this);
         boardHelper.onCreate();
 
-        String data = getIntent().getStringExtra("type");
-        if(!TextUtils.isEmpty(data)){
-            ToastCustomUtil.showLongToast(data);
-        }else {
-            Uri uri = getIntent().getData();
-            if (!TextUtils.isEmpty(uri+"")) {
-                ToastCustomUtil.showLongToast(uri + "");
-            }
-        }
     }
 
     @Override

@@ -71,15 +71,6 @@ public class MyApplication extends LitePalApplication {
         //获取全局Context对象
         appContext = getApplicationContext();
         httpClientBuilder = getOkHttpClientbBuild();
-//        httpClientBuilder = new OkHttpClient.Builder();
-//       // 初始化PersistenerCookiesJar开源库
-//        ClearableCookieJar cookieJar =
-//                new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(MyApplication.getAppContext()));
-//        //手动创建一个OkHttpClient并设置超时时间
-//        httpClientBuilder.connectTimeout(10, TimeUnit.SECONDS);
-//        //给OkttpClient添加开源库
-//        httpClientBuilder.cookieJar(cookieJar);
-
         //注册Activity生命周期监听回调
         registerActivityLifecycleCallbacks(callbacks);
         //初始化路由
@@ -103,8 +94,6 @@ public class MyApplication extends LitePalApplication {
         PlatformConfig.setWeixin("wxdc1e388c3822c80b", "3baf1193c85774b3fd9d18447d76cab0");
         PlatformConfig.setSinaWeibo("3921700954", "04b48b094faeb16683c32669824ebdad","http://sns.whalecloud.com");
         PlatformConfig.setQQZone("100424468", "c7394704798a158208a74ab60104f0ba");
-
-
     }
 
 
@@ -186,30 +175,13 @@ public class MyApplication extends LitePalApplication {
         if (httpClientBuilder == null) {
             synchronized (MyApplication.class) {
                 httpClientBuilder = new OkHttpClient.Builder()
-                        .connectTimeout(10, TimeUnit.SECONDS)
-                        .readTimeout(10, TimeUnit.SECONDS)
-                        .writeTimeout(10, TimeUnit.SECONDS)
+                        .connectTimeout(50000, TimeUnit.SECONDS)
+                        .readTimeout(50000, TimeUnit.SECONDS)
+                        .writeTimeout(50000, TimeUnit.SECONDS)
                         //cookie的持久化添加到请求头
                         .addInterceptor(new AddInterceptor())
                         //cookie的持久化保存到本地
                         .addInterceptor(new SaveInterceptor());
-
-                        //new CookieJar属于cookie的非持久化也就是app关闭后，Cookie丢失,如果需要持久化则需要自定义
-//                        .cookieJar(new CookieJar() {
-//                            //客户端请求成功以后，在响应头里面去存cookie
-//                            @Override
-//                            public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
-//
-//                                cookiestore.put(url.host(), cookies);
-//                            }
-//
-//                            //加载url的时候在请求头带上cookie
-//                            @Override
-//                            public List<Cookie> loadForRequest(HttpUrl url) {
-//                                List<Cookie> cookies = cookiestore.get(url.host());
-//                                return cookies != null ? cookies : new ArrayList<>();
-//                            }
-//                        });
             }
         }
         return httpClientBuilder;

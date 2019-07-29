@@ -117,25 +117,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
 
-    //    //Retrofit2所需要的Gson包所需要的包
 
-    //    implementation 'com.google.code.gson:gson:2.8.1'
-
-    //    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
-
-    //    //GsonConverterFactory和RxJavaCallAdapterFactory
-
-    //    implementation 'com.squareup.retrofit2:converter-protobuf:2.0.2'
-
-    //    implementation 'com.squareup.retrofit2:converter-gson:2.0.2'
-
-    //    implementation 'com.squareup.retrofit2:converter-scalars:2.0.2'
-
-    //    implementation 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
-
-    //    implementation 'com.squareup.okhttp3:okhttp:3.2.0'
-
-    //    implementation 'com.squareup.okio:okio:1.8.0'
 
     //Cookies持久化库
 
@@ -155,7 +137,7 @@ dependencies {
     //implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
 
     //ZXing
-    implementation 'com.google.zxing:core:3.2.0'
+    compileOnly 'com.google.zxing:core:3.2.0'
 
     //Banner
     implementation 'com.github.LidongWen:WenldBanner:2.0.2'

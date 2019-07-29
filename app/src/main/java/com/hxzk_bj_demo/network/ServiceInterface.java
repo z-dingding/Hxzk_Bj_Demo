@@ -126,12 +126,15 @@ public interface ServiceInterface {
 
 
     /**
+     * lg/uncollect/2805/json
+     * lg/uncollect_originId/{aricalId}/json
      * 删除收藏
-     * @param aricalId
+     * @param id
+     * @param originId originId字段值，没有为-1
      * @return
      */
-    @POST("lg/uncollect_originId/{aricalId}/json")
-    Observable<JsonObject> deleteCollectArtical(@Path("aricalId") String aricalId);
+    @POST("lg/uncollect/2805/json&id={id}&originId={originId}")
+    Observable<JsonObject> deleteCollectArtical(@Path("id") String id,@Path("originId")String originId);
 
 
     /**

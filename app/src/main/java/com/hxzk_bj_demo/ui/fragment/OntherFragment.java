@@ -606,6 +606,8 @@ public class OntherFragment extends BaseFragment implements SwipeRefreshLayout.O
                     String message=mJSONObject.getString("errorMsg");
                     if(!code.equals("0")){
                         ToastCustomUtil.showLongToast(message);
+                    }else{
+                        ToastCustomUtil.showLongToast(getString(R.string.toast_collectsuccess));
                     }
 
                 } catch (JSONException e) {

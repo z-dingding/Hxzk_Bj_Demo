@@ -85,5 +85,12 @@
     <string name="more">更多服务</string>
 
 
+    <!--=====================================toast=============================-->
+                <!--==========收藏界面toast提示=========-->
+    <string name="toast_collectsuccess">收藏成功</string>
+    <string name="toast_deletecolletcsuccess">已删除该收藏数据</string>
+    <string name="toast_deletecolletcfail">删除收藏数据失败</string>
+
+
 
 </resources>

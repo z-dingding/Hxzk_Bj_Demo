@@ -28,5 +28,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation androidDependencies.appcompat
     implementation androidDependencies.constraint
+
     api project(':router')
 }

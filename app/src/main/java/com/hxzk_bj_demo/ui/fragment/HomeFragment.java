@@ -24,6 +24,7 @@ import com.hxzk_bj_demo.network.HttpRequest;
 import com.hxzk_bj_demo.other.ZoomOutPageTransformer;
 import com.hxzk_bj_demo.ui.adapter.HomeListAdapter;
 import com.hxzk_bj_demo.ui.fragment.base.BaseFragment;
+import com.hxzk_bj_demo.utils.ProgressDialogUtil;
 import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
 import com.hxzk_bj_demo.widget.xrecyclerview.WRecyclerView;
 import com.wenld.wenldbanner.AutoTurnViewPager;
@@ -98,8 +99,8 @@ public class HomeFragment extends BaseFragment {
     private int pageSize =20;
     //总页数
     private int totalPage;
-
-    private LinearLayout nodata_layout;//暂无数据区域
+    //暂无数据区域
+    private LinearLayout nodata_layout;
 
 
     Handler mHandler = new Handler() {
@@ -208,8 +209,6 @@ public class HomeFragment extends BaseFragment {
         //设置布局管理器
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         mRecyclerView.setLayoutManager(linearLayoutManager);
-        //首次进来默认加载第一页数据,下标为1
-        requestHomeList(1);
         //请求Bannder数据
         requestBanner();
     }
@@ -251,12 +250,12 @@ public class HomeFragment extends BaseFragment {
 
             @Override
             public void onShowLoading() {
-
+                ProgressDialogUtil.getInstance().mshowDialog(mContext);
             }
 
             @Override
             public void onHiddenLoading() {
-
+                ProgressDialogUtil.getInstance().mdismissDialog();
             }
 
             @Override
@@ -273,6 +272,7 @@ public class HomeFragment extends BaseFragment {
             @Override
             public void onFail(Throwable e) {
                 ToastCustomUtil.showLongToast(e.getMessage());
+                ProgressDialogUtil.getInstance().mdismissDialog();
             }
 
 
@@ -328,9 +328,16 @@ public class HomeFragment extends BaseFragment {
     private void requestBanner() {
         bannerList = new LinkedList();
         subscriber = new Subscriber<BannerBean>() {
+
+            @Override
+            public void onStart() {
+                super.onStart();
+                ProgressDialogUtil.getInstance().mshowDialog(mContext);
+            }
+
             @Override
             public void onCompleted() {
-
+                ProgressDialogUtil.getInstance().mdismissDialog();
             }
 
             @Override
@@ -419,7 +426,8 @@ public class HomeFragment extends BaseFragment {
             }
         });
 
-
+        //轮播数据执行完毕执行完毕执行获取列表接口,首次进来默认加载第一页数据,下标为1
+        requestHomeList(1);
     }
 
 

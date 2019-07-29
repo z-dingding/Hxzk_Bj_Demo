@@ -11,6 +11,7 @@ import com.hxzk_bj_demo.network.BaseSubscriber;
 import com.hxzk_bj_demo.network.HttpRequest;
 import com.hxzk_bj_demo.ui.activity.base.BaseBussActivity;
 import com.hxzk_bj_demo.ui.adapter.CollectionAdapter;
+import com.hxzk_bj_demo.utils.ProgressDialogUtil;
 import com.hxzk_bj_demo.widget.SwipeItemLayout;
 import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
 import com.hxzk_bj_demo.widget.CustomRecyclerView;
@@ -92,11 +93,6 @@ public class CollectionActivity extends BaseBussActivity  {
     }
 
 
-//    @Override
-//    public void getPosition(int position) {
-//
-//    }
-
     @Override
     public void notifyByThemeChanged() {
         super.notifyByThemeChanged();
@@ -120,11 +116,13 @@ public class CollectionActivity extends BaseBussActivity  {
 
             @Override
             public void onShowLoading() {
+                ProgressDialogUtil.getInstance().mshowDialog(CollectionActivity.this);
 
             }
 
             @Override
             public void onHiddenLoading() {
+                ProgressDialogUtil.getInstance().mdismissDialog();
 
             }
 
@@ -146,9 +144,17 @@ public class CollectionActivity extends BaseBussActivity  {
                         public void delItemPos(int position) {
                             //同时删除服务器数据
                             delPosition = position;
-                            int articalId = ((CollectionBean.DatasBean) mData.get(position)).getId();
-                            if (!TextUtils.isEmpty(articalId + "")) {
-                                delCollection(articalId + "");
+                            mData.remove(delPosition);
+                            mAdapter.notifyDataSetChanged();
+                            String articalId = String.valueOf(((CollectionBean.DatasBean) mData.get(position)).getId());
+                            String originId = String.valueOf(((CollectionBean.DatasBean) mData.get(position)).getOriginId());
+                            if (!TextUtils.isEmpty(articalId)) {
+                                if(!TextUtils.isEmpty(originId)){
+                                    delCollection(articalId ,originId);
+                                }else{
+                                    delCollection(articalId ,String.valueOf(-1));
+                                }
+
                             }
                         }
                         });
@@ -175,19 +181,26 @@ public class CollectionActivity extends BaseBussActivity  {
 
     /**
      * 删除收藏
-     * @param articalId 文件id
+     * @param originId 文件id
      */
-    private void delCollection(String articalId){
+    private void delCollection(String id,String originId){
 
         mDelSubscriber= new Subscriber<JsonObject>() {
             @Override
-            public void onCompleted() {
+            public void onStart() {
+                super.onStart();
+                ProgressDialogUtil.getInstance().mshowDialog(CollectionActivity.this);
+            }
 
+            @Override
+            public void onCompleted() {
+                ProgressDialogUtil.getInstance().mdismissDialog();
             }
 
             @Override
             public void onError(Throwable e) {
                 ToastCustomUtil.showLongToast(e.getMessage());
+                ProgressDialogUtil.getInstance().mdismissDialog();
 
             }
 
@@ -198,18 +211,14 @@ public class CollectionActivity extends BaseBussActivity  {
                     if(!mJSONObject.getString("errorCode").equals("0")){
                         ToastCustomUtil.showLongToast(mJSONObject.getString("errorMsg"));
                     }else{
-                        mData.remove(delPosition);
-                        mAdapter.notifyDataSetChanged();
-                        if (mData.size() == 0) {
-                            ToastCustomUtil.showShortToast("已经没数据啦");
-                        }
+                    ToastCustomUtil.showShortToast(getString(R.string.toast_deletecolletcsuccess));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
         };
-        mDelObservable =HttpRequest.getInstance().getServiceInterface().deleteCollectArtical(articalId);
+        mDelObservable =HttpRequest.getInstance().getServiceInterface().deleteCollectArtical(id,originId);
         HttpRequest.getInstance().toSubscribe(mDelObservable,mDelSubscriber);
     }
 }
