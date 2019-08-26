@@ -2,13 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.hxzk_bj_demo">
-
-
     <!-- ======================授权访问网络（HttpUtil）========================== -->
     <!-- 允许一个程序访问精良位置(如GPS)  -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <!--访问CellID或WiFi,只要当前设备可以接收到基站的服务信号，便可获得位置信息。-->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <!-- 访问电话状态 -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <!-- ======================授权访问网络（MyWebView）========================== -->
@@ -18,9 +16,9 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!-- 允许程序访问Wi-Fi网络状态信息 -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <!-- ======================拍照用到的========================== -->
+    <!--拍照用到的 -->
     <uses-permission android:name="android.permission.CAMERA" />
-    <!-- ======================录音用到的========================== -->
+    <!-- 录音用到的-->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <!-- 在SD卡中创建与删除文件权限 -->
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
@@ -28,15 +26,11 @@
     <uses-permission android:name="android.permission.REORDER_TASKS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.WRITE_SETTINGS"
-        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <!-- 横竖屏切换的权限-->
     <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
-
-
-
 
 
     <application
@@ -44,114 +38,108 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:resizeableActivity="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Base.CustomTheme.Day"
-        android:resizeableActivity="true"
-         tools:replace="android:theme,name"
-         >
+        tools:replace="android:theme,name,icon,label">
+
         <!--targetSdkVersion==24（Android 7.0）以上Google默认支持了分屏模式-->
         <!--适配19:9全面屏黑边问题：https://blog.csdn.net/darkeet/article/details/80049913-->
         <!--https://blog.csdn.net/weelyy/article/details/79284332
          提高App所支持的最大屏幕纵横比（设置android.max_aspect比例值）-->
         <meta-data
             android:name="android.max_aspect"
-            android:value="2.2"/>
-
+            android:value="2.2" />
         <!--AndroidAutoSize的适配需要先填写效果图的宽高单位dp-->
         <meta-data
             android:name="design_width_in_dp"
-            android:value="360"/>
+            android:value="360" />
         <meta-data
             android:name="design_height_in_dp"
-            android:value="640"/>
-
-
+            android:value="640" />
         <!--  添加友盟appkey -->
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="5ca4551661f5644cc3000cb2"></meta-data>
+            android:value="5ca4551661f5644cc3000cb2"/>
         <!-- Channel ID 替换为您应用的推广渠道名称-->
+        <!--${UMENG_CHANNEL_VALUE} 渠道号，多渠道这里使用了占位符$-->
         <meta-data
             android:name="UMENG_CHANNEL"
-            android:value="${UMENG_CHANNEL_VALUE}" /><!--渠道号，多渠道这里使用了占位符$-->
+            android:value="${UMENG_CHANNEL_VALUE}" />
 
-        <!--android:theme="@style/TranslucentTheme">-->
-        <activity android:name=".ui.activity.WelcomeActivity"
+
+
+        <activity
+            android:name=".ui.activity.WelcomeActivity"
             android:theme="@style/welcometheme">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <!--  登录界面定义intent-filter是为了测试 -->
-        <activity android:name=".ui.activity.LoginActivity"
+        <activity
+            android:name=".ui.activity.LoginActivity"
             android:configChanges="locale"
-            android:exported="true"
-            >
+            android:exported="true">
             <intent-filter>
-                    <data
-                        android:host="host"
-                        android:path="/path"
-                        android:scheme="scheme" />
-                    <action android:name="android.intent.action.VIEW" />
-                    <category android:name="android.intent.category.DEFAULT" />
+                <data
+                    android:host="host"
+                    android:path="/path"
+                    android:scheme="scheme" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <!--  注册界面  -->
-        <activity android:name=".ui.activity.RegisterActivity"
-            android:configChanges="locale"/>
+        <activity
+            android:name=".ui.activity.RegisterActivity"
+            android:configChanges="locale" />
         <!--  主页面  -->
-        <activity android:name=".ui.activity.MainActivity"
-            android:configChanges="locale"
-                 ></activity>
+        <activity
+            android:name=".ui.activity.MainActivity"
+            android:configChanges="locale" />
         <!-- 收藏界面 -->
-        <activity android:name=".ui.activity.CollectionActivity"
-            android:configChanges="locale"/>
+        <activity
+            android:name=".ui.activity.CollectionActivity"
+            android:configChanges="locale" />
         <!-- 笔记本 -->
-        <activity android:name=".mvp.view.NoteBookActivity"
-            android:configChanges="locale"/>
-        <!-- 二维码界面     android:theme="@style/TranslucentTheme"-->
-        <activity android:name=".utils.zxing.activity.CaptureActivity"
+        <activity
+            android:name=".mvp.view.NoteBookActivity"
+            android:configChanges="locale" />
+        <!-- 二维码界面  android:theme="@style/TranslucentTheme"-->
+        <activity
+            android:name=".utils.zxing.activity.CaptureActivity"
             android:configChanges="locale"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait" />
         <!-- 其他方式登录 -->
-        <activity android:name=".ui.activity.OntherWayLoginActivity"
-            android:configChanges="locale"/>
+        <activity
+            android:name=".ui.activity.OntherWayLoginActivity"
+            android:configChanges="locale" />
         <!-- 首页搜索界面-->
-        <activity android:name=".ui.activity.HomeSearchActivity"/>
+        <activity android:name=".ui.activity.HomeSearchActivity" />
         <!--图案解锁界面-->
-        <activity android:name=".ui.activity.PatternLockActivity"/>
-
-
-
-
-
-
-
+        <activity android:name=".ui.activity.PatternLockActivity" />
 
 
         <!--新浪微博-->
         <activity
             android:name="com.umeng.socialize.media.WBShareCallBackActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:exported="false"
-            >
-        </activity>
-        <activity android:name="com.sina.weibo.sdk.web.WeiboSdkWebActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+        <activity
+            android:name="com.sina.weibo.sdk.web.WeiboSdkWebActivity"
             android:configChanges="keyboardHidden|orientation"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize"
-            >
+            android:windowSoftInputMode="adjustResize">
 
         </activity>
         <activity
-            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
+            android:name="com.sina.weibo.sdk.share.WbShareTransActivity"
             android:launchMode="singleTask"
-            android:name="com.sina.weibo.sdk.share.WbShareTransActivity">
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -168,7 +156,7 @@
         <activity
             android:name="com.tencent.tauth.AuthActivity"
             android:launchMode="singleTask"
-            android:noHistory="true" >
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -180,20 +168,18 @@
         </activity>
         <activity
             android:name="com.tencent.connect.common.AssistActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:configChanges="orientation|keyboardHidden|screenSize"/>
-
-
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <!--拨号中输入暗码:*#*#1010#*#*就能启动相应的应用程序-->
-        <receiver
-            android:name=".receiver.SecretCodeReceiver">
+        <receiver android:name=".receiver.SecretCodeReceiver">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SECRET_CODE" />
-                <data android:scheme="android_secret_code" android:host="110"  />
+                <data
+                    android:host="110"
+                    android:scheme="android_secret_code" />
             </intent-filter>
         </receiver>
     </application>
-
 
 
 </manifest>

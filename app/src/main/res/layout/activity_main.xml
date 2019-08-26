@@ -13,22 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
-        <!-- android:fitsSystemWindows="true"
-   属性让布局不延伸到状态栏-->
-        <!--
-            除了代码设置也可以自定义 xmlns:app="http://schemas.android.com/apk/res-auto"
-            toolbar:logo="@mipmap/ic_launcher"
-            toolbar:title="Title"
-            toolbar:subtitle="Sub Title"-->
-
-        <!--<View-->
-            <!--android:background="?attr/custom_attr_app_toolbar_bg"-->
-            <!--android:id="@id/custom_id_statusbar"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="0dp" />-->
-
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -59,7 +43,6 @@
         <!--unlabeled ：只显示图标-->
         <!--selected ：在选中的时候显示文字标签，有动画效果-->
         <!--auto : 在 1-3 个按钮时使用 labeled ，大于 3 个按钮使用 selected-->
-
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bav_main"
             android:layout_width="match_parent"
@@ -76,7 +59,7 @@
     app:headerLayout="@layout/header_layout"表示引用一个头布局文件
     .app:menu="@menu/main"表示引用一个menu作为下面的点击项
     1.app:itemBackground="@color/colorAccent"设置每一个item的背景颜色
-    2.app:itemTextColor=""设置item的背景颜色
+    2.app:itemTextColor=""设置item的字体颜色
     insetForeground 取消标题栏阴影-->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigationview_main"
@@ -88,7 +71,8 @@
         app:headerLayout="@layout/header_layout"
         app:insetForeground="@android:color/transparent"
         app:menu="@menu/menu_vavigationview"
-        app:itemTextColor="?attr/custom_attr_app_textcolor">
+        app:itemTextColor="?attr/custom_attr_app_textcolor"
+        >
     </com.google.android.material.navigation.NavigationView>
 </com.hxzk_bj_demo.widget.WidgetDrawerLayout>
 

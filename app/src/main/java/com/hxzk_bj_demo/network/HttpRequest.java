@@ -26,7 +26,7 @@ public class HttpRequest {
 
     //通过volatile关键字来确保安全，使用该关键字修饰的变量在被变更时会被其他变量可见
     private volatile static HttpRequest sHttpRequest = null;
-    //请求服务器ip或域名>
+    //请求服务器ip或域名
     public static String BASE_URL="https://www.wanandroid.com/";
 
 

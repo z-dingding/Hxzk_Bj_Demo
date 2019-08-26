@@ -48,11 +48,15 @@ import static com.hxzk_bj_demo.utils.LanguageUtil.setLocale;
 
 public class MyApplication extends LitePalApplication {
 
-    //通过volatile关键字来确保安全，使用该关键字修饰的变量在被变更时会被其他变量可见
+    /**
+     * 通过volatile关键字来确保安全，使用该关键字修饰的变量在被变更时会被其他变量可见
+     */
     private volatile static Context appContext = null;
     private volatile static OkHttpClient.Builder httpClientBuilder;
-
-    private List<ThemeChangeObserver> mThemeChangeObserverStack; //  主题切换监听栈
+    /**
+     * 主题切换监听栈
+     */
+    private List<ThemeChangeObserver> mThemeChangeObserverStack;
 
 
     @Override
@@ -66,7 +70,7 @@ public class MyApplication extends LitePalApplication {
              导致第三部分(MainActivity类的实例instance)泄露.
                     如果手动启动activity进行内存检测则需要执行:adb shell am start  -n [包名]/[Activity名]*/
         }
-        LeakCanary.install(this);
+        //LeakCanary.install(this);
         //正常程序初始化代码…
         //获取全局Context对象
         appContext = getApplicationContext();
@@ -77,8 +81,6 @@ public class MyApplication extends LitePalApplication {
         initRouter();
         //友盟相关
         initUMeng();
-
-
     }
 
     /**
@@ -233,8 +235,8 @@ public class MyApplication extends LitePalApplication {
     public void notifyByThemeChanged() {
         List<ThemeChangeObserver> observers = obtainThemeChangeObserverStack();
         for (ThemeChangeObserver observer : observers) {
-            observer.loadingCurrentTheme(); //
-            observer.notifyByThemeChanged(); //
+            observer.loadingCurrentTheme();
+            observer.notifyByThemeChanged();
         }
     }
 

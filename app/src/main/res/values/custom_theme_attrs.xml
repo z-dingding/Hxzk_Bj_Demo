@@ -16,5 +16,12 @@
     <!-- 控制app字体颜色 -->
     <attr name="custom_attr_app_textcolor" format="color|reference" />
 
+    <!-- toolbar 图标自定义属性 -->
+    <attr name="custom_attr_toolbar_notify" format="reference"/>
+    <attr name="custom_attr_toolbar_search" format="reference"/>
+    <attr name="custom_attr_toolbar_qrcode" format="reference"/>
+
+
+
 
 </resources>

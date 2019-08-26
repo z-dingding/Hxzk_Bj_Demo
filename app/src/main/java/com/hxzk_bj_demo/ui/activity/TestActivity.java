@@ -1,6 +1,7 @@
 package com.hxzk_bj_demo.ui.activity;
 
 import com.google.gson.JsonObject;
+import com.hxzk_bj_demo.BuildConfig;
 import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.javabean.BannerBean;
 import com.hxzk_bj_demo.network.HttpRequest;
@@ -27,7 +28,6 @@ public class TestActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-
     }
 
     @Override

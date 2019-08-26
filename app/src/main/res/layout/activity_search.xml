@@ -15,71 +15,79 @@
         android:layout_margin="@dimen/dp_5"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="@dimen/dp_5">
+        android:padding="@dimen/dp_10">
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/dp_8"
             android:layout_weight="1"
             android:background="@drawable/shape_homesearch"
             android:gravity="center"
             android:orientation="horizontal">
-
 
             <ImageView
                 android:id="@+id/tv_search"
                 android:layout_width="@dimen/dp_25"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/dp_8"
-                android:src="@drawable/ic_search" />
+                android:src="?attr/custom_attr_toolbar_search" />
             <!--  imeOptions ="actionSearch" 主要是这个属性，就是把软键盘上的回车键改成搜索按钮-->
             <EditText
                 android:id="@+id/et_seachcontent"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_margin="@dimen/dp_8"
+                android:layout_margin="@dimen/dp_5"
                 android:layout_weight="1"
                 android:background="@null"
                 android:hint="@string/search_prompt"
                 android:imeOptions="actionSearch"
                 android:inputType="textPersonName"
                 android:padding="@dimen/dp_2"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:textColor="?attr/custom_attr_app_textcolor"
+                android:gravity="left|center_vertical"/>
         </LinearLayout>
 
         <TextView
             android:id="@+id/tv_cancelsearch"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/dp_8"
+            android:layout_marginLeft="@dimen/dp_14"
             android:layout_marginRight="@dimen/dp_8"
             android:gravity="center"
-            android:text="@string/search_cancel"
+            android:text="@string/search_back"
+            android:textSize="18sp"
             android:textColor="@color/homesearch_cacel" />
     </LinearLayout>
-
+    <View
+        android:id="@+id/view_dividerone"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_1"
+        android:layout_below="@id/linear_search"
+        android:background="#CFD8DC" />
     <LinearLayout
         android:id="@+id/linear_historysearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/linear_search"
-        android:layout_margin="@dimen/dp_5"
-        android:minHeight="@dimen/dp_70"
+        android:layout_marginLeft="@dimen/dp_7"
         android:orientation="vertical"
-        android:padding="@dimen/dp_5">
+        android:padding="@dimen/dp_10">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+           >
 
             <ImageView
                 android:id="@+id/iv_shrarchhistory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="3dp"
                 android:src="@drawable/search_history" />
 
             <TextView
@@ -87,14 +95,16 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_5"
                 android:layout_toRightOf="@id/iv_shrarchhistory"
-                android:text="@string/search_history" />
+                android:text="@string/search_history"
+                android:textColor="?attr/custom_attr_app_textcolor"/>
 
             <TextView
                 android:id="@+id/tv_clearhistory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:text="@string/search_clear" />
+                android:text="@string/search_clear"
+                android:textColor="?attr/custom_attr_app_textcolor"/>
 
         </RelativeLayout>
 
@@ -110,17 +120,18 @@
     <View
         android:id="@+id/view_divider"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_2"
+        android:layout_height="@dimen/dp_1"
         android:layout_below="@id/linear_historysearch"
-        android:background="#373737" />
+        android:background="#CFD8DC" />
 
     <RelativeLayout
         android:id="@+id/realtive_searchbitch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_vertical"
         android:layout_below="@id/view_divider"
-        android:layout_margin="@dimen/dp_5"
-        android:padding="@dimen/dp_5">
+        android:layout_marginLeft="@dimen/dp_7"
+        android:padding="@dimen/dp_10">
 
         <ImageView
             android:id="@+id/iv_trend"
@@ -131,9 +142,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_5"
+            android:layout_marginLeft="@dimen/dp_2"
+            android:layout_marginTop="3dp"
             android:layout_toRightOf="@id/iv_trend"
-            android:text="@string/search_trend" />
+            android:text="@string/search_trend"
+            android:textColor="?attr/custom_attr_app_textcolor"/>
 
         <ImageView
             android:id="@+id/iv_batchSearch"
@@ -149,7 +162,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:text="@string/search_batch" />
+            android:text="@string/search_batch"
+            android:textColor="?attr/custom_attr_app_textcolor"/>
 
     </RelativeLayout>
 
@@ -158,9 +172,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/realtive_searchbitch"
-        >
-
-    </androidx.recyclerview.widget.RecyclerView>
+        />
 
 
 </RelativeLayout>

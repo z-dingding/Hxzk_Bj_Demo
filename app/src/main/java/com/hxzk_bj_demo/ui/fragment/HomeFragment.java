@@ -21,7 +21,7 @@ import com.hxzk_bj_demo.javabean.HomeListBean;
 import com.hxzk_bj_demo.network.BaseResponse;
 import com.hxzk_bj_demo.network.BaseSubscriber;
 import com.hxzk_bj_demo.network.HttpRequest;
-import com.hxzk_bj_demo.other.ZoomOutPageTransformer;
+import com.hxzk_bj_demo.utils.ZoomOutPageTransformer;
 import com.hxzk_bj_demo.ui.adapter.HomeListAdapter;
 import com.hxzk_bj_demo.ui.fragment.base.BaseFragment;
 import com.hxzk_bj_demo.utils.ProgressDialogUtil;
@@ -51,6 +51,7 @@ import rx.Subscriber;
 
 /**
  * Created by leeandy007 on 2017/6/15.
+ * 首页Fragment
  * 懒加载主要关注的几个生命周期：onCreatedView + onActivityCreated + onResume + onPause + onDestroyView
  */
 
@@ -70,7 +71,7 @@ public class HomeFragment extends BaseFragment {
 
     ExecutorService fixThreadPool;
 
-    //Banner请求链接
+    //Banner请求
     LinkedList<BannerBean.DataBean> bannerList;
 
 
@@ -409,8 +410,8 @@ public class HomeFragment extends BaseFragment {
         autoTurnViewPager.setPages(holder)
                 .setCanTurn(true)
                 .setScrollDuration(3000)
-                .setAutoTurnTime(2000);
-        autoTurnViewPager.setPageTransformer(new ZoomOutPageTransformer());
+                .setAutoTurnTime(2000)
+                .setPageTransformer(new ZoomOutPageTransformer());
         //设置指示器(选中,未选中)
         defaultPageIndicator.setPageIndicator(indicatorGrouop);
         UIContact.with(autoTurnViewPager, defaultPageIndicator)

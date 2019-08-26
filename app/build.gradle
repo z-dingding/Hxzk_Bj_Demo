@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.jakewharton.butterknife'
 
 
-
 android {
     compileSdkVersion rootProject.ext.globalCompileSdkVersion
 
@@ -13,13 +12,12 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-//        //添加了javaCompileOptions,解决Annotation processors must be explicitly declared now 问题
+        //添加了javaCompileOptions,解决Annotation processors must be explicitly declared now 问题
         javaCompileOptions {
             annotationProcessorOptions {
                 includeCompileClasspath = true
             }
         }
-        //必须要保证所有的flavor 都属于同一个维度
         flavorDimensions "default"
         //此段代码解决的是因为引入了第三方jar包，而项目里方法数过多，需要分包，android项目有方法数限制，最多64K。
         multiDexEnabled true
@@ -41,7 +39,6 @@ android {
         }
     }
     buildTypes {
-
         debug {
 
             minifyEnabled false
@@ -49,7 +46,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         release {
-
             minifyEnabled false
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -60,7 +56,7 @@ android {
     packagingOptions { //解决倒包冲突
         exclude 'META-INF/rxjava.properties'
     }
-   //为了解决om.android.builder.dexing.DexArchiveBuilderException
+    //为了解决om.android.builder.dexing.DexArchiveBuilderException
     compileOptions {
         sourceCompatibility 1.8
         targetCompatibility 1.8
@@ -75,7 +71,6 @@ android {
     productFlavors.all {
         flavor -> flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
     }
-
 }
 
 dependencies {
@@ -117,12 +112,6 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
 
-
-
-    //Cookies持久化库
-
-    // implementation 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
-
     //添加litepal依赖
     implementation 'org.litepal.android:core:1.6.0'
 
@@ -132,17 +121,11 @@ dependencies {
     //运行时权限
     implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar'
 
-    //implementation 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
-
-    //implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
-
     //ZXing
     compileOnly 'com.google.zxing:core:3.2.0'
 
     //Banner
     implementation 'com.github.LidongWen:WenldBanner:2.0.2'
-
-    //implementation project(':wenldbanner')
 
     //腾讯Tbs服务
     implementation project(':x5webview')
@@ -170,6 +153,5 @@ dependencies {
     implementation files('libs/umeng-shareboard-widget-6.9.4.jar')
     //状态栏着色库
     implementation 'com.readystatesoftware.systembartint:systembartint:1.0.3'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-}
 
+}

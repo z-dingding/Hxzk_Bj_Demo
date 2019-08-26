@@ -20,7 +20,7 @@ public class StatebusTextColorUtil {
 
 
     /**
-     *  修改状态栏文字颜色，这里小米，魅族区别对待。
+     *修改状态栏文字颜色，这里小米，魅族区别对待。
      */
     public static void setLightStatusBar(final Activity activity, final boolean dark) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -34,13 +34,13 @@ public class StatebusTextColorUtil {
                 case RomUtils.AvailableRomType.ANDROID_NATIVE:
                     setAndroidNativeLightStatusBar(activity, dark);
                     break;
-
+                default:
             }
         }
     }
 
     /**
-     * // 在setContentView之前执行
+     * 在setContentView之前执行
      * 修改状态栏颜色，支持4.4以上版本
      * @param activity
      * @param colorId

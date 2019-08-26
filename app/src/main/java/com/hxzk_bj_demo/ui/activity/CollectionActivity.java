@@ -47,7 +47,7 @@ public class CollectionActivity extends BaseBussActivity  {
     CollectionAdapter mAdapter;
     //数据源
     List mData;
-    //获取收藏数据观察者和订阅者
+    //获取收藏数据被观察者和订阅者
     Observable<BaseResponse<CollectionBean>> mObservable;
     Subscriber<BaseResponse<CollectionBean>> mSubscriber;
     //请求页码
@@ -73,7 +73,6 @@ public class CollectionActivity extends BaseBussActivity  {
 
     @Override
     protected void initEvent() {
-        //mRecyclerCollect.setListener(this);
     }
 
 
@@ -144,18 +143,10 @@ public class CollectionActivity extends BaseBussActivity  {
                         public void delItemPos(int position) {
                             //同时删除服务器数据
                             delPosition = position;
-                            mData.remove(delPosition);
-                            mAdapter.notifyDataSetChanged();
-                            String articalId = String.valueOf(((CollectionBean.DatasBean) mData.get(position)).getId());
                             String originId = String.valueOf(((CollectionBean.DatasBean) mData.get(position)).getOriginId());
-                            if (!TextUtils.isEmpty(articalId)) {
                                 if(!TextUtils.isEmpty(originId)){
-                                    delCollection(articalId ,originId);
-                                }else{
-                                    delCollection(articalId ,String.valueOf(-1));
+                                    delCollection(originId);
                                 }
-
-                            }
                         }
                         });
                 }else{
@@ -181,9 +172,9 @@ public class CollectionActivity extends BaseBussActivity  {
 
     /**
      * 删除收藏
-     * @param originId 文件id
+     * @param
      */
-    private void delCollection(String id,String originId){
+    private void delCollection(String id){
 
         mDelSubscriber= new Subscriber<JsonObject>() {
             @Override
@@ -211,14 +202,16 @@ public class CollectionActivity extends BaseBussActivity  {
                     if(!mJSONObject.getString("errorCode").equals("0")){
                         ToastCustomUtil.showLongToast(mJSONObject.getString("errorMsg"));
                     }else{
-                    ToastCustomUtil.showShortToast(getString(R.string.toast_deletecolletcsuccess));
+                        mData.remove(delPosition);
+                        mAdapter.notifyDataSetChanged();
+                        ToastCustomUtil.showShortToast(getString(R.string.toast_deletecolletcsuccess));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
         };
-        mDelObservable =HttpRequest.getInstance().getServiceInterface().deleteCollectArtical(id,originId);
+        mDelObservable =HttpRequest.getInstance().getServiceInterface().deleteCollectArtical(id);
         HttpRequest.getInstance().toSubscribe(mDelObservable,mDelSubscriber);
     }
 }

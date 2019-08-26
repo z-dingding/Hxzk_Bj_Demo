@@ -60,12 +60,15 @@
         <item name="android:background">@drawable/whitescreen</item>
     </style>
 
+    <!-- 登录页作为启动页时-->
+    <style name="logintheme" parent="Theme.AppCompat.NoActionBar">
+    <item name="android:windowIsTranslucent">true</item>
+    </style>
 
     <!-- 注册页面字数超出提示-->
     <style name="rigister_hinterroy">
         <item name="android:textColor">@color/red</item>
     </style>
-
 
     <!-- TabLayout的文字大小 -->
     <style name="TabLayoutTextStyle">

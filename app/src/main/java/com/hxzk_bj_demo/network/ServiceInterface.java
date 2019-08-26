@@ -9,9 +9,7 @@ import com.hxzk_bj_demo.javabean.InversBean;
 import com.hxzk_bj_demo.javabean.LoginOutBean;
 import com.hxzk_bj_demo.javabean.PublicListData;
 import com.hxzk_bj_demo.javabean.PublicNumBean;
-
 import java.util.List;
-
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -20,7 +18,7 @@ import rx.Observable;
 
 /**
  * Created by ${赵江涛} on 2018-1-18.
- * 作用:接口
+ * 作用:
  */
 
 public interface ServiceInterface {
@@ -81,11 +79,11 @@ public interface ServiceInterface {
 
     /**
      * 首页请求搜索接口
-     * @param searchKey
      * @return
+     * @Query("pageNum") int pageNum,
      */
-    @POST("article/query/{pageNum}/json")
-    Observable<BaseResponse<HomeSearchBean>> homeSearch(@Path("pageNum") int pageNum,@Query("k") String searchKey);
+    @POST("article/query/0/json")
+    Observable<BaseResponse<HomeSearchBean>> homeSearch(@Query("k") String searchContent);
 
 
     /**
@@ -126,15 +124,13 @@ public interface ServiceInterface {
 
 
     /**
-     * lg/uncollect/2805/json
-     * lg/uncollect_originId/{aricalId}/json
-     * 删除收藏
+     * 删除收藏 站内文章
      * @param id
-     * @param originId originId字段值，没有为-1
      * @return
      */
-    @POST("lg/uncollect/2805/json&id={id}&originId={originId}")
-    Observable<JsonObject> deleteCollectArtical(@Path("id") String id,@Path("originId")String originId);
+
+    @POST("lg/uncollect_originId/{id}/json")
+    Observable<JsonObject> deleteCollectArtical(@Path("id") String id);
 
 
     /**

@@ -14,6 +14,8 @@ import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 
+import static com.hxzk_bj_demo.common.Const.KEY_COOKIE;
+
 /**
  * 作者：created by ${zjt} on 2019/2/26
  * 描述:自定义拦截器实现cookie的持久化，还一种方式是自定义CookieJar
@@ -27,7 +29,7 @@ public class SaveInterceptor implements Interceptor {
         if(!response.headers("set-cookie").isEmpty()){
             List<String>  cookies =response.headers("set-cookie");
             String cookie =encodeCookie(cookies);
-            saveCookie(request.url().toString(),request.url().host(),cookie);
+            saveCookie(KEY_COOKIE,cookie);
         }
 
         return response;
@@ -68,16 +70,12 @@ public class SaveInterceptor implements Interceptor {
 
     /**
      * 持久化cookie，保存到本地
-     * @param url
-     * @param domain
+     * @param cookieKey
      * @param cookies
      */
-    private void saveCookie(String url,String domain,String cookies){
-        if(!TextUtils.isEmpty(url)){
-            SPUtils.put(MyApplication.getAppContext(),url,cookies);
-        }
-        if(!TextUtils.isEmpty(domain)){
-            SPUtils.put(MyApplication.getAppContext(),domain,cookies);
+    private void saveCookie(String cookieKey ,String cookies){
+        if(!TextUtils.isEmpty(cookieKey)){
+            SPUtils.put(MyApplication.getAppContext(),cookieKey,cookies);
         }
 
     }

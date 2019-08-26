@@ -4,6 +4,14 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.hxzk_bj_demo.R;
@@ -21,19 +29,15 @@ import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.widget.NestedScrollView;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * Created by leeandy007 on 2017/6/15.
+ * 我的Fragment
  */
 
-public  class UserFragment extends BaseFragment {
+public class UserFragment extends BaseFragment {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -53,11 +57,11 @@ public  class UserFragment extends BaseFragment {
     /**
      * 本地图片的数组
      */
-    public static int  [] localPhoto={R.drawable.author_artical,R.drawable.recommended_music,R.drawable.recommended_video,R.drawable.statistical,R.drawable.more};
+    public static int[] localPhoto = {R.drawable.author_artical, R.drawable.recommended_music, R.drawable.recommended_video, R.drawable.statistical, R.drawable.more};
     /**
      * 标题数组
      */
-    public static String [] localtitle;
+    public static String[] localtitle;
 
 
     /**
@@ -69,6 +73,8 @@ public  class UserFragment extends BaseFragment {
 
     UserAdapter mUserAdapter;
     UserFunAdapter mUserFunAdapter;
+    @BindView(R.id.toolbar_setting)
+    TextView toolbarSetting;
 
     @Override
     protected int getLayoutId() {
@@ -77,21 +83,21 @@ public  class UserFragment extends BaseFragment {
 
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
-        fmLayoutView=view;
+        fmLayoutView = view;
 
     }
 
     @SuppressLint("WrongConstant")
     @Override
     protected void initData() {
-        toolbar.setTitle("我的");
+        toolbar.setTitle("");
         ((AppCompatActivity) mContext).setSupportActionBar(toolbar);
-        mFunction=new ArrayList<UserItemBean>();
-        mDetail=new ArrayList<UserItemBean>();
+        mFunction = new ArrayList<UserItemBean>();
+        mDetail = new ArrayList<UserItemBean>();
 
-        localtitle= new String[]{mContext.getResources().getString(R.string.recommended_artical), mContext.getResources().getString(R.string.recommended_video), mContext.getResources().getString(R.string.recommended_music), mContext.getResources().getString(R.string.recommended_statistical), mContext.getResources().getString(R.string.more)};
-        for(int i=0;i<localPhoto.length;i++){
-            UserItemBean userItemBean =new UserItemBean();
+        localtitle = new String[]{mContext.getResources().getString(R.string.recommended_artical), mContext.getResources().getString(R.string.recommended_video), mContext.getResources().getString(R.string.recommended_music), mContext.getResources().getString(R.string.recommended_statistical), mContext.getResources().getString(R.string.more)};
+        for (int i = 0; i < localPhoto.length; i++) {
+            UserItemBean userItemBean = new UserItemBean();
             userItemBean.setTitle(localtitle[i]);
             userItemBean.setDes("");
             userItemBean.setLocaImg(localPhoto[i]);
@@ -100,12 +106,12 @@ public  class UserFragment extends BaseFragment {
         }
 
         String[] languages = getResources().getStringArray(R.array.userframent_item);
-        for(int i =0;i<languages.length;i++){
-            UserItemBean userItemBean =new UserItemBean();
+        for (int i = 0; i < languages.length; i++) {
+            UserItemBean userItemBean = new UserItemBean();
             userItemBean.setTitle(languages[i]);
-            if(languages[i].equals("清除缓存")){
+            if (languages[i].equals("清除缓存")) {
                 try {
-                    String totalSize =ClearCacheUtil.getTotalCacheSize(mContext);
+                    String totalSize = ClearCacheUtil.getTotalCacheSize(mContext);
                     userItemBean.setDes(totalSize);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -120,7 +126,7 @@ public  class UserFragment extends BaseFragment {
         LinearLayoutManager detailLayoutManager = new LinearLayoutManager(mContext);
         detailLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         mRecyclerFun.setLayoutManager(detailLayoutManager);
-        mUserFunAdapter =new UserFunAdapter(mContext,mFunction);
+        mUserFunAdapter = new UserFunAdapter(mContext, mFunction);
         mRecyclerFun.setAdapter(mUserFunAdapter);
 
 
@@ -129,7 +135,7 @@ public  class UserFragment extends BaseFragment {
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecycler.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL));
         mRecycler.setLayoutManager(linearLayoutManager);
-        mUserAdapter =new UserAdapter(mContext,mDetail);
+        mUserAdapter = new UserAdapter(mContext, mDetail);
         mRecycler.setAdapter(mUserAdapter);
     }
 
@@ -140,11 +146,11 @@ public  class UserFragment extends BaseFragment {
         mBundle.putInt("fragmentflag", 2);
         mCallBack.setValue(mBundle);
 
-        mRecyclerFun.addOnItemTouchListener(new RecyclerItemTouchListener(mRecyclerFun){
+        mRecyclerFun.addOnItemTouchListener(new RecyclerItemTouchListener(mRecyclerFun) {
 
             @Override
             public void onShortItemListener(RecyclerView.ViewHolder viewHolder) {
-                UserFunAdapter.FunctionViewHolder myViewHolder= (UserFunAdapter.FunctionViewHolder) viewHolder;
+                UserFunAdapter.FunctionViewHolder myViewHolder = (UserFunAdapter.FunctionViewHolder) viewHolder;
                 String title = (String) myViewHolder.tvTitle.getText();
                 ToastCustomUtil.showLongToast(title);
             }
@@ -155,27 +161,27 @@ public  class UserFragment extends BaseFragment {
             }
         });
 
-        mRecycler.addOnItemTouchListener(new RecyclerItemTouchListener(mRecycler){
+        mRecycler.addOnItemTouchListener(new RecyclerItemTouchListener(mRecycler) {
 
             @Override
             public void onShortItemListener(RecyclerView.ViewHolder viewHolder) {
-                UserAdapter.DetailViewHolder myViewHolder= (UserAdapter.DetailViewHolder) viewHolder;
+                UserAdapter.DetailViewHolder myViewHolder = (UserAdapter.DetailViewHolder) viewHolder;
                 String title = (String) myViewHolder.tvDetail.getText();
-                switch (title){
-                   case "图案解锁":
-                      ActivityJump.NormalJump(mContext,PatternLockActivity.class);
-                       break;
-                       case "清除缓存":
-                          ClearCacheUtil.clearAllCache(mContext);
-                           myViewHolder.tvPromptDetail.setText("");
+                switch (title) {
+                    case "图案解锁":
+                        ActivityJump.NormalJump(mContext, PatternLockActivity.class);
+                        break;
+                    case "清除缓存":
+                        ClearCacheUtil.clearAllCache(mContext);
+                        myViewHolder.tvPromptDetail.setText("");
 
-                           ToastCustomUtil.showLongToast(getString(R.string.clearCacheSuccess));
+                        ToastCustomUtil.showLongToast(getString(R.string.clearCacheSuccess));
 
-                           break;
+                        break;
 
                     default:
-                      ToastCustomUtil.showLongToast(getString(R.string.inDevelopment));
-                      break;
+                        ToastCustomUtil.showLongToast(getString(R.string.inDevelopment));
+                        break;
                 }
             }
 
@@ -183,7 +189,7 @@ public  class UserFragment extends BaseFragment {
             public void onLongItemListener(RecyclerView.ViewHolder viewHolder) {
 
             }
-        }) ;
+        });
     }
 
 
@@ -191,23 +197,18 @@ public  class UserFragment extends BaseFragment {
     @Override
     public void notifyByThemeChanged() {
         MarioResourceHelper helper = MarioResourceHelper.getInstance(mContext);
-        int color =helper.getColorByAttr(R.attr.custom_attr_app_statusbar_bg);
+        int color = helper.getColorByAttr(R.attr.custom_attr_app_statusbar_bg);
         collapsingToolbarLayout.setContentScrimColor(color);
-        if(mUserAdapter != null){
+        if (mUserAdapter != null) {
             mUserAdapter.notifyByThemeChanged();
         }
-        if(mUserFunAdapter != null){
+        if (mUserFunAdapter != null) {
             mUserFunAdapter.notifyByThemeChanged();
         }
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    @OnClick(R.id.toolbar_setting)
+    public void onViewClicked() {
+        ToastCustomUtil.showLongToast("123131");
     }
-
-
-
-
-
 }

@@ -15,6 +15,7 @@ import com.hxzk_bj_demo.ui.activity.HomeSearchActivity;
 import com.hxzk_bj_demo.utils.activity.ActivityJump;
 import com.hxzk_bj_demo.utils.zxing.activity.CaptureActivity;
 import com.hxzk_bj_demo.widget.XDialog;
+
 import java.lang.reflect.Method;
 
 import androidx.appcompat.widget.Toolbar;
@@ -29,13 +30,19 @@ public abstract class BaseBussActivity extends BaseActivity {
 
     private static final String TAG = "BaseBussActivity";
 
-    public static final int REQUEST_CODE=0x1111;
+    public static final int REQUEST_CODE = 0x1111;
 
     public Toolbar mToolbar;
+    /**
+     * base.xml中的根布局view
+     */
     public LinearLayout mRootLinear;
-    public View   statebarView;
+    public View statebarView;
 
-
+    Menu toolbarMenu;
+    public MenuItem menuItemSearch;
+    public MenuItem menuItemNotify;
+    public MenuItem menuItemQRCoder;
 
     /**
      * 显示隐藏toolbar的Menu
@@ -59,14 +66,15 @@ public abstract class BaseBussActivity extends BaseActivity {
         if (null == mToolbar) {
             mToolbar = findViewById(R.id.custom_id_app_toolbar);
             if (mRootLinear == null) {
-                mRootLinear =findViewById(R.id.custom_id_app);
+                mRootLinear = findViewById(R.id.custom_id_app);
             }
-            if(statebarView == null){
-                statebarView=findViewById(R.id.custom_id_statusbar);
+            if (statebarView == null) {
+                statebarView = findViewById(R.id.custom_id_statusbar);
             }
         }
 
     }
+
     @Override
     protected void initEvent() {
 
@@ -74,14 +82,6 @@ public abstract class BaseBussActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-
-    }
-
-    /**
-     *  自定义主题刷新ui
-     */
-    @Override
-    public void notifyByThemeChanged() {
 
     }
 
@@ -102,7 +102,7 @@ public abstract class BaseBussActivity extends BaseActivity {
         //设置左上角的图标响应
         getSupportActionBar().setHomeButtonEnabled(true);
         //Toolbar的空间监听有两种方式，一种是 Toolbar.OnMenuItemClickListener，另一种是onOptionsItemSelected
-       // mToolbar.setOnMenuItemClickListener(onMenuItemClick);
+        // mToolbar.setOnMenuItemClickListener(onMenuItemClick);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
@@ -110,10 +110,11 @@ public abstract class BaseBussActivity extends BaseActivity {
 
     /**
      * 控制toolbar的显示隐藏
+     *
      * @param visible
      */
-    protected void  toolbarVisible(int visible){
-        if(mToolbar != null){
+    protected void toolbarVisible(int visible) {
+        if (mToolbar != null) {
             mToolbar.setVisibility(visible);
         }
     }
@@ -122,18 +123,24 @@ public abstract class BaseBussActivity extends BaseActivity {
     /**
      * 重写onCreateOptionsMenu()方法，把这个Toolbar菜单加载进去：
      * 创建Activity是回调方法用于填充Menu的布局，只会执行一次
+     *
      * @param menu
      * @return
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        toolbarMenu = menu;
+        menuItemSearch = toolbarMenu.findItem(R.id.custom_id_toobbaricon_notify);
+        menuItemNotify = toolbarMenu.findItem(R.id.custom_id_toobbaricon_search);
+        menuItemQRCoder = toolbarMenu.findItem(R.id.custom_id_toobbaricon_qrcoder);
         return true;
     }
 
 
     /**
      * 它的功能是在每次点击一个Menu的时候，它就改变一次，所以你想要改变Menu的值，就得在这里运行
+     * 方法在创建菜单时(onCreateOptionMenu)会调用一次
      *
      * @param menu
      * @return
@@ -144,32 +151,33 @@ public abstract class BaseBussActivity extends BaseActivity {
         if (isShowMenu) {
             switch (fragmentFlag) {
                 case 0:
-                    menu.findItem(R.id.toolbar_search).setVisible(true);
-                    menu.findItem(R.id.action_notifications).setVisible(true);
-                    menu.findItem(R.id.toolbar_qrcode).setVisible(true);
+                    menuItemSearch.setVisible(true);
+                    menuItemNotify.setVisible(true);
+                    menuItemQRCoder.setVisible(true);
                     break;
                 case 1:
-                    menu.findItem(R.id.toolbar_search).setVisible(true);
-                    menu.findItem(R.id.toolbar_qrcode).setVisible(false);
-                    menu.findItem(R.id.action_notifications).setVisible(false);
+                    menuItemSearch.setVisible(true);
+                    menuItemQRCoder.setVisible(false);
+                    menuItemNotify.setVisible(false);
                     break;
                 case 2:
-                    menu.findItem(R.id.toolbar_search).setVisible(false);
-                    menu.findItem(R.id.toolbar_qrcode).setVisible(false);
-                    menu.findItem(R.id.action_notifications).setVisible(false);
+                    menuItemSearch.setVisible(false);
+                    menuItemQRCoder.setVisible(false);
+                    menuItemNotify.setVisible(false);
                     break;
+                default:
             }
 
         } else {
-            menu.findItem(R.id.toolbar_search).setVisible(false);
-            menu.findItem(R.id.toolbar_qrcode).setVisible(false);
-            menu.findItem(R.id.action_notifications).setVisible(false);
+            menuItemSearch.setVisible(false);
+            menuItemQRCoder.setVisible(false);
+            menuItemNotify.setVisible(false);
         }
         return super.onPrepareOptionsMenu(menu);
     }
 
     /**
-     *  Google已经不支持在Toolbar的menu中显示图标了，如果要显示，就必须运用反射，强制显示icon
+     * Google已经不支持在Toolbar的menu中显示图标了，如果要显示，就必须运用反射，强制显示icon
      */
     @Override
     public boolean onMenuOpened(int featureId, Menu menu) {
@@ -196,22 +204,28 @@ public abstract class BaseBussActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_notifications:
+            case R.id.custom_id_toobbaricon_notify:
                 break;
-            case R.id.toolbar_search:
-                addActivityToManager(this,HomeSearchActivity.class);
+            case R.id.custom_id_toobbaricon_search:
+                addActivityToManager(this, HomeSearchActivity.class);
                 break;
-            case R.id.toolbar_qrcode:
+            case R.id.custom_id_toobbaricon_qrcoder:
                 Intent intent = new Intent(_context, CaptureActivity.class);
-                startActivityForResult(intent,REQUEST_CODE);
+                startActivityForResult(intent, REQUEST_CODE);
                 break;
             case android.R.id.home:
                 finishActivity();
                 break;
+            default:
         }
         return super.onOptionsItemSelected(item);
     }
 
+
+    @Override
+    public void notifyByThemeChanged() {
+
+    }
 
     /**
      * 页面跳转动画,将当前activity添加到栈中
@@ -222,7 +236,6 @@ public abstract class BaseBussActivity extends BaseActivity {
     }
 
 
-
     /**
      * 返回上一页面退出动画,关闭当前界面
      */
@@ -230,6 +243,7 @@ public abstract class BaseBussActivity extends BaseActivity {
         ActivityJump.NormalJumpAndFinish(mActivity, cls);
         animNext();
     }
+
     /**
      * finish掉当前的页面动画
      */
@@ -240,15 +254,17 @@ public abstract class BaseBussActivity extends BaseActivity {
 
     /**
      * Bundle携参跳转带动画效果
+     *
      * @param mContext
      * @param cls
      * @param bundle
      */
-    public void jumpBundleActivity(Context mContext, Class<?> cls, Bundle bundle){
+    public void jumpBundleActivity(Context mContext, Class<?> cls, Bundle bundle) {
         ActivityJump.BundleJump(mContext, cls, bundle);
         animNext();
 
     }
+
     /**
      * @Desc 页面跳转动画
      */

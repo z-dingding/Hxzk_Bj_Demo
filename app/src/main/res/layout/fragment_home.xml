@@ -21,7 +21,6 @@
             android:layout_height="@dimen/dp_113"
             android:layout_gravity="center"
             />
-
         <com.wenld.wenldbanner.DefaultPageIndicator
             android:id="@+id/defaultPageIndicator"
             android:layout_width="match_parent"

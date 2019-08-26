@@ -10,22 +10,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.activity.MainActivity">
     <item
-        android:id="@+id/toolbar_search"
-        android:icon="@drawable/ic_search"
+        android:id="@id/custom_id_toobbaricon_search"
+        android:icon="?attr/custom_attr_toolbar_search"
         android:orderInCategory="100"
         android:title="搜索"
         app:showAsAction="ifRoom"
         />
     <item
-        android:id="@+id/action_notifications"
-        android:icon="@drawable/ic_notifications"
+        android:id="@id/custom_id_toobbaricon_notify"
+        android:icon="?attr/custom_attr_toolbar_notify"
         android:title="通知"
         app:showAsAction="always"
      />
 
     <item
-        android:id="@+id/toolbar_qrcode"
-        android:icon="@drawable/qr_code"
+        android:id="@id/custom_id_toobbaricon_qrcoder"
+        android:icon="?attr/custom_attr_toolbar_qrcode"
         android:orderInCategory="100"
         android:title="扫一扫"
         app:showAsAction="always" />

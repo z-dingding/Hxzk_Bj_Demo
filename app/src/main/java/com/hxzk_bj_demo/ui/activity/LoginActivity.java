@@ -1,12 +1,8 @@
 package com.hxzk_bj_demo.ui.activity;
 
-import android.content.ComponentName;
-import android.content.Intent;
-import android.net.Uri;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -16,9 +12,9 @@ import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.common.Const;
 import com.hxzk_bj_demo.javabean.LoginOutBean;
 import com.hxzk_bj_demo.network.BaseResponse;
-import com.hxzk_bj_demo.newmvp.base.BaseMvpActivity;
-import com.hxzk_bj_demo.newmvp.constract.LoginConstract;
-import com.hxzk_bj_demo.newmvp.presenter.LoginPreseneter;
+import com.hxzk_bj_demo.ui.basemvp.base.BaseMvpActivity;
+import com.hxzk_bj_demo.ui.basemvp.constract.LoginConstract;
+import com.hxzk_bj_demo.ui.basemvp.presenter.LoginPreseneter;
 import com.hxzk_bj_demo.utils.KeyBoardHelperUtil;
 import com.hxzk_bj_demo.utils.MarioResourceHelper;
 import com.hxzk_bj_demo.utils.ProgressDialogUtil;
@@ -55,14 +51,20 @@ public class LoginActivity extends BaseMvpActivity<LoginPreseneter> implements L
     private int bottomHeight;
     private KeyBoardHelperUtil boardHelper;
     private View layoutBottom;
+    /**
+     * 根布局View
+     */
     private LinearLayout layoutContent;
 
-    //账号
+
+    /**
+     * 账号
+     */
     String account;
-    //密码
+    /**
+     * 密码
+     */
     String pwd;
-
-
 
 
     @Override
@@ -78,28 +80,30 @@ public class LoginActivity extends BaseMvpActivity<LoginPreseneter> implements L
         super.initView();
         layoutContent = findViewById(R.id.rootLinear_login);
         initToolbar(R.drawable.back, getResources().getString(R.string.login));
-        //为 Activity 指定 windowSoftInputMode
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         layoutBottom = findViewById(R.id.layout_bottom);
+
+        //初始化软键盘工具类
         boardHelper = new KeyBoardHelperUtil(this);
         boardHelper.onCreate();
-
     }
 
     @Override
     protected void initEvent() {
         boardHelper.setOnKeyBoardStatusChangeListener(onKeyBoardStatusChangeListener);
+        //获取底部占位空白区域的高度,必须在子线程中获取,否则为0
         layoutBottom.post(new Runnable() {
             @Override
             public void run() {
                 bottomHeight = layoutBottom.getHeight();
             }
         });
+
+
     }
 
     @Override
     protected void initData() {
-        presenter  =new LoginPreseneter(LoginActivity.this);
+        presenter = new LoginPreseneter(LoginActivity.this);
         presenter.onAttachView(this);
     }
 
@@ -115,7 +119,11 @@ public class LoginActivity extends BaseMvpActivity<LoginPreseneter> implements L
         }
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        boardHelper.onDestory();
+    }
 
     @Override
     public void notifyByThemeChanged() {
@@ -124,7 +132,7 @@ public class LoginActivity extends BaseMvpActivity<LoginPreseneter> implements L
         helper.setBackgroundResourceByAttr(mToolbar, R.attr.custom_attr_app_toolbar_bg);
         helper.setBackgroundResourceByAttr(statebarView, R.attr.custom_attr_app_statusbar_bg);
         helper.setBackgroundResourceByAttr(btn_Loginin_Login, R.attr.custom_attr_app_btn_bg);
-        int color=helper.getColorByAttr(R.attr.custom_attr_app_textcolor);
+        int color = helper.getColorByAttr(R.attr.custom_attr_app_textcolor);
         mToolbar.setTitleTextColor(color);
         edt_Account_Login.setTextColor(color);
         edt_Pwd_Login.setTextColor(color);
@@ -141,7 +149,8 @@ public class LoginActivity extends BaseMvpActivity<LoginPreseneter> implements L
             if (bottomHeight > height) {
                 layoutBottom.setVisibility(View.GONE);
             } else {
-                int offset = bottomHeight - height;
+                //计算结果存在偏差就加了个56px
+                int offset = bottomHeight - height - 56;
                 final ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) layoutContent
                         .getLayoutParams();
                 lp.topMargin = offset;
@@ -166,32 +175,26 @@ public class LoginActivity extends BaseMvpActivity<LoginPreseneter> implements L
         }
     };
 
-
     @OnClick({R.id.tv_otherwaylogin_login, R.id.btn_loginin_login, R.id.tv_register_login})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_otherwaylogin_login:
-                addActivityToManager(LoginActivity.this,OntherWayLoginActivity.class);
+                addActivityToManager(LoginActivity.this, OntherWayLoginActivity.class);
                 break;
-
-
             case R.id.tv_register_login:
-                addActivityToManager(LoginActivity.this,RegisterActivity.class);
+                addActivityToManager(LoginActivity.this, RegisterActivity.class);
                 break;
-
 
             case R.id.btn_loginin_login:
                 account = edt_Account_Login.getText().toString();
                 pwd = edt_Pwd_Login.getText().toString();
                 if (!TextUtils.isEmpty(account) && !TextUtils.isEmpty(pwd)) {
-                    presenter.login(account,pwd);
+                    presenter.login(account, pwd);
                 } else {
                     ToastCustomUtil.showLongToast("请输入正确的账号密码!");
                 }
                 break;
-
-
-
+            default:
         }
     }
 

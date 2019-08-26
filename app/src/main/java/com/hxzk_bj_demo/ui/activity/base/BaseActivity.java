@@ -32,21 +32,26 @@ import static com.hxzk.bj.x5webview.statusbartextcolor.StatebusTextColorUtil.set
 public abstract class BaseActivity extends AppCompatActivity implements ThemeChangeObserver {
     private static final String TAG = "BaseActivity";
 
+    /**
+     * 接受子viwe的上下文
+     */
     protected Context _context;
-    //加载子视图内容区域
+    /**
+     * 加载子视图内容区域
+     */
     LinearLayout layout_ContentView_Base;
-
+    /**
+     * buterknife绑定对象
+     */
     Unbinder unbinder;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        //注册当前Activity主题的监听
+        //注册当前Activity主题的监听，并设置相关主题
         setupActivityBeforeCreate();
         super.onCreate(savedInstanceState);
         //将当前界面子类的Activity添加到栈中
         ActivityJump.AddToTack(this);
-        //打印当前活动的activity
-        LogUtil.e(TAG, "{当前活动的activity}"+getClass().getSimpleName());
         //打印栈中的activity
         ActivityJump.LogAllActivityNames();
         //竖屏
@@ -63,10 +68,11 @@ public abstract class BaseActivity extends AppCompatActivity implements ThemeCha
             initView();
             initEvent();
             initData();
-
         }
     }
-    //Session启动、App使用时长等基础数据统计接口API：
+    /**
+     * 友盟Session启动、App使用时长等基础数据统计接口API：
+     */
     @Override
     protected void onResume() {
         super.onResume();

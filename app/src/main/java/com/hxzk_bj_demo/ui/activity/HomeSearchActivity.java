@@ -19,7 +19,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.google.android.flexbox.FlexboxLayout;
 import com.hxzk.bj.common.X5ActionMessage;
 import com.hxzk_bj_demo.R;
@@ -32,18 +31,17 @@ import com.hxzk_bj_demo.ui.adapter.HomeSearchAdapter;
 import com.hxzk_bj_demo.utils.AvoidClickAgainUtil;
 import com.hxzk_bj_demo.utils.KeyboardUtil;
 import com.hxzk_bj_demo.utils.LogUtil;
+import com.hxzk_bj_demo.utils.MarioResourceHelper;
+import com.hxzk_bj_demo.utils.ProgressDialogUtil;
 import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
 import com.hxzk_bj_demo.widget.DrawableTextView;
 import com.xzt.xrouter.router.Xrouter;
 import com.xzt.xrouter.router.XrouterRequest;
 import com.xzt.xrouter.router.XrouterResponse;
-
 import org.litepal.crud.DataSupport;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-
 import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -52,8 +50,6 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import rx.Observable;
 import rx.Subscriber;
-
-import static com.hxzk_bj_demo.R2.id.linear_historysearch;
 
 /**
  * 作者：created by ${zjt} on 2019/3/7
@@ -72,8 +68,6 @@ public class HomeSearchActivity extends BaseBussActivity {
 
     Observable<BaseResponse<HomeSearchBean>> observable;
     Subscriber<BaseResponse<HomeSearchBean>> subscriber;
-
-
     //页码
     int mPageNum = 0;
     //总页数
@@ -105,8 +99,7 @@ public class HomeSearchActivity extends BaseBussActivity {
     @BindView(R.id.realtive_searchbitch)
     RelativeLayout relativeSearchBitch;
 
-    Handler mHandler = new Handler() {
-
+     Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -126,8 +119,8 @@ public class HomeSearchActivity extends BaseBussActivity {
                     } else {
                         mHomeSearchAdapter.notifyDataSetChanged();
                     }
-
                     break;
+                    default:
             }
         }
     };
@@ -152,7 +145,6 @@ public class HomeSearchActivity extends BaseBussActivity {
         etSeachcontent.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
@@ -240,7 +232,6 @@ public class HomeSearchActivity extends BaseBussActivity {
                     }
                 }else{
                     ToastCustomUtil.showLongToast(getString(R.string.avoidClickAgain));
-
                 }
                 break;
 
@@ -256,7 +247,6 @@ public class HomeSearchActivity extends BaseBussActivity {
                     linearHoistorySearch.setVisibility(View.GONE);
                 }
                 break;
-
             case R.id.tv_batchSearch:
             case R.id.iv_batchSearch:
                 if(mPageNum < allPageNum){
@@ -266,6 +256,8 @@ public class HomeSearchActivity extends BaseBussActivity {
                  ToastCustomUtil.showLongToast(getResources().getString(R.string.search_endbatch));
                 }
                 break;
+                default:
+                    break;
         }
     }
 
@@ -278,21 +270,23 @@ public class HomeSearchActivity extends BaseBussActivity {
      * @return
      */
     @SuppressLint("ResourceType")
-    private TextView createFlexItemTextView(final SearchTagBean searchTagBean, int drawableRes, boolean isHotSearch) {
+    private TextView createFlexItemTextView(final SearchTagBean searchTagBean, int shape, boolean isHotSearch) {
         final DrawableTextView textView = new DrawableTextView(HomeSearchActivity.this);
-        textView.setGravity(Gravity.CENTER);
+        //textView.setGravity(Gravity.CENTER);
         textView.setText(searchTagBean.getName());
         textView.setTextSize(12);
-        textView.setTextColor(this.getResources().getColor(R.color.homesearch_historyText));
-        textView.setBackgroundResource(drawableRes);
-        if (!isHotSearch) {//通过boolean值区分热门搜索和历史搜索的样式（历史搜索多一个x）
-            textView.setTextColor(this.getResources().getColor(R.color.white));
+        MarioResourceHelper marioResourceHelper = MarioResourceHelper.getInstance(HomeSearchActivity.this);
+        int textColor =marioResourceHelper.getColorByAttr(R.attr.custom_attr_app_textcolor);
+        textView.setTextColor(textColor);
+        textView.setBackgroundResource(shape);
+        //通过boolean值区分热门搜索和历史搜索的样式（历史搜索多一个x）
+        if (!isHotSearch) {
             Drawable deleteIcon = getResources().getDrawable(R.drawable.del);
             deleteIcon.setBounds(0, 0, deleteIcon.getMinimumWidth(), deleteIcon.getMinimumHeight());
             textView.setCompoundDrawables(null, null, deleteIcon, null);
-            textView.setCompoundDrawablePadding(30);//设置图片和text之间的间距
-            textView.setPadding(50, 0, 0, 0);
-
+            //设置图片和text之间的间距
+            textView.setCompoundDrawablePadding(20);
+            //textView.setPadding(50, 0, 0, 0);
         }
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -347,14 +341,14 @@ public class HomeSearchActivity extends BaseBussActivity {
     /**
      * 搜索请求
      */
-    private void requestSearch(int pageNum, String key) {
+    private void requestSearch(int pageNum, String searchContent) {
         mPageNum=pageNum;
         boolean isHasKeyWord = false;
         //保存搜索记录之前先判断之前又没有存储过,再次查询查询保存的历史记录
         list_history = (ArrayList<SearchTagBean>) DataSupport.findAll(SearchTagBean.class);
         if(list_history.size()>0){
             for (int i = 0; i < list_history.size(); i++) {
-                if (list_history.get(i).getName().equals(key)) {
+                if (list_history.get(i).getName().equals(searchContent)) {
                     isHasKeyWord = true;
                     break;
                 } else {
@@ -365,7 +359,7 @@ public class HomeSearchActivity extends BaseBussActivity {
         }
         if (!isHasKeyWord) {
             SearchTagBean searchTagBean = new SearchTagBean();
-            searchTagBean.setName(key);
+            searchTagBean.setName(searchContent);
             searchTagBean.setIsSelect("false");
             if (searchTagBean.save()) {
               LogUtil.e(TAG, "搜索记录已保存");
@@ -373,14 +367,22 @@ public class HomeSearchActivity extends BaseBussActivity {
         }
 
         subscriber = new Subscriber<BaseResponse<HomeSearchBean>>() {
+
+            @Override
+            public void onStart() {
+                super.onStart();
+                ProgressDialogUtil.getInstance().mshowDialog(HomeSearchActivity.this);
+            }
+
             @Override
             public void onCompleted() {
+                ProgressDialogUtil.getInstance().mdismissDialog();
             }
 
             @Override
             public void onError(Throwable e) {
+                ProgressDialogUtil.getInstance().mdismissDialog();
                 ToastCustomUtil.showLongToast(e.getMessage());
-
             }
 
             @Override
@@ -398,24 +400,22 @@ public class HomeSearchActivity extends BaseBussActivity {
                             ToastCustomUtil.showLongToast(getString(R.string.search_noresult));
                         }
                     });
-
                 }
-
                 if (mSearchResultData.size() != 0) {
                     relativeSearchBitch.setVisibility(View.VISIBLE);
                     linearHoistorySearch.setVisibility(View.GONE);
                 }else{
+                    if(list_history.size() >0){
+                        linearHoistorySearch.setVisibility(View.VISIBLE);
+                    }
                     relativeSearchBitch.setVisibility(View.GONE);
-                    linearHoistorySearch.setVisibility(View.VISIBLE);
                 }
                 mHandler.sendEmptyMessage(0x111);
             }
 
         };
-
-        observable = HttpRequest.getInstance().getServiceInterface().homeSearch(pageNum, key);
+        observable = HttpRequest.getInstance().getServiceInterface().homeSearch(searchContent);
         HttpRequest.getInstance().toSubscribe(observable, subscriber);
-
     }
 
 

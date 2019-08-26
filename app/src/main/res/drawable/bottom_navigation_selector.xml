@@ -4,10 +4,12 @@
 
 
     <item android:state_checked="true"
-        android:color="#18c1bc"/>
+        android:color="#E96F59"
+       />
 
     <item android:state_enabled="true"
-        android:color="#000"/>
+        android:color="#636363"
+      />
 
 
 <!--

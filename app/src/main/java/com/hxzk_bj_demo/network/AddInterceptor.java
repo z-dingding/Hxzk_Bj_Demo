@@ -19,6 +19,8 @@ import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 
+import static com.hxzk_bj_demo.common.Const.KEY_COOKIE;
+
 /**
  * 作者：created by ${zjt} on 2019/2/26
  * 描述:AddCookiesInterceptor请求拦截器，
@@ -37,29 +39,37 @@ public class AddInterceptor implements Interceptor {
     }
 
 
-    public AddInterceptor(){}
+    public AddInterceptor() {
+    }
 
 
     @Override
     public Response intercept(Chain chain) throws IOException {
-        Request request =chain.request();
-        Request.Builder builder =request.newBuilder();
-        String cookie=getCookie(request.url().toString(),request.url().host().toString());
-        if(!TextUtils.isEmpty(cookie)){
-            builder.addHeader("Cookie",cookie);
+        Request request = chain.request();
+        Request.Builder builder = request.newBuilder();
+        String cookie = getCookie();
+        if (!TextUtils.isEmpty(cookie)) {
+            builder.addHeader("Cookie", cookie);
         }
         //拦截器实现关键部分是调用chain.proceed(request)。这个方法是所有HTTP工作发生的地方，以满足请求和响应的需求。
         return chain.proceed(builder.build());
     }
 
 
+    /**
+     * 获取之前存储在SP中的cookie
+     * @return
+     */
+    private String getCookie() {
+        return (String) SPUtils.get(MyApplication.getAppContext(), KEY_COOKIE, "");
+    }
 
-    private String getCookie(String url,String domain) {
-        if(!TextUtils.isEmpty(url) && !TextUtils.isEmpty((String) SPUtils.get(MyApplication.getAppContext(),domain,""))) {
-            return (String) SPUtils.get(MyApplication.getAppContext(), domain, "");
-        }
-        return null;
 
+    /**
+     *执行退出登录后,清空本地保存的cookie
+     */
+    public static void clearCookie(Context context , String clearKey ){
+        SPUtils.remove(context,clearKey);
     }
 
 

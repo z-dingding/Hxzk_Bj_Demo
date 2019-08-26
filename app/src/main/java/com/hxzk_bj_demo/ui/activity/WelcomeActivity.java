@@ -14,10 +14,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hxzk_bj_demo.R;
+import com.hxzk_bj_demo.common.MyApplication;
+import com.hxzk_bj_demo.utils.SPUtils;
 import com.hxzk_bj_demo.utils.activity.ActivityJump;
 import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import static com.hxzk_bj_demo.common.Const.KEY_COOKIE;
 
 /**
  * Created by Ding on 2017/12/24
@@ -34,7 +38,7 @@ public class WelcomeActivity extends AppCompatActivity {
         ActivityJump.AddToTack(WelcomeActivity.this);
 
         View view = View.inflate(this, R.layout.activity_welcome,null);
-        //取消状态栏
+        //取消状态栏,充满全屏
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(view);
@@ -66,7 +70,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
         AnimatorSet set =new AnimatorSet();
         set.play(oa_suitwo).with(oa_yitwo).after(oa_yione).after(oa_suione);
-        set.setDuration(3000);
+        set.setDuration(1000);
         set.start();
 
         set.addListener(new Animator.AnimatorListener() {
@@ -77,10 +81,16 @@ public class WelcomeActivity extends AppCompatActivity {
 
             @Override
             public void onAnimationEnd(Animator animator) {
-                Intent intent=new Intent(WelcomeActivity.this, LoginActivity.class);
-                startActivity(intent);
-                animNext();
-                finish();
+                String cookies =(String) SPUtils.get(MyApplication.getAppContext(),KEY_COOKIE,"");
+                if(!TextUtils.isEmpty(cookies)){
+                    ActivityJump.NormalJumpAndFinish(WelcomeActivity.this, MainActivity.class);
+                }else{
+                    Intent intent=new Intent(WelcomeActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    animNext();
+                    finish();
+                }
+
 
             }
 

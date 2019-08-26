@@ -24,7 +24,7 @@
 
     <!--=====================================底部导航栏字符=============================-->
     <string name="home">首页</string>
-    <string name="investment">投资</string>
+    <string name="investment">公众号</string>
     <string name="mine">我的</string>
 
     <!--=====================================登录界面字符=============================-->
@@ -69,6 +69,7 @@
     <!--=====================================首页搜索按钮=============================-->
     <string name="search_prompt">请输入搜索内容</string>
     <string name="search_cancel">取消</string>
+    <string name="search_back">返回</string>
     <string name="search_history">搜索历史</string>
     <string name="search_clear">清除历史</string>
     <string name="search_trend">搜索趋势</string>
@@ -78,6 +79,8 @@
 
 
     <!--=====================================我的Fragment相关字符=============================-->
+    <string name="toolbar_mine_title">我的</string>
+    <string name="toolbar_mine_settting">设置</string>
     <string name="recommended_artical">推荐文章</string>
     <string name="recommended_video">推荐视频</string>
     <string name="recommended_music">推荐音乐</string>

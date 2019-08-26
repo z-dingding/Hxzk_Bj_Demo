@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -27,16 +29,18 @@ import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.common.MyApplication;
 import com.hxzk_bj_demo.javabean.LoginOutBean;
 import com.hxzk_bj_demo.mvp.view.NoteBookActivity;
+import com.hxzk_bj_demo.network.AddInterceptor;
 import com.hxzk_bj_demo.network.BaseResponse;
 import com.hxzk_bj_demo.network.BaseSubscriber;
 import com.hxzk_bj_demo.network.HttpRequest;
 import com.hxzk_bj_demo.ui.activity.base.BaseBussActivity;
 import com.hxzk_bj_demo.ui.adapter.base.FragmentAdapter;
+import com.hxzk_bj_demo.ui.fragment.ConsultingFragment;
 import com.hxzk_bj_demo.ui.fragment.HomeFragment;
-import com.hxzk_bj_demo.ui.fragment.InvestFragment;
 import com.hxzk_bj_demo.ui.fragment.UserFragment;
 import com.hxzk_bj_demo.ui.fragment.base.BaseFragment;
 import com.hxzk_bj_demo.utils.LanguageUtil;
+import com.hxzk_bj_demo.utils.LogUtil;
 import com.hxzk_bj_demo.utils.MarioResourceHelper;
 import com.hxzk_bj_demo.utils.SPUtils;
 import com.hxzk_bj_demo.utils.ScreenUtil;
@@ -61,10 +65,13 @@ import rx.Observable;
 import rx.Subscriber;
 
 import static com.hxzk_bj_demo.R.id.vp_main;
+import static com.hxzk_bj_demo.common.Const.KEY_COOKIE;
 import static com.hxzk_bj_demo.utils.LanguageUtil.setLocale;
 
 
-//注意因为BaseFragmeng中定义了FragmentCallBack接口MainActiviyz中用到了Fragment所以要实现，否则报未知错误
+/**
+ * 注意因为BaseFragmeng中定义了FragmentCallBack接口MainActiviyz中用到了Fragment所以要实现，否则报未知错误
+ */
 public class MainActivity extends BaseBussActivity implements BaseFragment.FragmentCallBack {
 
     private static final String TAG = "MainActivity";
@@ -129,11 +136,13 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
         };
 
         mDrawerToggle.syncState();
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {//防止5.0一下NavigationView没延伸到状态栏
+        //防止5.0一下NavigationView没延伸到状态栏
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             mDrawer.setFitsSystemWindows(true);
             mDrawer.setClipToPadding(false);
         }
-        mDrawer.setDrawerListener(mDrawerToggle); //设置侧滑监听
+        //设置侧滑监听
+        mDrawer.setDrawerListener(mDrawerToggle);
     }
 
     @Override
@@ -169,7 +178,10 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
                             MyApplication.setAppTheme(true);
                         }
                         loadingCurrentTheme();
+                        //此处刷新主题，调用所有的注册的观察者
                         ((MyApplication)getApplication()).notifyByThemeChanged();
+                        //刷新Activitytoolbar才会变动图标
+                        MainActivity.this.recreate();
                         break;
                     case R.id.favorite:
                         addActivityToManager(MainActivity.this, CollectionActivity.class);
@@ -183,7 +195,6 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
                         break;
 
                     case R.id.loginout:
-
                         subscriber = new BaseSubscriber<BaseResponse<LoginOutBean>>(MainActivity.this) {
 
                             @Override
@@ -202,7 +213,7 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
                                     ToastCustomUtil.showLongToast(baseResponse.getMsg());
                                 } else {
                                     //清空保存在本地的cookie
-                                    SPUtils.remove(MainActivity.this, "ygcy.drugwebcn.com");
+                                    AddInterceptor.clearCookie(MainActivity.this,KEY_COOKIE);
                                     ActivityJump.finnishAllActivitys();
                                     //登出
                                     MobclickAgent.onProfileSignOff();
@@ -230,6 +241,8 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
                             setLocale(MainActivity.this, Locale.SIMPLIFIED_CHINESE);
                         }
                         break;
+                    default :
+                        break;
                 }
                 return true;
             }
@@ -241,16 +254,7 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
 
     @Override
     public void notifyByThemeChanged() {
-        super.notifyByThemeChanged();
-        MarioResourceHelper helper = MarioResourceHelper.getInstance(MainActivity.this);
-        helper.setBackgroundResourceByAttr(mRootLinear, R.attr.custom_attr_app_bg);
-        helper.setBackgroundResourceByAttr(mToolbar, R.attr.custom_attr_app_toolbar_bg);
-        int color=helper.getColorByAttr(R.attr.custom_attr_app_textcolor);
-        mToolbar.setTitleTextColor(color);
-        helper.setBackgroundResourceByAttr(statebarView, R.attr.custom_attr_app_toolbar_bg);
-        helper.setBackgroundResourceByAttr(navigationview_Main, R.attr.custom_attr_app_toolbar_bg);
 
-        navigationview_Main.setItemTextColor(ColorStateList.valueOf(color));
     }
 
     @Override
@@ -270,7 +274,7 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
     private void UserInforLink() {
 
         //先判断中英文
-        if (getResources().getConfiguration().locale.getLanguage().equals("en")) { //英文
+        if (getResources().getConfiguration().locale.getLanguage().equals("en")) {
             SpannableString mSpannableString = new SpannableString(getString(R.string.sideslip_welcom));
             //加粗字体
             StyleSpan mStyleSpan = new StyleSpan(Typeface.BOLD_ITALIC);
@@ -313,28 +317,28 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
 
         @Override
         public void onClick(View widget) {
-            Intent intent = new Intent();//创建Intent对象
-            intent.setAction(Intent.ACTION_VIEW);//为Intent设置动作
-            intent.putExtra("content", content);//可以传递数据到下个页面
-            intent.setData(Uri.parse("http://www.baidu.com"));//为Intent设置数据
-            startActivity(intent);//将Intent传递给Activity
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_VIEW);
+            //可以传递数据到下个页面
+            intent.putExtra("content", content);
+            //为Intent设置数据
+            intent.setData(Uri.parse("http://www.baidu.com"));
+            //将Intent传递给Activity
+            startActivity(intent);
         }
 
         @Override
         public void updateDrawState(TextPaint ds) {
             //设置不显示下划线，默认显示
-            //  ds.setUnderlineText(false);
             super.updateDrawState(ds);
         }
-
-
     }
 
     @Override
     protected void initData() {
         super.initData();
         homeFrag = HomeFragment.getInstance(HomeFragment.class, null);
-        investFrag = InvestFragment.getInstance(InvestFragment.class, null);
+        investFrag = ConsultingFragment.getInstance(ConsultingFragment.class, null);
         userFrag = UserFragment.getInstance(UserFragment.class, null);
         List<Fragment> list = new ArrayList<>();
         list.add(homeFrag);
@@ -387,6 +391,7 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
                     getWindow().invalidatePanelMenu(Window.FEATURE_OPTIONS_PANEL);
                     invalidateOptionsMenu();
                     break;
+                    default:
             }
             menuItem = bav_Main.getMenu().getItem(position);
             menuItem.setChecked(true);
@@ -404,12 +409,7 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
         @Override
         public boolean onNavigationItemSelected(MenuItem item) {
             //item.getOrder()对应menu里的orderInCategory属性值
-            try{
-                vp_Main.setCurrentItem(item.getOrder());
-
-            }catch (Exception e){
-
-            }
+             vp_Main.setCurrentItem(item.getOrder());
             return true;
         }
     };
@@ -441,14 +441,12 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
      */
 
     private void MultPermission() {
-        RxPermissions rxPermissions = new RxPermissions(MainActivity.this); // 创建实例
+        RxPermissions rxPermissions = new RxPermissions(MainActivity.this);
         rxPermissions.request(Manifest.permission.CAMERA,
                 Manifest.permission.READ_PHONE_STATE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.READ_EXTERNAL_STORAGE
-
-        )//权限名称，多个权限之间逗号分隔ca
-                .subscribe(new Consumer<Boolean>() {
+        ).subscribe(new Consumer<Boolean>() {
                     @Override
                     public void accept(Boolean granted) throws Exception {
                         //执行顺序——1【多个权限的情况，只有所有的权限均允许的情况下granted==true】
@@ -463,7 +461,7 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        // LogUtil.e(TAG, "授权异常请检查处理");//可能是授权异常的情况下的处理
+                        //LogUtil.e(TAG, "授权异常请检查处理");//可能是授权异常的情况下的处理
                     }
                 }, new Action() {
                     @Override

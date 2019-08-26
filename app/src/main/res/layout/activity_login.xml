@@ -19,7 +19,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         >
 
@@ -31,7 +31,7 @@
             android:layout_marginTop="56dp"
             android:layout_marginBottom="40dp"
             android:focusable="true"
-            android:scaleType="centerInside"
+            android:scaleType="fitXY"
             android:src="@mipmap/ic_launcher"
             android:visibility="visible"
             />
@@ -95,13 +95,12 @@
 
         <TextView
             android:id="@+id/tv_otherwaylogin_login"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/login_otherwaylogin"
             android:textColor="?attr/custom_attr_app_textcolor"
             android:layout_alignParentRight="true"
-
-
             />
         </RelativeLayout>
         <Button
@@ -116,10 +115,12 @@
             android:textSize="17sp" />
 
 
+
+        <!-- 此布局就是充当占位符,用于计算底部空白区域高度，没有实际意义 -->
         <RelativeLayout
             android:id="@+id/layout_bottom"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:visibility="invisible">
 
             <TextView
@@ -128,18 +129,6 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_margin="14dp"
-                android:text="无法登陆？"
-                android:visibility="invisible"
-                android:textColor="@color/colorPrimary"
-                android:textSize="14sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:layout_margin="14dp"
-                android:text="新用户"
                 android:visibility="invisible"
                 android:textColor="@color/colorPrimary"
                 android:textSize="14sp" />
