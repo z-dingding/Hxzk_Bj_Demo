@@ -1,4 +1,4 @@
-package com.hxzk_bj_demo.ui.basemvp.base;
+package com.hxzk_bj_demo.ui.mvpbase.base;
 
 /**
  * 作者：created by ${zjt} on 2019/3/29

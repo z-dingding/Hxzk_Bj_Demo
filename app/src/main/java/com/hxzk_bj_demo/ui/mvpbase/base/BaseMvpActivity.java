@@ -1,4 +1,4 @@
-package com.hxzk_bj_demo.ui.basemvp.base;
+package com.hxzk_bj_demo.ui.mvpbase.base;
 
 import com.hxzk_bj_demo.ui.activity.base.BaseBussActivity;
 

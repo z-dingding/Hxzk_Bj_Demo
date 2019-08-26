@@ -1,4 +1,4 @@
-package com.hxzk_bj_demo.ui.basemvp.presenter;
+package com.hxzk_bj_demo.ui.mvpbase.presenter;
 
 import android.content.Context;
 
@@ -6,9 +6,9 @@ import com.hxzk_bj_demo.javabean.LoginOutBean;
 import com.hxzk_bj_demo.network.BaseResponse;
 import com.hxzk_bj_demo.network.BaseSubscriber;
 import com.hxzk_bj_demo.network.HttpRequest;
-import com.hxzk_bj_demo.ui.basemvp.base.BasePreseneter;
-import com.hxzk_bj_demo.ui.basemvp.constract.LoginConstract;
-import com.hxzk_bj_demo.ui.basemvp.model.LoginModel;
+import com.hxzk_bj_demo.ui.mvpbase.base.BasePreseneter;
+import com.hxzk_bj_demo.ui.mvpbase.constract.LoginConstract;
+import com.hxzk_bj_demo.ui.mvpbase.model.LoginModel;
 import com.hxzk_bj_demo.ui.activity.LoginActivity;
 import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
 

@@ -16,6 +16,8 @@ import static com.chad.library.adapter.base.listener.SimpleClickListener.TAG;
 
 public class NoteBookModelCompl implements NoteBookModel {
 
+
+
     @Override
     public NoteBookBean getNoteBook(int position) {
         List<NoteBookBean> mListNoteBookBean =DataSupport.findAll(NoteBookBean.class);
@@ -34,9 +36,9 @@ public class NoteBookModelCompl implements NoteBookModel {
         String date =noteBookBean.getDate();
           if(noteBookBean.save()){
               LogUtil.e(TAG,"数据库插入数据成功");
-             // NoteBookBean bookBean = (NoteBookBean) DataSupport.where("content = ?", content).find(NoteBookBean.class);
               List<NoteBookBean> listData =DataSupport.findAll(NoteBookBean.class);
              for(int i=0;i<listData.size();i++){
+                 //根据插入数据对象的时间判断是否插入成功
                  if(date.equals(listData.get(i).getDate())){
                      return i+1;
                  }
@@ -44,5 +46,18 @@ public class NoteBookModelCompl implements NoteBookModel {
           }
         return -1;
     }
+
+    @Override
+    public boolean deleteNote(NoteBookBean note, int adapterPos) {
+        int bol =DataSupport.deleteAll(NoteBookBean.class,"date = ?",note.getDate());
+        if(bol > 0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+
+
 
 }

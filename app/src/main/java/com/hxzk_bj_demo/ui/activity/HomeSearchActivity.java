@@ -99,6 +99,7 @@ public class HomeSearchActivity extends BaseBussActivity {
     @BindView(R.id.realtive_searchbitch)
     RelativeLayout relativeSearchBitch;
 
+
      Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -116,7 +117,7 @@ public class HomeSearchActivity extends BaseBussActivity {
                                 XrouterResponse mXrouterResponse=Xrouter.getInstance().senMessage(HomeSearchActivity.this,mXrouterRequest);
                             }
                         });
-                    } else {
+                    } else{
                         mHomeSearchAdapter.notifyDataSetChanged();
                     }
                     break;
