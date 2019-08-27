@@ -19,11 +19,10 @@ public class NoteBookModelCompl implements NoteBookModel {
 
 
     @Override
-    public NoteBookBean getNoteBook(int position) {
-        List<NoteBookBean> mListNoteBookBean =DataSupport.findAll(NoteBookBean.class);
-        int listsize =mListNoteBookBean.size();
-        NoteBookBean bean =DataSupport.find(NoteBookBean.class,position+1);
-        return DataSupport.find(NoteBookBean.class,position+1);
+    public NoteBookBean getNoteBook(int id) {
+        //根据每个item的id查询并不是position
+        NoteBookBean bean =DataSupport.find(NoteBookBean.class,id);
+        return bean;
     }
 
     @Override

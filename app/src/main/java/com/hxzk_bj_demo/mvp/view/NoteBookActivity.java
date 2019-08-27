@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.hxzk_bj_demo.R;
+import com.hxzk_bj_demo.javabean.NoteBookBean;
 import com.hxzk_bj_demo.mvp.presenter.NoteBookPresenter;
 import com.hxzk_bj_demo.mvp.presenter.NoteBookPresenterCompl;
 import com.hxzk_bj_demo.ui.activity.base.BaseBussActivity;
@@ -19,6 +20,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import org.litepal.crud.DataSupport;
+
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -143,6 +149,7 @@ public class NoteBookActivity extends BaseBussActivity implements NoteBookView {
     private   class NoteBookAdapter extends RecyclerView.Adapter<NotesViewHolder> {
         @Override
         public int getItemCount() {
+            //返回数据库数据条目
             int count = mNoteBookPresenter.getNotesCount();
             return count;
         }
@@ -154,7 +161,10 @@ public class NoteBookActivity extends BaseBussActivity implements NoteBookView {
 
         @Override
         public void onBindViewHolder(NotesViewHolder holder, int position) {
-                 mNoteBookPresenter.bindViewHolder(holder, position);
+                List<NoteBookBean> noteBookBeanList = DataSupport.findAll(NoteBookBean.class);
+                NoteBookBean noteBookBean = noteBookBeanList.get(position);
+                 int id =noteBookBean.getId();
+                 mNoteBookPresenter.bindViewHolder(holder, id);
         }
     }
 

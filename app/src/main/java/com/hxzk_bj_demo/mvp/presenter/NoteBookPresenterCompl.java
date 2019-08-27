@@ -85,7 +85,6 @@ public class NoteBookPresenterCompl implements  NoteBookPresenter {
 
     @Override
     public NotesViewHolder createViewHolder(ViewGroup parent, int viewType) {
-
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View viewTaskRow = inflater.inflate(R.layout.item_notebook, parent, false);
         NotesViewHolder notesViewHolder =new NotesViewHolder(viewTaskRow);
@@ -93,8 +92,8 @@ public class NoteBookPresenterCompl implements  NoteBookPresenter {
     }
 
     @Override
-    public void bindViewHolder( NotesViewHolder notesViewHolder, int position) {
-        NoteBookBean noteBookBean =mNoteBookModel.getNoteBook(position);
+    public void bindViewHolder( NotesViewHolder notesViewHolder, int id) {
+        NoteBookBean noteBookBean =mNoteBookModel.getNoteBook(id);
         notesViewHolder.tvContent.setText(noteBookBean.getContent());
         notesViewHolder.tvDate.setText(noteBookBean.getDate());
         notesViewHolder.imgBtnDelete.setOnClickListener(new View.OnClickListener() {
@@ -157,12 +156,10 @@ public class NoteBookPresenterCompl implements  NoteBookPresenter {
      */
     public void deleteNote(final NoteBookBean note, final int adapterPos,final int layoutPos){
         new AsyncTask<Void,Void,Boolean>(){
-
             @Override
             protected Boolean doInBackground(Void... params) {
                 return mNoteBookModel.deleteNote(note,adapterPos) ;
             }
-
             @Override
             protected void onPostExecute(Boolean aBoolean) {
                 if(aBoolean){
@@ -171,7 +168,6 @@ public class NoteBookPresenterCompl implements  NoteBookPresenter {
                 }else{
                     getView().showSnackBar("...删除不了 ⊙﹏⊙");
                 }
-
             }
         }.execute();
     }
