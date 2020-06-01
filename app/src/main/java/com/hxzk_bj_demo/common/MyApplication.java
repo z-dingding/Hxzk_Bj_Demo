@@ -65,14 +65,8 @@ public class MyApplication extends LitePalApplication {
         if (LeakCanary.isInAnalyzerProcess(this)) {
             //这个过程专用于LeakCanary用于堆分析,在这个过程中，你不应该init你的应用程序。
             return;
-           /* LeakCanary的内存泄露提示一般会包含三个部分:
-            第一部分(LeakSingle类的sInstance变量)引用第二部分(LeakSingle类的mContext变量),
-             导致第三部分(MainActivity类的实例instance)泄露.
-                    如果手动启动activity进行内存检测则需要执行:adb shell am start  -n [包名]/[Activity名]*/
         }
         //LeakCanary.install(this);
-        //正常程序初始化代码…
-        //获取全局Context对象
         appContext = getApplicationContext();
         httpClientBuilder = getOkHttpClientbBuild();
         //注册Activity生命周期监听回调
@@ -92,7 +86,6 @@ public class MyApplication extends LitePalApplication {
         //添加初始化方法:上下文,AppKey,Channel,设备类型，Push推送业务的secret
         UMConfigure.init(this,UMConfigure.DEVICE_TYPE_PHONE, "");
         PlatformConfig.setWeixin("wxdc1e388c3822c80b", "3baf1193c85774b3fd9d18447d76cab0");
-
         PlatformConfig.setWeixin("wxdc1e388c3822c80b", "3baf1193c85774b3fd9d18447d76cab0");
         PlatformConfig.setSinaWeibo("3921700954", "04b48b094faeb16683c32669824ebdad","http://sns.whalecloud.com");
         PlatformConfig.setQQZone("100424468", "c7394704798a158208a74ab60104f0ba");
@@ -112,9 +105,9 @@ public class MyApplication extends LitePalApplication {
 
             if (!isSameWithSetting(activity) && !(activity instanceof WelcomeActivity)) {
                 String lan = LanguageUtil.getAppLanguage(activity);
-                if (lan.equals("zh") || !lan.equals("en")) {
+                if ("zh".equals(lan) || !"en".equals(lan)) {
                     setLocale(activity, Locale.SIMPLIFIED_CHINESE);
-                } else if (lan.equals("en") || !lan.equals("zh")) {
+                } else {
                     setLocale(activity, Locale.US);
                 }
             }
@@ -171,7 +164,6 @@ public class MyApplication extends LitePalApplication {
      * @return
      */
     private static final HashMap<String, List<Cookie>> cookiestore = new HashMap<>();
-
 
     public static OkHttpClient.Builder getOkHttpClientbBuild() {
         if (httpClientBuilder == null) {

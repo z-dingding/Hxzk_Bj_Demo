@@ -39,6 +39,7 @@
         android:layout_marginTop="@dimen/dp_50"
         android:layout_marginLeft="@dimen/dp_10"
         android:layout_marginRight="@dimen/dp_10"
+        app:passwordToggleEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tilayout_account"
@@ -52,9 +53,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/rigister_pwd"
+            android:inputType="textPassword"
            />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <!--       textColorHint  提示字体颜色-->
+<!--    hintTextAppearance  -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_confirmpwd"
         android:layout_width="match_parent"
@@ -62,11 +66,13 @@
         android:layout_marginTop="@dimen/dp_50"
         android:layout_marginLeft="@dimen/dp_10"
         android:layout_marginRight="@dimen/dp_10"
+        app:passwordToggleEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tilayout_pwd"
         app:counterEnabled="true"
         app:counterMaxLength="16"
+        android:textColorHint="@color/black"
         app:counterOverflowTextAppearance="@style/rigister_hinterroy"
        >
 
@@ -74,7 +80,9 @@
             android:id="@+id/tiet_confirmpwd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="textPassword"
             android:hint="@string/rigister_confirmpwd"
+            android:theme="@style/TextAppTheme"
          />
     </com.google.android.material.textfield.TextInputLayout>
 

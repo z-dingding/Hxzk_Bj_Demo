@@ -78,7 +78,6 @@ public class CaptureActivity extends AppCompatActivity implements Callback {
     private ProgressDialog mProgress;
     private String photo_path;
     private Bitmap scanBitmap;
-    //	private Button cancelScanButton;
     public static final int RESULT_CODE_QR_SCAN = 0xA1;
     public static final String INTENT_EXTRA_KEY_QR_SCAN = "qr_scan_result";
     /**
@@ -88,7 +87,6 @@ public class CaptureActivity extends AppCompatActivity implements Callback {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scanner);
-        //ViewUtil.addTopView(getApplicationContext(), this, R.string.scan_card);
         CameraManager.init(getApplication());
         viewfinderView = (ViewfinderView) findViewById(R.id.viewfinder_content);
         back = (ImageView) findViewById(R.id.scanner_toolbar_back);
@@ -98,79 +96,12 @@ public class CaptureActivity extends AppCompatActivity implements Callback {
                 finish();
             }
         });
-//		cancelScanButton = (Button) this.findViewById(R.id.btn_cancel_scan);
         hasSurface = false;
         inactivityTimer = new InactivityTimer(this);
-
-        //添加toolbar
-//        addToolbar();
-        addStatusBarView();
-    }
-    /**
-     * Android 状态栏着色
-     */
-    private void addStatusBarView() {
-        int height;//状态栏的高度
-        height = getStatusBarHeight(this);
-        if (height <= 0) {
-            return;
-        }
-        View view = new View(this);
-        view.setBackgroundColor(getResources().getColor(R.color.black));
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height);
-        ViewGroup decorView = (ViewGroup) findViewById(android.R.id.content);
-        decorView.addView(view, params);
-    }
-
-    /**
-     * 获取状态栏的高度
-     * 19API以上 读取到状态栏高度才有意义
-     */
-    private int getStatusBarHeight(Context context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
-            return resourceId > 0 ? context.getResources().getDimensionPixelSize(resourceId) : 0;
-        } else {
-            return 0;
-        }
+        //addStatusBarView();
     }
 
 
-
-
-
-    private void addToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        ImageView more = (ImageView) findViewById(R.id.scanner_toolbar_more);
-//        assert more != null;
-//        more.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
-        setSupportActionBar(toolbar);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        //getMenuInflater().inflate(R.menu.scanner_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()){
-//            case R.id.scan_local:
-//                //打开手机中的相册
-//                Intent innerIntent = new Intent(Intent.ACTION_GET_CONTENT); //"android.intent.action.GET_CONTENT"
-//                innerIntent.setType("image/*");
-//                Intent wrapperIntent = Intent.createChooser(innerIntent, "选择二维码图片");
-//                this.startActivityForResult(wrapperIntent, REQUEST_CODE_SCAN_GALLERY);
-//                return true;
-//        }
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     protected void onActivityResult(final int requestCode, int resultCode, Intent data) {
@@ -215,6 +146,7 @@ public class CaptureActivity extends AppCompatActivity implements Callback {
                         }
                     }).start();
                     break;
+                default:
             }
         }
         super.onActivityResult(requestCode, resultCode, data);

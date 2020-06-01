@@ -51,7 +51,7 @@
 
 
     <!--=====================================左侧滑菜单字符=============================-->
-    <string name="sideslip_welcom">欢迎赵涛涛今日签到</string>
+    <string name="sideslip_welcom">欢迎%s今日签到</string>
 
     <string name="theme">更改主题</string>
     <string name="favorite">收藏</string>

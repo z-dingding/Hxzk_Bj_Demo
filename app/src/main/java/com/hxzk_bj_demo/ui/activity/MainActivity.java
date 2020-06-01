@@ -26,6 +26,7 @@ import android.widget.TextView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.hxzk_bj_demo.R;
+import com.hxzk_bj_demo.common.Const;
 import com.hxzk_bj_demo.common.MyApplication;
 import com.hxzk_bj_demo.javabean.LoginOutBean;
 import com.hxzk_bj_demo.mvp.view.NoteBookActivity;
@@ -101,8 +102,6 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
 
     Observable<BaseResponse<LoginOutBean>> observable;
     Subscriber<BaseResponse<LoginOutBean>> subscriber;
-
-
 
     @Override
     protected int setLayoutId() {
@@ -234,10 +233,9 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
 
                     case R.id.settting:
                         String lan = LanguageUtil.getAppLanguage(MainActivity.this);
-                        if (lan.equals("zh") || !lan.equals("en")) {
+                        if ("zh".equals(lan) || !"en".equals(lan)) {
                             setLocale(MainActivity.this, Locale.US);
-
-                        } else if (lan.equals("en") || !lan.equals("zh")) {
+                        } else {
                             setLocale(MainActivity.this, Locale.SIMPLIFIED_CHINESE);
                         }
                         break;
@@ -272,34 +270,36 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
      * 点击跳转用户详细信息
      */
     private void UserInforLink() {
-
+        //获取用户名
+        String userName = (String) SPUtils.get(this, Const.KEY_LOGIN_ACCOUNT,"");
+        String endString =String.format(getResources().getString(R.string.sideslip_welcom).toString(),userName);
         //先判断中英文
         if (getResources().getConfiguration().locale.getLanguage().equals("en")) {
             SpannableString mSpannableString = new SpannableString(getString(R.string.sideslip_welcom));
             //加粗字体
             StyleSpan mStyleSpan = new StyleSpan(Typeface.BOLD_ITALIC);
-            mSpannableString.setSpan(mStyleSpan, 8, 20, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+            mSpannableString.setSpan(mStyleSpan, 8, userName.length()+8, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
             //加点击事件
             //使用ClickableSpan的文本如果想真正实现点击作用，必须为TextView设置setMovementMethod方法
-            mSpannableString.setSpan(new MyClickableSpan(""), 8, 20, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+            mSpannableString.setSpan(new MyClickableSpan(""), 8, userName.length()+8, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
             //加前背景色
             ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(Color.GREEN);
-            mSpannableString.setSpan(foregroundColorSpan, 8, 20, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+            mSpannableString.setSpan(foregroundColorSpan, 8, userName.length()+8, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
 
             tv_userInfo_hvfromvn.setMovementMethod(LinkMovementMethod.getInstance());
             tv_userInfo_hvfromvn.setText(mSpannableString);
 
         } else {//中文
-            SpannableString mSpannableString = new SpannableString(getString(R.string.sideslip_welcom));
+            SpannableString mSpannableString = new SpannableString(endString);
             //加粗字体
             StyleSpan mStyleSpan = new StyleSpan(Typeface.BOLD_ITALIC);
-            mSpannableString.setSpan(mStyleSpan, 2, 5, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+            mSpannableString.setSpan(mStyleSpan, 2, userName.length()+2, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
             //设置点击事件
             //使用ClickableSpan的文本如果想真正实现点击作用，必须为TextView设置setMovementMethod方法
-            mSpannableString.setSpan(new MyClickableSpan(""), 2, 5, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+            mSpannableString.setSpan(new MyClickableSpan(""), 2, userName.length()+2, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
             //加前背景色
             ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(Color.GREEN);
-            mSpannableString.setSpan(foregroundColorSpan, 2, 5, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+            mSpannableString.setSpan(foregroundColorSpan, 2, userName.length()+2, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
 
             tv_userInfo_hvfromvn.setMovementMethod(LinkMovementMethod.getInstance());
             tv_userInfo_hvfromvn.setText(mSpannableString);

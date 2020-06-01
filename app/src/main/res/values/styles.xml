@@ -75,4 +75,14 @@
         <item name="android:textSize">@dimen/tab_top_auto_title_size</item>
     </style>
 
+
+
+    <!--改变TextInputLayout 里面的EditText默认下划线和点击时下划线的颜色-->
+    <style name="TextAppTheme" parent="Theme.AppCompat.NoActionBar">
+    <item name="colorControlNormal">@color/green</item><!--默认显示下划线的颜色-->
+    <item name="colorControlActivated">@color/black</item><!--点击后下划线的颜色-->
+<!--    <item name="colorAccent">@color/ivory</item>-->
+    </style>
+
+
 </resources>

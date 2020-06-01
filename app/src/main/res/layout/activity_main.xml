@@ -37,8 +37,6 @@
         icon 的选中颜色默认是 @color/colorPrimary。当然你也可以使用 app:itemIconTint=””
         菜单元素文字的默认颜色是 @color/colorPrimary。你可以使用 app:itemTextColor=””
         底部导航栏背景颜色默认是当前样式的背景色，你可以使用 app:itemBackground=””-->
-
-
         <!--labeled : 保持所有文字便签显示-->
         <!--unlabeled ：只显示图标-->
         <!--selected ：在选中的时候显示文字标签，有动画效果-->
