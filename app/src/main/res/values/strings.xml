@@ -52,6 +52,7 @@
 
     <!--=====================================左侧滑菜单字符=============================-->
     <string name="sideslip_welcom">欢迎%s今日签到</string>
+    <string name="sideslip_myintegral">我的积分</string>
 
     <string name="theme">更改主题</string>
     <string name="favorite">收藏</string>

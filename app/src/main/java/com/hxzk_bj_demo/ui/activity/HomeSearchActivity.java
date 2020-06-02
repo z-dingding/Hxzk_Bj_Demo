@@ -33,6 +33,7 @@ import com.hxzk_bj_demo.utils.KeyboardUtil;
 import com.hxzk_bj_demo.utils.LogUtil;
 import com.hxzk_bj_demo.utils.MarioResourceHelper;
 import com.hxzk_bj_demo.utils.ProgressDialogUtil;
+import com.hxzk_bj_demo.utils.activity.ActivityJump;
 import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
 import com.hxzk_bj_demo.widget.DrawableTextView;
 import com.xzt.xrouter.router.Xrouter;
@@ -237,7 +238,7 @@ public class HomeSearchActivity extends BaseBussActivity {
                 break;
 
             case R.id.tv_cancelsearch:
-                finishActivity();
+                ActivityJump.Back(this);
                 break;
 
             case R.id.tv_clearhistory:

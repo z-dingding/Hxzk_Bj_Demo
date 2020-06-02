@@ -5,6 +5,7 @@ import com.hxzk_bj_demo.javabean.BannerBean;
 import com.hxzk_bj_demo.javabean.CollectionBean;
 import com.hxzk_bj_demo.javabean.HomeListBean;
 import com.hxzk_bj_demo.javabean.HomeSearchBean;
+import com.hxzk_bj_demo.javabean.IntegralBean;
 import com.hxzk_bj_demo.javabean.InversBean;
 import com.hxzk_bj_demo.javabean.LoginOutBean;
 import com.hxzk_bj_demo.javabean.PublicListData;
@@ -140,4 +141,7 @@ public interface ServiceInterface {
     @GET("query?siteCode=bm35000001&database=all&method=json&qt=%E8%8D%AF%E5%93%81&page=1&pageSize=10")
     Observable<JsonObject> testMethod();
 
+
+    @GET("lg/coin/userinfo/json")
+    Observable<BaseResponse<IntegralBean>> integralApi();
 }

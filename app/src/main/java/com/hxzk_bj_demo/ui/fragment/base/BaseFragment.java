@@ -8,7 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.hxzk_bj_demo.common.MyApplication;
+
+import com.hxzk_bj_demo.common.MainApplication;
 import com.hxzk_bj_demo.interfaces.ThemeChangeObserver;
 import com.hxzk_bj_demo.utils.LazyLoadFragment;
 import androidx.annotation.Nullable;
@@ -94,7 +95,7 @@ public abstract class BaseFragment extends LazyLoadFragment implements ThemeChan
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-         ((MyApplication) ((Activity)mContext).getApplication()).registerObserver(this);
+         ((MainApplication) ((Activity)mContext).getApplication()).registerObserver(this);
 
         if (getLayoutId() != 0) {
             if (layoutView == null) {
@@ -118,8 +119,7 @@ public abstract class BaseFragment extends LazyLoadFragment implements ThemeChan
     public void onDestroyView() {
         super.onDestroyView();
         mUnbinder.unbind();
-        ((MyApplication) ((Activity) getContext()).getApplication()).unregisterObserver(this);
-
+        ((MainApplication) ((Activity) getContext()).getApplication()).unregisterObserver(this);
     }
 
 

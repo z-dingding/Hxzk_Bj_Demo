@@ -1,4 +1,4 @@
-package com.hxzk_bj_demo.network;
+package com.hxzk_bj_demo.network.interceptor;
 
 
 import android.app.Activity;
@@ -6,7 +6,7 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.widget.Toast;
 
-import com.hxzk_bj_demo.common.MyApplication;
+import com.hxzk_bj_demo.common.MainApplication;
 import com.hxzk_bj_demo.utils.NetWorkUtil;
 import com.hxzk_bj_demo.utils.SPUtils;
 
@@ -61,7 +61,7 @@ public class AddInterceptor implements Interceptor {
      * @return
      */
     private String getCookie() {
-        return (String) SPUtils.get(MyApplication.getAppContext(), KEY_COOKIE, "");
+        return (String) SPUtils.get(MainApplication.getAppContext(), KEY_COOKIE, "");
     }
 
 

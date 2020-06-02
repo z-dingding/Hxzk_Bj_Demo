@@ -158,11 +158,8 @@ public class ActivityJump {
 	 * @param mContext - 当前界面
 	 * @param cls - 要返回到的界面*/
 	public static void BackToAppointActivityAndFinishBetween(Context mContext, Class<?> cls) {
-
-
 		int currentIndex = getScreenManager().getIndexByActivtiyName((Activity)mContext);
 		int targetImdex = getScreenManager().getIndexByClassName(cls);
-
 		getScreenManager().removeBetweenActivitys(currentIndex,targetImdex);
 
 		NormalJumpAndFinish(mContext,cls);

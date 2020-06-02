@@ -3,7 +3,7 @@ package com.hxzk_bj_demo.utils.toastutil;
 import android.view.Gravity;
 import android.widget.Toast;
 
-import com.hxzk_bj_demo.common.MyApplication;
+import com.hxzk_bj_demo.common.MainApplication;
 
 
 /**
@@ -18,9 +18,9 @@ public class ToastCustomUtil {
 	 * 短时间显示Toast【居下】
 	 * @param msg 显示的内容-字符串*/
 	public static void showShortToast(String msg) {
-		if(MyApplication.getAppContext() != null){
+		if(MainApplication.getAppContext() != null){
 			if (toast == null) {
-				toast = ToastCustom.makeText(MyApplication.getAppContext(), msg, Toast.LENGTH_SHORT);
+				toast = ToastCustom.makeText(MainApplication.getAppContext(), msg, Toast.LENGTH_SHORT);
 			} else {
 				toast.setText(msg);
 			}
@@ -31,9 +31,9 @@ public class ToastCustomUtil {
 	 * 短时间显示Toast【居中】
 	 * @param msg 显示的内容-字符串*/
 	public static void showShortToastCenter(String msg){
-		if(MyApplication.getAppContext() != null) {
+		if(MainApplication.getAppContext() != null) {
 			if (toast == null) {
-				toast = ToastCustom.makeText(MyApplication.getAppContext(), msg, Toast.LENGTH_SHORT);
+				toast = ToastCustom.makeText(MainApplication.getAppContext(), msg, Toast.LENGTH_SHORT);
 				toast.setGravity(Gravity.CENTER, 0, 0);
 			} else {
 				toast.setText(msg);
@@ -46,9 +46,9 @@ public class ToastCustomUtil {
 	 * 短时间显示Toast【居上】
 	 * @param msg 显示的内容-字符串*/
 	public static void showShortToastTop(String msg){
-		if(MyApplication.getAppContext() != null) {
+		if(MainApplication.getAppContext() != null) {
 			if (toast == null) {
-				toast = ToastCustom.makeText(MyApplication.getAppContext(), msg, Toast.LENGTH_SHORT);
+				toast = ToastCustom.makeText(MainApplication.getAppContext(), msg, Toast.LENGTH_SHORT);
 				toast.setGravity(Gravity.TOP, 0, 0);
 			} else {
 				toast.setText(msg);
@@ -61,9 +61,9 @@ public class ToastCustomUtil {
 	 * 长时间显示Toast【居下】
 	 * @param msg 显示的内容-字符串*/
 	public static void showLongToast(String msg) {
-		if(MyApplication.getAppContext() != null) {
+		if(MainApplication.getAppContext() != null) {
 			if (toast == null) {
-				toast = ToastCustom.makeText(MyApplication.getAppContext(), msg, Toast.LENGTH_LONG);
+				toast = ToastCustom.makeText(MainApplication.getAppContext(), msg, Toast.LENGTH_LONG);
 			} else {
 				toast.setText(msg);
 			}
@@ -74,9 +74,9 @@ public class ToastCustomUtil {
 	 * 长时间显示Toast【居中】
 	 * @param msg 显示的内容-字符串*/
 	public static void showLongToastCenter(String msg){
-		if(MyApplication.getAppContext() != null) {
+		if(MainApplication.getAppContext() != null) {
 			if (toast == null) {
-				toast = ToastCustom.makeText(MyApplication.getAppContext(), msg, Toast.LENGTH_LONG);
+				toast = ToastCustom.makeText(MainApplication.getAppContext(), msg, Toast.LENGTH_LONG);
 				toast.setGravity(Gravity.CENTER, 0, 0);
 			} else {
 				toast.setText(msg);
@@ -88,9 +88,9 @@ public class ToastCustomUtil {
 	 * 长时间显示Toast【居上】
 	 * @param msg 显示的内容-字符串*/
 	public static void showLongToastTop(String msg){
-		if(MyApplication.getAppContext() != null) {
+		if(MainApplication.getAppContext() != null) {
 			if (toast == null) {
-				toast = ToastCustom.makeText(MyApplication.getAppContext(), msg, Toast.LENGTH_LONG);
+				toast = ToastCustom.makeText(MainApplication.getAppContext(), msg, Toast.LENGTH_LONG);
 				toast.setGravity(Gravity.TOP, 0, 0);
 			} else {
 				toast.setText(msg);

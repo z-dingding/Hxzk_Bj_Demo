@@ -7,8 +7,8 @@ import android.os.Bundle;
 import com.hxzk.bj.common.X5ActionMessage;
 import com.hxzk.bj.x5webview.action.X5Action;
 import com.hxzk_bj_demo.interfaces.ThemeChangeObserver;
-import com.hxzk_bj_demo.network.AddInterceptor;
-import com.hxzk_bj_demo.network.SaveInterceptor;
+import com.hxzk_bj_demo.network.interceptor.AddInterceptor;
+import com.hxzk_bj_demo.network.interceptor.SaveInterceptor;
 import com.hxzk_bj_demo.ui.activity.WelcomeActivity;
 import com.hxzk_bj_demo.utils.LanguageUtil;
 import com.hxzk_bj_demo.utils.SPUtils;
@@ -25,14 +25,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-import androidx.appcompat.app.AppCompatDelegate;
 import okhttp3.Cookie;
-import okhttp3.CookieJar;
-import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 
-import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO;
-import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES;
 import static com.hxzk_bj_demo.utils.LanguageUtil.isSameWithSetting;
 import static com.hxzk_bj_demo.utils.LanguageUtil.setLocale;
 
@@ -46,7 +41,7 @@ import static com.hxzk_bj_demo.utils.LanguageUtil.setLocale;
        2. 初始化对象
        3.将内存空间的地址赋值给对应的引用*/
 
-public class MyApplication extends LitePalApplication {
+public class MainApplication extends LitePalApplication {
 
     /**
      * 通过volatile关键字来确保安全，使用该关键字修饰的变量在被变更时会被其他变量可见
@@ -167,7 +162,7 @@ public class MyApplication extends LitePalApplication {
 
     public static OkHttpClient.Builder getOkHttpClientbBuild() {
         if (httpClientBuilder == null) {
-            synchronized (MyApplication.class) {
+            synchronized (MainApplication.class) {
                 httpClientBuilder = new OkHttpClient.Builder()
                         .connectTimeout(50000, TimeUnit.SECONDS)
                         .readTimeout(50000, TimeUnit.SECONDS)
@@ -200,8 +195,9 @@ public class MyApplication extends LitePalApplication {
      * 获得observer堆栈
      * */
     private List<ThemeChangeObserver> obtainThemeChangeObserverStack() {
-        if (mThemeChangeObserverStack == null)
+        if (mThemeChangeObserverStack == null) {
             mThemeChangeObserverStack = new ArrayList<>();
+        }
         return mThemeChangeObserverStack;
     }
 
@@ -209,7 +205,7 @@ public class MyApplication extends LitePalApplication {
      * 向堆栈中添加observer
      * */
     public void registerObserver(ThemeChangeObserver observer) {
-        if (observer == null || obtainThemeChangeObserverStack().contains(observer)) return ;
+        if (observer == null || obtainThemeChangeObserverStack().contains(observer)){ return ;}
         obtainThemeChangeObserverStack().add(observer);
     }
 
@@ -217,7 +213,7 @@ public class MyApplication extends LitePalApplication {
      * 从堆栈中移除observer
      * */
     public void unregisterObserver(ThemeChangeObserver observer) {
-        if (observer == null || !(obtainThemeChangeObserverStack().contains(observer))) return ;
+        if (observer == null || !(obtainThemeChangeObserverStack().contains(observer))){ return ;}
         obtainThemeChangeObserverStack().remove(observer);
     }
 

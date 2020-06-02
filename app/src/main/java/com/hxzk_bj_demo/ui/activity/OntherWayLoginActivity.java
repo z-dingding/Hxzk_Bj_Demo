@@ -22,8 +22,8 @@ import butterknife.OnClick;
  *
  */
 public class OntherWayLoginActivity extends BaseBussActivity {
-
-    public static final int NOTIFY_ID = 100; // NotifyCationId,类似于唯一标识,确定是不是同一个Notification,如果两个Notification用一个，则显示一个Notifycatino。
+    // NotifyCationId,类似于唯一标识,确定是不是同一个Notification,如果两个Notification用一个，则显示一个Notifycatino。
+    public static final int NOTIFY_ID = 100;
 
 
     @BindView(R.id.et_verification_otherwaylogin)
@@ -66,7 +66,7 @@ public class OntherWayLoginActivity extends BaseBussActivity {
                     String verification=etVerification.getText().toString();
                     if(verification.equals(verificationCode)){
                         countDownTimerUtil.cancel();
-                        jumpFinishCurrentActivity(OntherWayLoginActivity.this,MainActivity.class);
+                        ActivityJump.BackToAppointActivityAndFinishBetween(OntherWayLoginActivity.this,MainActivity.class);
                         ActivityJump.finnishAllActivitys();
                     }else{
                         ToastCustomUtil.showLongToast("请输入正确的随机登录码");

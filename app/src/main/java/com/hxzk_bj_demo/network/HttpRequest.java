@@ -1,9 +1,11 @@
 package com.hxzk_bj_demo.network;
 
 import com.google.gson.GsonBuilder;
-import com.hxzk_bj_demo.common.MyApplication;
+import com.hxzk_bj_demo.common.MainApplication;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import retrofit2.CallAdapter;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
@@ -24,16 +26,17 @@ import static com.lzy.okgo.utils.HttpUtils.runOnUiThread;
 public class HttpRequest {
 
 
-    //通过volatile关键字来确保安全，使用该关键字修饰的变量在被变更时会被其他变量可见
+    /**
+     *  通过volatile关键字来确保安全，使用该关键字修饰的变量在被变更时会被其他变量可见
+     */
     private volatile static HttpRequest sHttpRequest = null;
-    //请求服务器ip或域名
+    /**
+     *  请求服务器ip或域名
+     */
     public static String BASE_URL="https://www.wanandroid.com/";
 
-
-
-    //Rotrofit
     private static Retrofit.Builder sRetrofit;
-    //ServiceInterface
+
     private static ServiceInterface sServiceInterface;
 
 
@@ -48,13 +51,11 @@ public class HttpRequest {
      */
     private HttpRequest() {
         sRetrofit = new Retrofit.Builder()
-                .client(MyApplication.getOkHttpClientbBuild().build())
+                .client(MainApplication.getOkHttpClientbBuild().build())
                 .addConverterFactory(GsonConverterFactory.create(new GsonBuilder()
                         .setLenient()
                         .create()))//转Gson
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-//                .addConverterFactory(ProtoConverterFactory.create())//转jsonObject
-//                .addConverterFactory(ScalarsConverterFactory.create())//转string
                 .addConverterFactory(gsonConverterFactory)
                 .addCallAdapterFactory(rxJavaCallAdapterFactory)
                 .baseUrl(BASE_URL);
@@ -99,8 +100,6 @@ public class HttpRequest {
                 .delay(2, TimeUnit.SECONDS)
                 //取消发生在IO线程
                 .unsubscribeOn(Schedulers.io())
-                // 指定 Subscriber 的回调发生在主线程
-                //.observeOn(AndroidSchedulers.mainThread())
                         .observeOn(Schedulers.from(new Executor(){
                             @Override
                             public void execute(Runnable command) {

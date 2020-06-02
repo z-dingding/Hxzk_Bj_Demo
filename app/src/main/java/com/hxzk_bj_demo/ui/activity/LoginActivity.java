@@ -12,9 +12,9 @@ import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.common.Const;
 import com.hxzk_bj_demo.javabean.LoginOutBean;
 import com.hxzk_bj_demo.network.BaseResponse;
-import com.hxzk_bj_demo.ui.mvpbase.base.BaseMvpActivity;
-import com.hxzk_bj_demo.ui.mvpbase.constract.LoginConstract;
-import com.hxzk_bj_demo.ui.mvpbase.presenter.LoginPreseneter;
+import com.hxzk_bj_demo.ui.activity.base.BaseMvpActivity;
+import com.hxzk_bj_demo.mvp.constract.LoginConstract;
+import com.hxzk_bj_demo.mvp.presenter.LoginPreseneter;
 import com.hxzk_bj_demo.utils.KeyBoardHelperUtil;
 import com.hxzk_bj_demo.utils.MarioResourceHelper;
 import com.hxzk_bj_demo.utils.ProgressDialogUtil;
@@ -179,10 +179,10 @@ public class LoginActivity extends BaseMvpActivity<LoginPreseneter> implements L
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_otherwaylogin_login:
-                addActivityToManager(LoginActivity.this, OntherWayLoginActivity.class);
+                ActivityJump.NormalJump(LoginActivity.this, OntherWayLoginActivity.class);
                 break;
             case R.id.tv_register_login:
-                addActivityToManager(LoginActivity.this, RegisterActivity.class);
+                ActivityJump.NormalJump(LoginActivity.this, RegisterActivity.class);
                 break;
 
             case R.id.btn_loginin_login:

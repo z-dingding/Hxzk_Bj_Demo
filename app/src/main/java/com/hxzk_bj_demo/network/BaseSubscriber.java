@@ -24,10 +24,8 @@ public abstract class BaseSubscriber <T> extends Subscriber<T> {
 
     private Context mContext;
 
-
     public BaseSubscriber(Context context) {
         this.mContext = context;
-
     }
 
 
@@ -82,7 +80,9 @@ public abstract class BaseSubscriber <T> extends Subscriber<T> {
     public abstract void onFail(Throwable e);
 
 
-    //通过RXJva的 Func1来进行对原始的Throwable 进行包装转换将原来Throwable 强转成自定义的 ResponeThrowable
+    /**
+     *  通过RXJva的 Func1来进行对原始的Throwable 进行包装转换将原来Throwable 强转成自定义的 ResponeThrowable
+     */
     public static class HttpResponseFunc<T> implements Func1<Throwable, Observable> {
         @Override public Observable<T> call(Throwable t) {
             return Observable.error(ExceptionHandle.handleException(t));

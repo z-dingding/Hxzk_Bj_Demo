@@ -40,6 +40,7 @@
 
     <!--=====================================左侧滑菜单字符=============================-->
     <string name="sideslip_welcom">Welcome zhao taotao to sign in today</string>
+    <string name="sideslip_myintegral">mine integral\u3000</string>
     <string name="theme">change theme</string>
     <string name="favorite">collection</string>
     <string name="notebook">notebook</string>

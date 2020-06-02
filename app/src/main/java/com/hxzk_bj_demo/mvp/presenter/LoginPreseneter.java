@@ -1,4 +1,4 @@
-package com.hxzk_bj_demo.ui.mvpbase.presenter;
+package com.hxzk_bj_demo.mvp.presenter;
 
 import android.content.Context;
 
@@ -6,9 +6,9 @@ import com.hxzk_bj_demo.javabean.LoginOutBean;
 import com.hxzk_bj_demo.network.BaseResponse;
 import com.hxzk_bj_demo.network.BaseSubscriber;
 import com.hxzk_bj_demo.network.HttpRequest;
-import com.hxzk_bj_demo.ui.mvpbase.base.BasePreseneter;
-import com.hxzk_bj_demo.ui.mvpbase.constract.LoginConstract;
-import com.hxzk_bj_demo.ui.mvpbase.model.LoginModel;
+import com.hxzk_bj_demo.mvp.presenter.base.BasePreseneter;
+import com.hxzk_bj_demo.mvp.constract.LoginConstract;
+import com.hxzk_bj_demo.mvp.model.LoginModel;
 import com.hxzk_bj_demo.ui.activity.LoginActivity;
 import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
 
@@ -27,6 +27,7 @@ public class LoginPreseneter extends BasePreseneter<LoginActivity> implements Lo
 
     BaseSubscriber<BaseResponse<LoginOutBean>> subscriber;
     Observable<BaseResponse<LoginOutBean>> observable;
+
 
     public LoginPreseneter(Context context ) {
         this.mContext=context;

@@ -14,7 +14,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hxzk_bj_demo.R;
-import com.hxzk_bj_demo.common.MyApplication;
+
+import com.hxzk_bj_demo.common.MainApplication;
 import com.hxzk_bj_demo.utils.SPUtils;
 import com.hxzk_bj_demo.utils.activity.ActivityJump;
 import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
@@ -81,7 +82,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
             @Override
             public void onAnimationEnd(Animator animator) {
-                String cookies =(String) SPUtils.get(MyApplication.getAppContext(),KEY_COOKIE,"");
+                String cookies =(String) SPUtils.get(MainApplication.getAppContext(),KEY_COOKIE,"");
                 if(!TextUtils.isEmpty(cookies)){
                     ActivityJump.NormalJumpAndFinish(WelcomeActivity.this, MainActivity.class);
                 }else{

@@ -1,8 +1,8 @@
-package com.hxzk_bj_demo.ui.mvpbase.constract;
+package com.hxzk_bj_demo.mvp.constract;
 
 import com.hxzk_bj_demo.javabean.LoginOutBean;
 import com.hxzk_bj_demo.network.BaseResponse;
-import com.hxzk_bj_demo.ui.mvpbase.base.BaseView;
+import com.hxzk_bj_demo.mvp.view.base.BaseView;
 
 import rx.Observable;
 

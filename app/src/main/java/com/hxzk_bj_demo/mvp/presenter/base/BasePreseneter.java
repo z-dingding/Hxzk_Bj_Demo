@@ -1,4 +1,6 @@
-package com.hxzk_bj_demo.ui.mvpbase.base;
+package com.hxzk_bj_demo.mvp.presenter.base;
+
+import com.hxzk_bj_demo.mvp.view.base.BaseView;
 
 /**
  * 作者：created by ${zjt} on 2019/3/29

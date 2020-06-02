@@ -12,7 +12,12 @@
        >
    </com.hxzk_bj_demo.widget.CircleImageView>
    <TextView
-       android:id="@+id/tv_userInfo_hvfromvn"
+    android:id="@+id/tv_userInfo_hvfromvn"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textColor="?attr/custom_attr_app_textcolor"/>
+   <TextView
+       android:id="@+id/tv_userIntegral_hvfromvn"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
        android:textColor="?attr/custom_attr_app_textcolor"/>

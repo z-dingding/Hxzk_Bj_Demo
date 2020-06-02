@@ -1,8 +1,8 @@
-package com.hxzk_bj_demo.network;
+package com.hxzk_bj_demo.network.interceptor;
 
 import android.text.TextUtils;
 
-import com.hxzk_bj_demo.common.MyApplication;
+import com.hxzk_bj_demo.common.MainApplication;
 import com.hxzk_bj_demo.utils.SPUtils;
 
 import java.io.IOException;
@@ -75,7 +75,7 @@ public class SaveInterceptor implements Interceptor {
      */
     private void saveCookie(String cookieKey ,String cookies){
         if(!TextUtils.isEmpty(cookieKey)){
-            SPUtils.put(MyApplication.getAppContext(),cookieKey,cookies);
+            SPUtils.put(MainApplication.getAppContext(),cookieKey,cookies);
         }
 
     }

@@ -3,21 +3,15 @@ package com.hxzk_bj_demo.ui.activity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
-import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -27,24 +21,27 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.common.Const;
-import com.hxzk_bj_demo.common.MyApplication;
+
+import com.hxzk_bj_demo.common.MainApplication;
+import com.hxzk_bj_demo.javabean.IntegralBean;
 import com.hxzk_bj_demo.javabean.LoginOutBean;
+import com.hxzk_bj_demo.mvp.constract.MainConstract;
+import com.hxzk_bj_demo.mvp.presenter.MainPresenter;
 import com.hxzk_bj_demo.mvp.view.NoteBookActivity;
-import com.hxzk_bj_demo.network.AddInterceptor;
+import com.hxzk_bj_demo.network.interceptor.AddInterceptor;
 import com.hxzk_bj_demo.network.BaseResponse;
 import com.hxzk_bj_demo.network.BaseSubscriber;
 import com.hxzk_bj_demo.network.HttpRequest;
 import com.hxzk_bj_demo.ui.activity.base.BaseBussActivity;
+import com.hxzk_bj_demo.ui.activity.base.BaseMvpActivity;
 import com.hxzk_bj_demo.ui.adapter.base.FragmentAdapter;
 import com.hxzk_bj_demo.ui.fragment.ConsultingFragment;
 import com.hxzk_bj_demo.ui.fragment.HomeFragment;
 import com.hxzk_bj_demo.ui.fragment.UserFragment;
 import com.hxzk_bj_demo.ui.fragment.base.BaseFragment;
 import com.hxzk_bj_demo.utils.LanguageUtil;
-import com.hxzk_bj_demo.utils.LogUtil;
-import com.hxzk_bj_demo.utils.MarioResourceHelper;
+import com.hxzk_bj_demo.utils.ProgressDialogUtil;
 import com.hxzk_bj_demo.utils.SPUtils;
-import com.hxzk_bj_demo.utils.ScreenUtil;
 import com.hxzk_bj_demo.utils.activity.ActivityJump;
 import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil;
 import com.tbruyelle.rxpermissions2.RxPermissions;
@@ -73,7 +70,7 @@ import static com.hxzk_bj_demo.utils.LanguageUtil.setLocale;
 /**
  * 注意因为BaseFragmeng中定义了FragmentCallBack接口MainActiviyz中用到了Fragment所以要实现，否则报未知错误
  */
-public class MainActivity extends BaseBussActivity implements BaseFragment.FragmentCallBack {
+public class MainActivity extends BaseMvpActivity<MainPresenter> implements BaseFragment.FragmentCallBack, MainConstract.MainView {
 
     private static final String TAG = "MainActivity";
     private static final int HOME = 0;
@@ -96,12 +93,24 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
 
     ActionBarDrawerToggle mDrawerToggle;
     DrawerLayout mDrawer;
-
+    /**
+     * 侧边栏用户名展示
+     */
     TextView tv_userInfo_hvfromvn;
+    /**
+     * 侧边栏积分展示
+     */
+    TextView  tv_userIntegral_hvfromvn;
 
-
+    /**
+     * 退出登录被观察者对象
+     */
     Observable<BaseResponse<LoginOutBean>> observable;
-    Subscriber<BaseResponse<LoginOutBean>> subscriber;
+    MainPresenter mainPresenter;
+    /**
+     *获取积分被观察者对象
+     */
+    Observable<BaseResponse<IntegralBean>> IntegralBeanObservable;
 
     @Override
     protected int setLayoutId() {
@@ -115,6 +124,9 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
     @Override
     protected void initView() {
         super.initView();
+        mainPresenter =new MainPresenter(this);
+        mainPresenter.onAttachView(this);
+
         ActivityJump.popSpecifiedActivity(LoginActivity.class);
         //初始化DrawerLayout
         mDrawer = (DrawerLayout) findViewById(R.id.drawerlayout_main);
@@ -154,96 +166,56 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
         //获取头布局文件
         View headerView = navigationview_Main.getHeaderView(0);
         //过调用headerView中的findViewById方法来查找到头部的控件
-        headerView.findViewById(R.id.img_uphoto_hvfromnv).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ToastCustomUtil.showShortToast("点击了用户头像");
-            }
-        });
+        headerView.findViewById(R.id.img_uphoto_hvfromnv).setOnClickListener(v -> ToastCustomUtil.showShortToast("点击了用户头像"));
         tv_userInfo_hvfromvn = (TextView) headerView.findViewById(R.id.tv_userInfo_hvfromvn);
-
+        tv_userIntegral_hvfromvn =headerView.findViewById(R.id.tv_userIntegral_hvfromvn);
         //设置用户详细信息点击
         UserInforLink();
+        tv_userIntegral_hvfromvn.setOnClickListener(v -> {
+            ToastCustomUtil.showLongToast("敬请期待");
+        });
+        navigationview_Main.setNavigationItemSelectedListener(item -> {
+            //在这里处理item的点击事件
+            switch (item.getItemId()) {
+                case R.id.theme:
+                    if(MainApplication.getAppTheme()){
+                        MainApplication.setAppTheme(false);
+                    }else{
+                        MainApplication.setAppTheme(true);
+                    }
+                    loadingCurrentTheme();
+                    //此处刷新主题，调用所有的注册的观察者
+                    ((MainApplication)getApplication()).notifyByThemeChanged();
+                    //刷新Activitytoolbar才会变动图标
+                    MainActivity.this.recreate();
+                    break;
+                case R.id.favorite:
+                    ActivityJump.NormalJump(MainActivity.this, CollectionActivity.class);
+                    break;
 
-        navigationview_Main.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem item) {
-                //在这里处理item的点击事件
-                switch (item.getItemId()) {
-                    case R.id.theme:
-                        if(MyApplication.getAppTheme()){
-                            MyApplication.setAppTheme(false);
-                        }else{
-                            MyApplication.setAppTheme(true);
-                        }
-                        loadingCurrentTheme();
-                        //此处刷新主题，调用所有的注册的观察者
-                        ((MyApplication)getApplication()).notifyByThemeChanged();
-                        //刷新Activitytoolbar才会变动图标
-                        MainActivity.this.recreate();
-                        break;
-                    case R.id.favorite:
-                        addActivityToManager(MainActivity.this, CollectionActivity.class);
-                        break;
+                case R.id.notebook:
+                    ActivityJump.NormalJump(MainActivity.this, NoteBookActivity.class);
+                    break;
 
-                    case R.id.notebook:
-                        addActivityToManager(MainActivity.this, NoteBookActivity.class);
-                        break;
+                case R.id.photo:
+                    break;
 
-                    case R.id.photo:
-                        break;
+                case R.id.loginout:
+                    observable =mainPresenter.loginOutP();
+                    break;
 
-                    case R.id.loginout:
-                        subscriber = new BaseSubscriber<BaseResponse<LoginOutBean>>(MainActivity.this) {
-
-                            @Override
-                            public void onShowLoading() {
-
-                            }
-
-                            @Override
-                            public void onHiddenLoading() {
-
-                            }
-
-                            @Override
-                            public void onResult(BaseResponse<LoginOutBean> baseResponse) {
-                                if (!baseResponse.isOk()) {
-                                    ToastCustomUtil.showLongToast(baseResponse.getMsg());
-                                } else {
-                                    //清空保存在本地的cookie
-                                    AddInterceptor.clearCookie(MainActivity.this,KEY_COOKIE);
-                                    ActivityJump.finnishAllActivitys();
-                                    //登出
-                                    MobclickAgent.onProfileSignOff();
-                                    ActivityJump.NormalJumpAndFinish(MainActivity.this, LoginActivity.class);
-                                }
-                            }
-
-                            @Override
-                            public void onFail(Throwable e) {
-                                ToastCustomUtil.showLongToast(e.getMessage());
-                            }
-
-
-                        };
-                        observable = HttpRequest.getInstance().getServiceInterface().loginout();
-                         HttpRequest.getInstance().toSubscribe(observable, subscriber);
-                        break;
-
-                    case R.id.settting:
-                        String lan = LanguageUtil.getAppLanguage(MainActivity.this);
-                        if ("zh".equals(lan) || !"en".equals(lan)) {
-                            setLocale(MainActivity.this, Locale.US);
-                        } else {
-                            setLocale(MainActivity.this, Locale.SIMPLIFIED_CHINESE);
-                        }
-                        break;
-                    default :
-                        break;
-                }
-                return true;
+                case R.id.settting:
+                    String lan = LanguageUtil.getAppLanguage(MainActivity.this);
+                    if ("zh".equals(lan) || !"en".equals(lan)) {
+                        setLocale(MainActivity.this, Locale.US);
+                    } else {
+                        setLocale(MainActivity.this, Locale.SIMPLIFIED_CHINESE);
+                    }
+                    break;
+                default :
+                    break;
             }
+            return true;
         });
         MultPermission();
     }
@@ -262,6 +234,7 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
             vp_Main = null;
         }
         HttpRequest.getInstance().unsubscribe(observable);
+        HttpRequest.getInstance().unsubscribe(IntegralBeanObservable);
     }
 
 
@@ -281,7 +254,7 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
             mSpannableString.setSpan(mStyleSpan, 8, userName.length()+8, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
             //加点击事件
             //使用ClickableSpan的文本如果想真正实现点击作用，必须为TextView设置setMovementMethod方法
-            mSpannableString.setSpan(new MyClickableSpan(""), 8, userName.length()+8, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+            mSpannableString.setSpan(null, 8, userName.length() + 8, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
             //加前背景色
             ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(Color.GREEN);
             mSpannableString.setSpan(foregroundColorSpan, 8, userName.length()+8, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
@@ -296,7 +269,7 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
             mSpannableString.setSpan(mStyleSpan, 2, userName.length()+2, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
             //设置点击事件
             //使用ClickableSpan的文本如果想真正实现点击作用，必须为TextView设置setMovementMethod方法
-            mSpannableString.setSpan(new MyClickableSpan(""), 2, userName.length()+2, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+            mSpannableString.setSpan(null, 2, userName.length() + 2, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
             //加前背景色
             ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(Color.GREEN);
             mSpannableString.setSpan(foregroundColorSpan, 2, userName.length()+2, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
@@ -304,34 +277,7 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
             tv_userInfo_hvfromvn.setMovementMethod(LinkMovementMethod.getInstance());
             tv_userInfo_hvfromvn.setText(mSpannableString);
         }
-    }
 
-
-    class MyClickableSpan extends ClickableSpan {
-
-        private String content;
-
-        public MyClickableSpan(String content) {
-            this.content = content;
-        }
-
-        @Override
-        public void onClick(View widget) {
-            Intent intent = new Intent();
-            intent.setAction(Intent.ACTION_VIEW);
-            //可以传递数据到下个页面
-            intent.putExtra("content", content);
-            //为Intent设置数据
-            intent.setData(Uri.parse("http://www.baidu.com"));
-            //将Intent传递给Activity
-            startActivity(intent);
-        }
-
-        @Override
-        public void updateDrawState(TextPaint ds) {
-            //设置不显示下划线，默认显示
-            super.updateDrawState(ds);
-        }
     }
 
     @Override
@@ -347,6 +293,9 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
         adapter = new FragmentAdapter(getSupportFragmentManager(), _context, list);
         vp_Main.setAdapter(adapter);
         vp_Main.setOffscreenPageLimit(3);
+
+        //获取用户积分
+        IntegralBeanObservable =mainPresenter.integralP();
     }
 
 
@@ -483,5 +432,44 @@ public class MainActivity extends BaseBussActivity implements BaseFragment.Fragm
             homeFrag.onActivityResult(requestCode, resultCode, data);
         }
 
+    }
+
+    @Override
+    public void onLoginoutResult(BaseResponse<LoginOutBean> loginoutbean) {
+        if (!loginoutbean.isOk()) {
+            ToastCustomUtil.showLongToast(loginoutbean.getMsg());
+        } else {
+            //清空保存在本地的cookie
+            AddInterceptor.clearCookie(MainActivity.this,KEY_COOKIE);
+            ActivityJump.finnishAllActivitys();
+            //登出
+            MobclickAgent.onProfileSignOff();
+            ActivityJump.NormalJumpAndFinish(MainActivity.this, LoginActivity.class);
+        }
+    }
+
+    @Override
+    public void onIntegralResult(BaseResponse<IntegralBean> integralBeanBaseResponse) {
+        if (!integralBeanBaseResponse.isOk()) {
+            ToastCustomUtil.showLongToast(integralBeanBaseResponse.getMsg());
+        } else {
+          IntegralBean integralBean =  integralBeanBaseResponse.getData();
+            tv_userIntegral_hvfromvn.setText(getString(R.string.sideslip_myintegral)+integralBean.getCoinCount());
+        }
+    }
+
+    @Override
+    public void onShowLoading() {
+        ProgressDialogUtil.getInstance().mshowDialog(this);
+    }
+
+    @Override
+    public void onHiddenLoading() {
+        ProgressDialogUtil.getInstance().mdismissDialog();
+    }
+
+    @Override
+    public void onFail(Throwable throwable) {
+        ToastCustomUtil.showLongToast(throwable.getMessage());
     }
 }

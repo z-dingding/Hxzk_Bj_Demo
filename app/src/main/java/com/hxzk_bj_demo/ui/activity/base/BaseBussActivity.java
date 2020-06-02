@@ -204,14 +204,14 @@ public abstract class BaseBussActivity extends BaseActivity {
             case R.id.custom_id_toobbaricon_notify:
                 break;
             case R.id.custom_id_toobbaricon_search:
-                addActivityToManager(this, HomeSearchActivity.class);
+                ActivityJump.NormalJump(this, HomeSearchActivity.class);
                 break;
             case R.id.custom_id_toobbaricon_qrcoder:
                 Intent intent = new Intent(_context, CaptureActivity.class);
                 startActivityForResult(intent, REQUEST_CODE);
                 break;
             case android.R.id.home:
-                finishActivity();
+                ActivityJump.Back(this);
                 break;
             default:
         }
@@ -224,66 +224,6 @@ public abstract class BaseBussActivity extends BaseActivity {
 
     }
 
-    /**
-     * 页面跳转动画,将当前activity添加到栈中
-     */
-    public void addActivityToManager(Context context, Class clazz) {
-        ActivityJump.NormalJump(context, clazz);
-        animNext();
-    }
-
-
-    /**
-     * 返回上一页面退出动画,关闭当前界面
-     */
-    public void jumpFinishCurrentActivity(Activity mActivity, Class cls) {
-        ActivityJump.NormalJumpAndFinish(mActivity, cls);
-        animNext();
-    }
-
-    /**
-     * finish掉当前的页面动画
-     */
-    public void finishActivity() {
-        ActivityJump.Back(this);
-        animBack();
-    }
-
-    /**
-     * Bundle携参跳转带动画效果
-     *
-     * @param mContext
-     * @param cls
-     * @param bundle
-     */
-    public void jumpBundleActivity(Context mContext, Class<?> cls, Bundle bundle) {
-        ActivityJump.BundleJump(mContext, cls, bundle);
-        animNext();
-
-    }
-
-    /**
-     * @Desc 页面跳转动画
-     */
-
-    public void animNext() {
-        /**<<<------右入左出*/
-        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-    }
-
-    /**
-     * @Desc 页面返回动画
-     */
-    public void animBack() {
-        /**------>>>左入右出*/
-        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finishActivity();
-    }
 
 
 }

@@ -1,9 +1,9 @@
-package com.hxzk_bj_demo.ui.mvpbase.model;
+package com.hxzk_bj_demo.mvp.model;
 
 import com.hxzk_bj_demo.javabean.LoginOutBean;
 import com.hxzk_bj_demo.network.BaseResponse;
 import com.hxzk_bj_demo.network.HttpRequest;
-import com.hxzk_bj_demo.ui.mvpbase.constract.LoginConstract;
+import com.hxzk_bj_demo.mvp.constract.LoginConstract;
 
 import rx.Observable;
 

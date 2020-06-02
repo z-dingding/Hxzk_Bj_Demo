@@ -11,7 +11,8 @@ import android.widget.LinearLayout;
 
 import com.hxzk.bj.x5webview.statusbartextcolor.StatebusTextColorUtil;
 import com.hxzk_bj_demo.R;
-import com.hxzk_bj_demo.common.MyApplication;
+
+import com.hxzk_bj_demo.common.MainApplication;
 import com.hxzk_bj_demo.interfaces.ThemeChangeObserver;
 import com.hxzk_bj_demo.utils.LogUtil;
 import com.hxzk_bj_demo.utils.activity.ActivityJump;
@@ -89,7 +90,7 @@ public abstract class BaseActivity extends AppCompatActivity implements ThemeCha
 
     @Override
     protected void onDestroy() {
-        ((MyApplication) getApplication()).unregisterObserver(this);
+        ((MainApplication) getApplication()).unregisterObserver(this);
         super.onDestroy();
         unbinder.unbind();
     }
@@ -99,7 +100,7 @@ public abstract class BaseActivity extends AppCompatActivity implements ThemeCha
      * 先将当前Activity注册
      */
     private void setupActivityBeforeCreate() {
-        ((MyApplication) getApplication()).registerObserver(this);
+        ((MainApplication) getApplication()).registerObserver(this);
         loadingCurrentTheme();
     }
 
@@ -107,7 +108,7 @@ public abstract class BaseActivity extends AppCompatActivity implements ThemeCha
     @Override
     public void loadingCurrentTheme() {
                //夜间模式
-            if(MyApplication.getAppTheme()){
+            if(MainApplication.getAppTheme()){
                 setTheme(R.style.Base_CustomTheme_Night);
                 StatebusTextColorUtil.setStatusBarColor(this,R.color.custom_color_app_status_bg_night);
                 setLightStatusBar(this, false);
