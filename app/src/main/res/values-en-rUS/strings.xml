@@ -1,12 +1,13 @@
 <resources>
     <string name="app_name">random</string>
 
-
-
+    <!--===================================公共的=============================-->
+    <string name="back">Back</string>
     <!--====================================请求网络相关字符=============================-->
     <string name="empty_network_error">Network error, click retry!</string>
     <string name="empty_no_data">No data requested, click retry...</string>
     <string name="load_more_error">Failed to load more data!</string>
+    <string name="wechat_select">WeChat Select</string>
     <string name="content_is_empty">the content cannot be empty!</string>
 
 
@@ -40,7 +41,7 @@
 
     <!--=====================================左侧滑菜单字符=============================-->
     <string name="sideslip_welcom">Welcome zhao taotao to sign in today</string>
-    <string name="sideslip_myintegral">mine integral\u3000</string>
+    <string name="sideslip_myintegral">mine integral&#8194;</string>
     <string name="theme">change theme</string>
     <string name="favorite">collection</string>
     <string name="notebook">notebook</string>
@@ -55,4 +56,8 @@
     <string name="recommended_music"></string>
     <string name="recommended_statistical">recommended statistical</string>
     <string name="more">more</string>
+
+    <!--=====================================积分页面相关字符=============================-->
+    <string name="integral_title">integral history</string>
+    <string name="integral_order">orderList</string>
 </resources>

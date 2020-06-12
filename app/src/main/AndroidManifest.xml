@@ -3,36 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.hxzk_bj_demo">
     <!-- ======================授权访问网络（HttpUtil）========================== -->
-    <!-- 允许一个程序访问精良位置(如GPS)  -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <!--访问CellID或WiFi,只要当前设备可以接收到基站的服务信号，便可获得位置信息。-->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <!-- 访问电话状态 -->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <!-- ======================授权访问网络（MyWebView）========================== -->
-    <!-- 允许程序打开网络套接字 -->
-    <uses-permission android:name="android.permission.INTERNET" />
-    <!-- 允许程序访问有关GSM网络信息 -->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <!-- 允许程序访问Wi-Fi网络状态信息 -->
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <!--拍照用到的 -->
-    <uses-permission android:name="android.permission.CAMERA" />
-    <!-- 录音用到的-->
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <!-- 在SD卡中创建与删除文件权限 -->
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
-    <!-- 向SD卡写入数据权限 -->
-    <uses-permission android:name="android.permission.REORDER_TASKS" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <!-- 横竖屏切换的权限-->
-    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
-
-
+    <!-- 允许一个程序访问精良位置(如GPS) -->
     <application
         android:name=".common.MainApplication"
         android:allowBackup="true"
@@ -43,116 +14,85 @@
         android:supportsRtl="true"
         android:theme="@style/Base.CustomTheme.Day"
         tools:replace="android:theme,name,icon,label">
-
-        <!--targetSdkVersion==24（Android 7.0）以上Google默认支持了分屏模式-->
-        <!--适配19:9全面屏黑边问题：https://blog.csdn.net/darkeet/article/details/80049913-->
-        <!--https://blog.csdn.net/weelyy/article/details/79284332
-         提高App所支持的最大屏幕纵横比（设置android.max_aspect比例值）-->
-        <meta-data
-            android:name="android.max_aspect"
-            android:value="2.2" />
-        <!--AndroidAutoSize的适配需要先填写效果图的宽高单位dp-->
-        <meta-data
-            android:name="design_width_in_dp"
-            android:value="360" />
-        <meta-data
-            android:name="design_height_in_dp"
-            android:value="640" />
-        <!--  添加友盟appkey -->
-        <meta-data
-            android:name="UMENG_APPKEY"
-            android:value="5ca4551661f5644cc3000cb2"/>
-        <!-- Channel ID 替换为您应用的推广渠道名称-->
-        <!--${UMENG_CHANNEL_VALUE} 渠道号，多渠道这里使用了占位符$-->
-        <meta-data
-            android:name="UMENG_CHANNEL"
-            android:value="${UMENG_CHANNEL_VALUE}" />
-
-
-
+        <activity android:name=".ui.activity.IntegralActivity"></activity>
+        <!-- targetSdkVersion==24（Android 7.0）以上Google默认支持了分屏模式 -->
+        <!-- 适配19:9全面屏黑边问题：https://blog.csdn.net/darkeet/article/details/80049913 -->
+        <!--
+https://blog.csdn.net/weelyy/article/details/79284332
+         提高App所支持的最大屏幕纵横比（设置android.max_aspect比例值）
+        -->
         <activity
             android:name=".ui.activity.WelcomeActivity"
             android:theme="@style/welcometheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <!--  登录界面定义intent-filter是为了测试 -->
+        </activity> <!-- AndroidAutoSize的适配需要先填写效果图的宽高单位dp -->
         <activity
             android:name=".ui.activity.LoginActivity"
             android:configChanges="locale"
             android:exported="true">
             <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
                 <data
                     android:host="host"
                     android:path="/path"
                     android:scheme="scheme" />
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <!--  注册界面  -->
         <activity
             android:name=".ui.activity.RegisterActivity"
-            android:configChanges="locale" />
-        <!--  主页面  -->
+            android:configChanges="locale" /> <!-- 添加友盟appkey -->
         <activity
             android:name=".ui.activity.MainActivity"
-            android:configChanges="locale" />
-        <!-- 收藏界面 -->
+            android:configChanges="locale" /> <!-- Channel ID 替换为您应用的推广渠道名称 -->
+        <!-- ${UMENG_CHANNEL_VALUE} 渠道号，多渠道这里使用了占位符$ -->
         <activity
             android:name=".ui.activity.CollectionActivity"
             android:configChanges="locale" />
-        <!-- 笔记本 -->
+
         <activity
             android:name=".mvp.view.NoteBookActivity"
-            android:configChanges="locale" />
-        <!-- 二维码界面  android:theme="@style/TranslucentTheme"-->
+            android:configChanges="locale" /> <!-- 登录界面定义intent-filter是为了测试 -->
         <activity
             android:name=".utils.zxing.activity.CaptureActivity"
             android:configChanges="locale"
-            android:screenOrientation="fullSensor" />
-        <!-- 其他方式登录 -->
+            android:screenOrientation="fullSensor" /> <!-- 注册界面 -->
         <activity
             android:name=".ui.activity.OntherWayLoginActivity"
-            android:configChanges="locale" />
-        <!-- 首页搜索界面-->
-        <activity android:name=".ui.activity.HomeSearchActivity" />
-        <!--图案解锁界面-->
-        <activity android:name=".ui.activity.PatternLockActivity" />
-
-
-        <!--新浪微博-->
+            android:configChanges="locale" /> <!-- 主页面 -->
+        <activity android:name=".ui.activity.HomeSearchActivity" /> <!-- 收藏界面 -->
+        <activity android:name=".ui.activity.PatternLockActivity" /> <!-- 笔记本 -->
         <activity
             android:name="com.umeng.socialize.media.WBShareCallBackActivity"
             android:configChanges="keyboardHidden|orientation"
             android:exported="false"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" /> <!-- 二维码界面  android:theme="@style/TranslucentTheme" -->
         <activity
             android:name="com.sina.weibo.sdk.web.WeiboSdkWebActivity"
             android:configChanges="keyboardHidden|orientation"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize">
-
-        </activity>
+            android:windowSoftInputMode="adjustResize"></activity> <!-- 其他方式登录 -->
         <activity
             android:name="com.sina.weibo.sdk.share.WbShareTransActivity"
             android:launchMode="singleTask"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-
-        </activity>
-        <!--微信-->
+        </activity> <!-- 首页搜索界面 -->
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <!--qq（请注意将我们的qq appkey替换成您自己的qq appkey-->
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" /> <!-- 图案解锁界面 -->
         <activity
             android:name="com.tencent.tauth.AuthActivity"
             android:launchMode="singleTask"
@@ -165,21 +105,53 @@
 
                 <data android:scheme="tencent100424468" />
             </intent-filter>
-        </activity>
+        </activity> <!-- 新浪微博 -->
         <activity
             android:name="com.tencent.connect.common.AssistActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <!--拨号中输入暗码:*#*#1010#*#*就能启动相应的应用程序-->
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="2.2" />
+        <meta-data
+            android:name="design_width_in_dp"
+            android:value="360" /> <!-- 微信 -->
+        <meta-data
+            android:name="design_height_in_dp"
+            android:value="640" /> <!-- qq（请注意将我们的qq appkey替换成您自己的qq appkey -->
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="5ca4551661f5644cc3000cb2" />
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="${UMENG_CHANNEL_VALUE}" /> <!-- 拨号中输入暗码:*#*#1010#*#*就能启动相应的应用程序 -->
         <receiver android:name=".receiver.SecretCodeReceiver">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SECRET_CODE" />
+
                 <data
                     android:host="110"
                     android:scheme="android_secret_code" />
             </intent-filter>
         </receiver>
-    </application>
+    </application> <!-- 访问CellID或WiFi,只要当前设备可以接收到基站的服务信号，便可获得位置信息。 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- 访问电话状态 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- ======================授权访问网络（MyWebView）========================== -->
+    <!-- 允许程序打开网络套接字 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" /> <!-- 允许程序访问有关GSM网络信息 -->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- 允许程序访问Wi-Fi网络状态信息 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- 拍照用到的 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- 录音用到的 -->
+    <uses-permission android:name="android.permission.CAMERA" /> <!-- 在SD卡中创建与删除文件权限 -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" /> <!-- 向SD卡写入数据权限 -->
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.REORDER_TASKS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- 横竖屏切换的权限 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
+    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
 
 </manifest>

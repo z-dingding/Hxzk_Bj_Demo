@@ -6,6 +6,7 @@ import com.hxzk_bj_demo.javabean.CollectionBean;
 import com.hxzk_bj_demo.javabean.HomeListBean;
 import com.hxzk_bj_demo.javabean.HomeSearchBean;
 import com.hxzk_bj_demo.javabean.IntegralBean;
+import com.hxzk_bj_demo.javabean.IntegralListBean;
 import com.hxzk_bj_demo.javabean.InversBean;
 import com.hxzk_bj_demo.javabean.LoginOutBean;
 import com.hxzk_bj_demo.javabean.PublicListData;
@@ -142,6 +143,16 @@ public interface ServiceInterface {
     Observable<JsonObject> testMethod();
 
 
+    /**
+     * 获取个人积分
+     * @return
+     */
     @GET("lg/coin/userinfo/json")
     Observable<BaseResponse<IntegralBean>> integralApi();
+    /**
+     * 获取积分列表
+     * @param pageNum
+     */
+    @GET("lg/coin/list/{pageNum}/json")
+   Observable<BaseResponse<IntegralListBean>> inegralListApi(@Path("pageNum") int pageNum);
 }

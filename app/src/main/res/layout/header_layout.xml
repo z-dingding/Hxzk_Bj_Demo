@@ -15,11 +15,27 @@
     android:id="@+id/tv_userInfo_hvfromvn"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+       android:text="132456"
     android:textColor="?attr/custom_attr_app_textcolor"/>
-   <TextView
-       android:id="@+id/tv_userIntegral_hvfromvn"
+   <RelativeLayout
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
-       android:textColor="?attr/custom_attr_app_textcolor"/>
+       android:layout_marginTop="5dp">
+      <TextView
+          android:id="@+id/tv_userIntegral"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/sideslip_myintegral"
+          android:textColor="?attr/custom_attr_app_textcolor"
+          android:textStyle="bold" />
+      <TextView
+          android:id="@+id/tv_userIntegral_hvfromvn"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_toRightOf="@id/tv_userIntegral"
+          android:textColor="@color/lightblue"
+          android:textStyle="bold" />
+   </RelativeLayout>
+
 
 </LinearLayout>

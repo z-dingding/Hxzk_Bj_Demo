@@ -19,6 +19,7 @@ import com.hxzk_bj_demo.widget.XDialog;
 import java.lang.reflect.Method;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 
 /**
@@ -72,7 +73,6 @@ public abstract class BaseBussActivity extends BaseActivity {
                 statebarView = findViewById(R.id.custom_id_statusbar);
             }
         }
-
     }
 
     @Override

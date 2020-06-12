@@ -151,6 +151,7 @@ public class HomeFragment extends BaseFragment {
                         }
                         stopRefreshAndLoading();//停止刷新和上拉加载
                         break;
+                default:
             }
         }
     };
@@ -231,8 +232,10 @@ public class HomeFragment extends BaseFragment {
 
     /**刷新列表*/
     private void refreshList() {
-        mRecyclerView.setPullLoadEnable(false);//禁用上拉加载功能
-        mRecyclerView.setPullRefresh(true);//设置处于下拉刷新状态中
+        //禁用上拉加载功能
+        mRecyclerView.setPullLoadEnable(false);
+        //设置处于下拉刷新状态中
+        mRecyclerView.setPullRefresh(true);
         curPageIndex = 0;
         position = 0;
         //下拉刷新，需要清空集合
@@ -319,7 +322,8 @@ public class HomeFragment extends BaseFragment {
         if(mRecyclerView.ismPullLoading()){
             mRecyclerView.stopLoadMore();//停止加载动画
         }
-        mRecyclerView.setPullRefresh(false);//设置处于下拉刷新状态中[否]
+        //设置处于下拉刷新状态中[否]
+        mRecyclerView.setPullRefresh(false);
     }
 
 

@@ -12,6 +12,7 @@ import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -62,6 +63,7 @@ import io.reactivex.functions.Consumer;
 import rx.Observable;
 import rx.Subscriber;
 
+import static com.hxzk_bj_demo.R.id.drawerlayout_main;
 import static com.hxzk_bj_demo.R.id.vp_main;
 import static com.hxzk_bj_demo.common.Const.KEY_COOKIE;
 import static com.hxzk_bj_demo.utils.LanguageUtil.setLocale;
@@ -106,12 +108,12 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Base
      * 退出登录被观察者对象
      */
     Observable<BaseResponse<LoginOutBean>> observable;
-    MainPresenter mainPresenter;
     /**
      *获取积分被观察者对象
      */
     Observable<BaseResponse<IntegralBean>> IntegralBeanObservable;
 
+    MainPresenter mainPresenter;
     @Override
     protected int setLayoutId() {
         _context = MainActivity.this;
@@ -172,7 +174,7 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Base
         //设置用户详细信息点击
         UserInforLink();
         tv_userIntegral_hvfromvn.setOnClickListener(v -> {
-            ToastCustomUtil.showLongToast("敬请期待");
+           ActivityJump.NormalJump(this,IntegralActivity.class);
         });
         navigationview_Main.setNavigationItemSelectedListener(item -> {
             //在这里处理item的点击事件
@@ -191,6 +193,7 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Base
                     break;
                 case R.id.favorite:
                     ActivityJump.NormalJump(MainActivity.this, CollectionActivity.class);
+                    mDrawer.closeDrawers();
                     break;
 
                 case R.id.notebook:
@@ -214,7 +217,9 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Base
                     break;
                 default :
                     break;
+
             }
+            mDrawer.closeDrawers();
             return true;
         });
         MultPermission();
@@ -454,7 +459,7 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Base
             ToastCustomUtil.showLongToast(integralBeanBaseResponse.getMsg());
         } else {
           IntegralBean integralBean =  integralBeanBaseResponse.getData();
-            tv_userIntegral_hvfromvn.setText(getString(R.string.sideslip_myintegral)+integralBean.getCoinCount());
+            tv_userIntegral_hvfromvn.setText(integralBean.getCoinCount()+">");
         }
     }
 

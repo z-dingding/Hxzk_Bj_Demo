@@ -20,6 +20,8 @@ import com.umeng.analytics.MobclickAgent;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
@@ -57,7 +59,6 @@ public abstract class BaseActivity extends AppCompatActivity implements ThemeCha
         ActivityJump.LogAllActivityNames();
         //竖屏
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
         setContentView(R.layout.activity_base);
         layout_ContentView_Base= findViewById(R.id.layout_contentview_base);
         if(setLayoutId() != 0){
@@ -77,6 +78,7 @@ public abstract class BaseActivity extends AppCompatActivity implements ThemeCha
     @Override
     protected void onResume() {
         super.onResume();
+        _context =this;
         MobclickAgent.onResume(this);
     }
 

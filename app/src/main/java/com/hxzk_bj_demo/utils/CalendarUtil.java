@@ -34,12 +34,28 @@ public class CalendarUtil {
      * @return
      */
     public   String getTime() {
-
         Date d = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
         return sdf.format(d);
 
     }
 
+    /**
+     * 时间戳(毫秒)转日期
+     * @param seconds
+     * @param format
+     * @return
+     */
+    public static String timeStamp2Date(String seconds,String format) {
+        if(seconds == null || seconds.isEmpty() || seconds.equals("null")){
+            return "";
+        }
+        if(format == null || format.isEmpty()){
+            format = "yyyy-MM-dd HH:mm:ss";
+        }
+        Date date = new Date(Long.parseLong(seconds));
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        return sdf.format(date);
+    }
 
 }
