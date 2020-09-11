@@ -21,8 +21,4 @@
         android:text="@string/splash_animationtwo"
         android:textSize="25sp"
         android:textColor="@color/black"/>
-
-
-
-
 </LinearLayout>

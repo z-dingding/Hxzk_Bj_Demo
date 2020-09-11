@@ -62,23 +62,9 @@ public class HomeFragment extends BaseFragment {
     private static final String TAG = "HomeFragment";
 
 
-    @BindView(R.id.autoTurnViewPager)
-    AutoTurnViewPager autoTurnViewPager;
-    @BindView(R.id.defaultPageIndicator)
-    DefaultPageIndicator defaultPageIndicator;
+
     @BindView(R.id.linear_root_home)
     LinearLayout linearRootHome;
-
-    ExecutorService fixThreadPool;
-
-    //Banner请求
-    LinkedList<BannerBean.DataBean> bannerList;
-
-
-    Observable<BannerBean> observable;
-    Subscriber<BannerBean> subscriber;
-
-
 
     Observable<BaseResponse<HomeListBean>> homeListBeanObservable;
     Subscriber<BaseResponse<HomeListBean>> baseHomeListSubscriber;
@@ -103,58 +89,6 @@ public class HomeFragment extends BaseFragment {
     //暂无数据区域
     private LinearLayout nodata_layout;
 
-
-    Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case 0x111:
-                    //初始化Banner
-                    initBanner();
-                    break;
-
-                    case 0x222:
-                        //如果首页数据为空或者小于每页展现的条数，则禁用上拉加载功能
-                        if(curPageIndex == 0){
-                            if(listitemList.size() < pageSize){
-                                mRecyclerView.setPullLoadEnable(false);//禁用上拉加载功能
-                            }else{
-                                mRecyclerView.setPullLoadEnable(true);//启用上拉加载功能
-                            }
-                        }
-                        //设置适配器
-                        if(mHomeListAdapter == null){
-                            //设置适配器
-                            mHomeListAdapter = new HomeListAdapter(mContext, listitemList,R.layout.item_homelist);
-                            mRecyclerView.setAdapter(mHomeListAdapter);
-                            //添加分割线
-                            //设置添加删除动画
-                            //调用ListView的setSelected(!ListView.isSelected())方法，这样就能及时刷新布局
-                            mRecyclerView.setSelected(true);
-                            //列表适配器的点击监听事件
-                            mHomeListAdapter.setOnItemClickLitener(new HomeListAdapter.OnItemClickLitener() {
-                                @Override
-                                public void onItemClick(int position) {
-                                    //封装传递的请求数据到XrouterRequest
-                                    XrouterRequest mXrouterRequest =XrouterRequest.create().putData("data",listitemList.get(position).getLink()).putActionName(X5ActionMessage.X5ACTIONNAME);
-                                    XrouterResponse mXrouterResponse=Xrouter.getInstance().senMessage(mContext,mXrouterRequest);
-                                }
-
-                                @Override
-                                public void onItemLongClick(int position) {
-                                    ToastCustomUtil.showLongToast("正在开发中,敬请期待!");
-                                }
-                            });
-                        }else{
-                            mHomeListAdapter.notifyDataSetChanged();
-                        }
-                        stopRefreshAndLoading();//停止刷新和上拉加载
-                        break;
-                default:
-            }
-        }
-    };
 
 
     @Override
@@ -204,22 +138,18 @@ public class HomeFragment extends BaseFragment {
     protected void initData() {
         // 初始化SwipeRefresh刷新控件
         initSwipeRefreshView();
-        //创建线程池
-        fixThreadPool = Executors.newFixedThreadPool(3);
         //初始化集合
         listitemList = new LinkedList<HomeListBean.DatasBean>();
         //设置布局管理器
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         mRecyclerView.setLayoutManager(linearLayoutManager);
-        //请求Bannder数据
-        requestBanner();
+        requestHomeList(curPageIndex);
     }
 
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        HttpRequest.getInstance().unsubscribe(observable);
         HttpRequest.getInstance().unsubscribe(homeListBeanObservable);
     }
 
@@ -269,7 +199,42 @@ public class HomeFragment extends BaseFragment {
                 for(int i =0 ;i<linkList.size();i++){
                     listitemList.add((HomeListBean.DatasBean) linkList.get(i));
                 }
-                mHandler.sendEmptyMessage(0X222);
+                //如果首页数据为空或者小于每页展现的条数，则禁用上拉加载功能
+                if(curPageIndex == 0){
+                    if(listitemList.size() < pageSize){
+                        mRecyclerView.setPullLoadEnable(false);//禁用上拉加载功能
+                    }else{
+                        mRecyclerView.setPullLoadEnable(true);//启用上拉加载功能
+                    }
+                }
+                //设置适配器
+                if(mHomeListAdapter == null){
+                    //设置适配器
+                    mHomeListAdapter = new HomeListAdapter(mContext, listitemList,R.layout.item_homelist);
+                    mRecyclerView.setAdapter(mHomeListAdapter);
+                    //添加分割线
+                    //设置添加删除动画
+                    //调用ListView的setSelected(!ListView.isSelected())方法，这样就能及时刷新布局
+                    mRecyclerView.setSelected(true);
+                    //列表适配器的点击监听事件
+                    mHomeListAdapter.setOnItemClickLitener(new HomeListAdapter.OnItemClickLitener() {
+                        @Override
+                        public void onItemClick(int position) {
+                            //封装传递的请求数据到XrouterRequest
+                            XrouterRequest mXrouterRequest =XrouterRequest.create().putData("data",listitemList.get(position).getLink()).putActionName(X5ActionMessage.X5ACTIONNAME);
+                            XrouterResponse mXrouterResponse=Xrouter.getInstance().senMessage(mContext,mXrouterRequest);
+                        }
+
+                        @Override
+                        public void onItemLongClick(int position) {
+                            ToastCustomUtil.showLongToast("正在开发中,敬请期待!");
+                        }
+                    });
+                }else{
+                    mHomeListAdapter.notifyDataSetChanged();
+                }
+                //停止刷新和上拉加载
+                stopRefreshAndLoading();
             }
 
 
@@ -325,116 +290,6 @@ public class HomeFragment extends BaseFragment {
         //设置处于下拉刷新状态中[否]
         mRecyclerView.setPullRefresh(false);
     }
-
-
-    /**
-     * 请求banner图片信息
-     */
-    private void requestBanner() {
-        bannerList = new LinkedList();
-        subscriber = new Subscriber<BannerBean>() {
-
-            @Override
-            public void onStart() {
-                super.onStart();
-                ProgressDialogUtil.getInstance().mshowDialog(mContext);
-            }
-
-            @Override
-            public void onCompleted() {
-                ProgressDialogUtil.getInstance().mdismissDialog();
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                ToastCustomUtil.showLongToast(e.getMessage());
-            }
-
-            @Override
-            public void onNext(BannerBean baseResponse) {
-                List mList = baseResponse.getData();
-                for (Object bean : mList) {
-                    bannerList.add((BannerBean.DataBean) bean);
-                }
-                mHandler.sendEmptyMessage(0x111);
-            }
-        };
-
-        Observable<BannerBean> observable = HttpRequest.getInstance().getServiceInterface().homeBanner();
-        //用observable提供的onErrorResumeNext 则可以将你自定义的Func1 关联到错误处理类中
-        //observable.onErrorResumeNext(new BaseSubscriber.HttpResponseFunc<>());
-        HttpRequest.getInstance().toSubscribe(observable, subscriber);
-    }
-
-
-    /**
-     * 初始化Banner
-     */
-    private void initBanner() {
-        int[] indicatorGrouop = new int[]{R.drawable.ic_page_indicator, R.drawable.ic_page_indicator_focused};
-
-        Holder holder = new Holder<BannerBean.DataBean>() {
-            @Override
-            public ViewHolder createView(Context context, ViewGroup parent, int pos, int viewType) {
-                return ViewHolder.createViewHolder(context, parent, R.layout.item_vp_home, getViewType(pos));
-            }
-
-            @Override
-            public void UpdateUI(Context context, ViewHolder viewHolder, int position, BannerBean.DataBean data) {
-                try {
-                    fixThreadPool.execute(new Runnable() {
-                        @Override
-                        public void run() {
-                                ImageView imageView = viewHolder.getView(R.id.iv_item_vp_home);
-                                //You must call this method on the main thread
-                            imageView.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Glide.with(context)
-                                            //.centerCrop()
-                                            .asBitmap() //必须
-                                            .load(data.getImagePath())
-                                            .into(imageView);
-                                }
-                            });
-
-                        }
-                    });
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public int getViewType(int position) {
-                return 0;
-            }
-        };
-        autoTurnViewPager.setPages(holder)
-                .setCanTurn(true)
-                .setScrollDuration(3000)
-                .setAutoTurnTime(2000)
-                .setPageTransformer(new ZoomOutPageTransformer());
-        //设置指示器(选中,未选中)
-        defaultPageIndicator.setPageIndicator(indicatorGrouop);
-        UIContact.with(autoTurnViewPager, defaultPageIndicator)
-                //设置数据
-                .setData(bannerList);
-        autoTurnViewPager.setOnItemClickListener(new OnPageClickListener() {
-            @Override
-            public void onItemClick(int i) {
-                //封装传递的请求数据到XrouterRequest
-                XrouterRequest mXrouterRequest =XrouterRequest.create().putData("data",bannerList.get(i).getUrl()).putActionName(X5ActionMessage.X5ACTIONNAME);
-                XrouterResponse mXrouterResponse=Xrouter.getInstance().senMessage(mContext,mXrouterRequest);
-               // Toast.makeText(mContext,mXrouterResponse.getResponseResult()+"",Toast.LENGTH_LONG).show();
-            }
-        });
-
-        //轮播数据执行完毕执行完毕执行获取列表接口,首次进来默认加载第一页数据,下标为1
-        requestHomeList(1);
-    }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

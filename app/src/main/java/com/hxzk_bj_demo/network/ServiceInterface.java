@@ -9,8 +9,11 @@ import com.hxzk_bj_demo.javabean.IntegralBean;
 import com.hxzk_bj_demo.javabean.IntegralListBean;
 import com.hxzk_bj_demo.javabean.InversBean;
 import com.hxzk_bj_demo.javabean.LoginOutBean;
+import com.hxzk_bj_demo.javabean.PointRankBean;
 import com.hxzk_bj_demo.javabean.PublicListData;
 import com.hxzk_bj_demo.javabean.PublicNumBean;
+
+
 import java.util.List;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -155,4 +158,10 @@ public interface ServiceInterface {
      */
     @GET("lg/coin/list/{pageNum}/json")
    Observable<BaseResponse<IntegralListBean>> inegralListApi(@Path("pageNum") int pageNum);
+
+    /**
+     * 获取排行榜接口
+     */
+    @GET("coin/rank/{pageNum}/json")
+    Observable<BaseResponse<PointRankBean>> rankListApi(@Path("pageNum") int pageNum);
 }

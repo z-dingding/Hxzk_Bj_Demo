@@ -33,7 +33,9 @@ android {
             keyAlias "suiyi"
             keyPassword "hxzk123456"
         }
-        debug {
+        //4.0 之后发现 new Activity 不成功，加载了两秒进度条之后什么也没发生。
+        //studio 4.0 build中不能出现 debug 字段 改为 dev
+        dev {
             storeFile file('suiyi.jks')
             storePassword "hxzk123456"
             keyAlias "suiyi"
@@ -149,4 +151,6 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     //下拉刷新，上拉加载框架
     implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-21'
+    //Eventbus
+    implementation 'org.greenrobot:eventbus:3.0.0'
 }

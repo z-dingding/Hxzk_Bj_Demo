@@ -51,11 +51,9 @@ public class ActivityJump {
 		if (! ((Activity) mContext).equals(getScreenManager().topActivity())) {
 			getScreenManager().pushActivity((Activity)mContext);
 		}
-
 		Intent intent = new Intent(mContext, cls);
 		mContext.startActivity(intent);
-
-		Back(mContext);//防止内存泄漏
+		Back(mContext);
 	}
 
 

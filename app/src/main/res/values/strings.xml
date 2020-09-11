@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="app_name">随意</string>
     <!--===================================公共的=============================-->
     <string name="content_is_empty">内容不能为空!</string>
@@ -34,6 +34,7 @@
     <!--=====================================登录界面字符=============================-->
 
     <string name="login">登录</string>
+    <string name="login_reset">请重新登录!</string>
     <string name="login_account_prompt">请输入账号</string>
     <string name="login_pasword_prompt">请输入密码</string>
     <string name="login_otherwaylogin">试试临时登录?</string>

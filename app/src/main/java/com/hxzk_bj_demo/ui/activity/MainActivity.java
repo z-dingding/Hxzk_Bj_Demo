@@ -24,6 +24,7 @@ import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.common.Const;
 
 import com.hxzk_bj_demo.common.MainApplication;
+import com.hxzk_bj_demo.javabean.EventBuseBean;
 import com.hxzk_bj_demo.javabean.IntegralBean;
 import com.hxzk_bj_demo.javabean.LoginOutBean;
 import com.hxzk_bj_demo.mvp.constract.MainConstract;
@@ -57,6 +58,11 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import butterknife.BindView;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
@@ -70,7 +76,7 @@ import static com.hxzk_bj_demo.utils.LanguageUtil.setLocale;
 
 
 /**
- * 注意因为BaseFragmeng中定义了FragmentCallBack接口MainActiviyz中用到了Fragment所以要实现，否则报未知错误
+ * 注意因为BaseFragmeng中定义了FragmentCallBack接口MainActiviyz中用到了Fragment所以要实现
  */
 public class MainActivity extends BaseMvpActivity<MainPresenter> implements BaseFragment.FragmentCallBack, MainConstract.MainView {
 
@@ -126,6 +132,10 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Base
     @Override
     protected void initView() {
         super.initView();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+
         mainPresenter =new MainPresenter(this);
         mainPresenter.onAttachView(this);
 
@@ -373,14 +383,6 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Base
     public void setValue(Object... param) {
         Bundle bundleData = (Bundle) param[0];
         int flag = bundleData.getInt("fragmentflag");
-//        switch (flag){
-//            case 2:
-//                showSearchOnMenu=true;
-//                this.getWindow().invalidatePanelMenu(Window.FEATURE_OPTIONS_PANEL);
-//                 invalidateOptionsMenu();
-//
-//                break;
-//        }
     }
 
 
@@ -476,5 +478,13 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Base
     @Override
     public void onFail(Throwable throwable) {
         ToastCustomUtil.showLongToast(throwable.getMessage());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void resetLogin(EventBuseBean event) {
+        if (event.getMark_code() == Const.EVENTBUS_RESETLOGIN) {
+            ToastCustomUtil.showLongToast(getString(R.string.login_reset));
+            resetLoginFun();
+        }
     }
 }

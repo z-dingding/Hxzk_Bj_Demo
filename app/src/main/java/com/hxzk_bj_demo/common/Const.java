@@ -19,4 +19,10 @@ public class Const {
     public static final  String KEY_LOGIN_PWD="password";
 
 
+    /**
+     * eventbus令牌失效订阅接受的标识
+     */
+    public static final int  EVENTBUS_RESETLOGIN= 1111;
+
+
 }

@@ -6,12 +6,6 @@ package com.hxzk_bj_demo.javabean
  *
  */
 data class IntegralListBean(
-//    val `data`: Data,
-//    val errorCode: Int,
-//    val errorMsg: String
-//)
-//
-//data class Data(
     val curPage: Int,
     val datas: List<DataX>,
     val offset: Int,

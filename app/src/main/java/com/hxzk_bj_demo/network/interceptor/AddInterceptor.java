@@ -32,7 +32,9 @@ public class AddInterceptor implements Interceptor {
     private Map<String, String> headers;
     private Context context;
 
-    //主要是为了缓存这里是公共的，还有允许自定义指定缓存，之后在研究
+    /**
+     *  主要是为了缓存这里是公共的，还有允许自定义指定缓存，之后在研究
+     */
     public AddInterceptor(Map<String, String> headers, Context context) {
         this.headers = headers;
         this.context = context;
@@ -51,7 +53,8 @@ public class AddInterceptor implements Interceptor {
         if (!TextUtils.isEmpty(cookie)) {
             builder.addHeader("Cookie", cookie);
         }
-        //拦截器实现关键部分是调用chain.proceed(request)。这个方法是所有HTTP工作发生的地方，以满足请求和响应的需求。
+        //拦截器实现关键部分是调用chain.proceed(request)。
+        // 这个方法是所有HTTP工作发生的地方，以满足请求和响应的需求。
         return chain.proceed(builder.build());
     }
 

@@ -31,7 +31,6 @@ import static com.hxzk_bj_demo.common.Const.KEY_COOKIE;
 
 public class WelcomeActivity extends AppCompatActivity {
 
-    public static final String  sConstant ="cons";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,18 +42,27 @@ public class WelcomeActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(view);
-
-        String data = getIntent().getStringExtra("type");
-        if(!TextUtils.isEmpty(data)){
-            ToastCustomUtil.showLongToast(data);
-        }
-
         initData();
     }
 
 
 
     private void initData() {
+        //如果cookie为空，说明用户没有登录,可能是首次登录或者退出登录再次进入
+        String cookies =(String) SPUtils.get(MainApplication.getAppContext(),KEY_COOKIE,"");
+        if(TextUtils.isEmpty(cookies)){
+            animation();
+        }else{
+            ActivityJump.NormalJumpAndFinish(WelcomeActivity.this, MainActivity.class);
+        }
+
+    }
+
+
+    /**
+     * 启动动画()
+     */
+    private void animation(){
         DisplayMetrics dm = getResources().getDisplayMetrics();
         int screenWidth = dm.widthPixels;
         int screenHeight = dm.heightPixels;
@@ -64,14 +72,17 @@ public class WelcomeActivity extends AppCompatActivity {
         TextView ivYi =findViewById(R.id.tv_animationtwo);
         ivSui.setVisibility(View.VISIBLE);
         ivYi.setVisibility(View.VISIBLE);
+        //先从上到中间
         ObjectAnimator oa_suione = ObjectAnimator.ofFloat(ivSui,"TranslationY",-200,screenHeight/2);
-        ObjectAnimator oa_suitwo = ObjectAnimator.ofFloat(ivSui,"TranslationX",0,screenWidth/2+400);
         ObjectAnimator oa_yione = ObjectAnimator.ofFloat(ivYi,"TranslationY",-200,screenHeight/2);
+        //以当前左上角为原点，继续执行
+        ObjectAnimator oa_suitwo = ObjectAnimator.ofFloat(ivSui,"TranslationX",0,screenWidth/2+400);
         ObjectAnimator oa_yitwo = ObjectAnimator.ofFloat(ivYi,"TranslationX",0,-(screenWidth/2+400));
 
         AnimatorSet set =new AnimatorSet();
+        //先执行oa_yione和oa_suione在执行oa_suitwo和oa_yitwo
         set.play(oa_suitwo).with(oa_yitwo).after(oa_yione).after(oa_suione);
-        set.setDuration(1000);
+        set.setDuration(2000);
         set.start();
 
         set.addListener(new Animator.AnimatorListener() {
@@ -82,17 +93,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
             @Override
             public void onAnimationEnd(Animator animator) {
-                String cookies =(String) SPUtils.get(MainApplication.getAppContext(),KEY_COOKIE,"");
-                if(!TextUtils.isEmpty(cookies)){
-                    ActivityJump.NormalJumpAndFinish(WelcomeActivity.this, MainActivity.class);
-                }else{
-                    Intent intent=new Intent(WelcomeActivity.this, LoginActivity.class);
-                    startActivity(intent);
-                    animNext();
-                    finish();
-                }
-
-
+                ActivityJump.NormalJumpAndFinish(WelcomeActivity.this, LoginActivity.class);
             }
 
             @Override
@@ -109,20 +110,10 @@ public class WelcomeActivity extends AppCompatActivity {
     }
 
 
-    /**
-     * @Desc 页面跳转动画
-     */
-
-    public void animNext() {
-        /**<<<------右入左出*/
-        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-    }
-
 
     @Override
     protected void onStop() {
         super.onStop();
-        //关闭欢迎界面
         ActivityJump.popSpecifiedActivity(WelcomeActivity.class);
     }
 }

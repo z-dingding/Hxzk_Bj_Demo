@@ -170,7 +170,7 @@ public class MainApplication extends LitePalApplication {
                         //cookie的持久化添加到请求头
                         .addInterceptor(new AddInterceptor())
                         //cookie的持久化保存到本地
-                        .addInterceptor(new SaveInterceptor());
+                        .addInterceptor(new SaveInterceptor(appContext));
             }
         }
         return httpClientBuilder;

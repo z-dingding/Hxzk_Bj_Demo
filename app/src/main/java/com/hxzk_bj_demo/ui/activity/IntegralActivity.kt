@@ -26,7 +26,9 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener
 import rx.Observable
 import java.util.*
 
-
+/**
+ * 积分记录Activity
+ */
 class IntegralActivity : BaseKtMvpActivity<IntegralPresener>(),IntegralConstract.IntegralView{
 
     private lateinit var mSmartRefreshLayout: SmartRefreshLayout
@@ -74,6 +76,9 @@ class IntegralActivity : BaseKtMvpActivity<IntegralPresener>(),IntegralConstract
         tvBack.setOnClickListener {
             ActivityJump.Back(this)
         }
+        tvOrder.setOnClickListener{
+          ActivityJump.NormalJump(this,RankActivity :: class.java)
+        }
         mSmartRefreshLayout.setOnRefreshListener{
             currentPageNum = 1
             isRefershRequest =true
@@ -120,8 +125,6 @@ class IntegralActivity : BaseKtMvpActivity<IntegralPresener>(),IntegralConstract
     override fun notifyByThemeChanged() {
 
     }
-
-
 
     override fun onShowLoading() {
         if(1 == currentPageNum){
