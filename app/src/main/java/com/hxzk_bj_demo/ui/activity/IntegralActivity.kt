@@ -29,14 +29,14 @@ import java.util.*
 /**
  * 积分记录Activity
  */
-class IntegralActivity : BaseKtMvpActivity<IntegralPresener>(),IntegralConstract.IntegralView{
+class IntegralActivity : BaseKtMvpActivity<IntegralPresener>(), IntegralConstract.IntegralView {
 
     private lateinit var mSmartRefreshLayout: SmartRefreshLayout
-    private  lateinit var  mRecyvler :RecyclerView
-    lateinit var mIntegralAdapter :IntegralAdapter
-    lateinit var tvTitle : TextView
-    lateinit var tvBack :TextView
-    lateinit var tvOrder :TextView
+    private lateinit var mRecyvler: RecyclerView
+    lateinit var mIntegralAdapter: IntegralAdapter
+    lateinit var tvTitle: TextView
+    lateinit var tvBack: TextView
+    lateinit var tvOrder: TextView
 
 
     lateinit var mObserable: Observable<BaseResponse<IntegralListBean>>
@@ -45,30 +45,44 @@ class IntegralActivity : BaseKtMvpActivity<IntegralPresener>(),IntegralConstract
      * 当前页码,默认从1开始
      */
     var currentPageNum = 1
-    var allPageNum =0
+
+    /**
+     * 总共页码
+     */
+    var allPageNum = 0
+
+    /**
+     * 每页条目
+     */
+    var pageSize = 20
 
     /**
      * 是否是刷新请求
      */
-    var isRefershRequest =false
+    var isRefersh = false
+
+    /**
+     * 是否是刷新请求
+     */
+    var isLoadMore = false
 
     /**
      * 数据源
      */
-     var mDataList : MutableList<DataX> = mutableListOf()
+    var mDataList: MutableList<DataX> = mutableListOf()
+
 
     override fun setLayoutId(): Int {
-        isShowMenu = false
         return R.layout.activity_integral
     }
 
     override fun initView() {
-       mSmartRefreshLayout =findViewById(R.id.srl_integral)
-        mRecyvler =findViewById(R.id.rv_integral)
-        tvTitle=findViewById(R.id.tv_titlebar_title)
-        tvBack=findViewById(R.id.tv_titlebar_back)
-        tvOrder=findViewById(R.id.tv_titlebar_other)
-        presenter =IntegralPresener()
+        mSmartRefreshLayout = findViewById(R.id.srl_integral)
+        mRecyvler = findViewById(R.id.rv_integral)
+        tvTitle = findViewById(R.id.tv_titlebar_title)
+        tvBack = findViewById(R.id.tv_titlebar_back)
+        tvOrder = findViewById(R.id.tv_titlebar_other)
+        presenter = IntegralPresener()
         presenter!!.onAttachView(this)
     }
 
@@ -76,29 +90,25 @@ class IntegralActivity : BaseKtMvpActivity<IntegralPresener>(),IntegralConstract
         tvBack.setOnClickListener {
             ActivityJump.Back(this)
         }
-        tvOrder.setOnClickListener{
-          ActivityJump.NormalJump(this,RankActivity :: class.java)
+        tvOrder.setOnClickListener {
+            ActivityJump.NormalJump(this, RankActivity::class.java)
         }
-        mSmartRefreshLayout.setOnRefreshListener{
+        mSmartRefreshLayout.setOnRefreshListener {
+            mSmartRefreshLayout.resetNoMoreData()
             currentPageNum = 1
-            isRefershRequest =true
-            mObserable = presenter!!.intergralListP(currentPageNum,this)
-
+            isRefersh = true
+            mDataList.clear()
+            mObserable = presenter!!.intergralListP(currentPageNum, this)
         }
         mSmartRefreshLayout.setOnLoadMoreListener {
-            currentPageNum++
-            isRefershRequest =false
-            if(currentPageNum <= allPageNum){
-                mObserable = presenter!!.intergralListP(currentPageNum,this)
-            }else{
-                //结束加载
-                mSmartRefreshLayout.finishLoadMore(2000)
+            isLoadMore = true
+            if (currentPageNum < allPageNum) {
+                currentPageNum++
+                mObserable = presenter!!.intergralListP(currentPageNum, this)
+            } else {
                 //完成加载并标记没有更多数据
                 mSmartRefreshLayout.finishLoadMoreWithNoMoreData()
-                //恢复没有更多数据的原始状态
-                mSmartRefreshLayout.setNoMoreData(false)
             }
-
         }
 
     }
@@ -108,13 +118,13 @@ class IntegralActivity : BaseKtMvpActivity<IntegralPresener>(),IntegralConstract
         //设置标题
         tvTitle.setText(resources.getString(R.string.integral_title))
         tvOrder.text = resources.getString(R.string.integral_order)
-      val rvManager : LinearLayoutManager= LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
+        val rvManager: LinearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         mRecyvler.layoutManager = rvManager
         mRecyvler.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
-        mIntegralAdapter =IntegralAdapter()
+        mIntegralAdapter = IntegralAdapter()
         mRecyvler.adapter = mIntegralAdapter
         //请求积分列表
-        mObserable = presenter!!.intergralListP(currentPageNum,this)
+        mObserable = presenter!!.intergralListP(currentPageNum, this)
     }
 
     override fun onDestroy() {
@@ -127,41 +137,37 @@ class IntegralActivity : BaseKtMvpActivity<IntegralPresener>(),IntegralConstract
     }
 
     override fun onShowLoading() {
-        if(1 == currentPageNum){
+        if (!isRefersh && !isLoadMore) {
             ProgressDialogUtil.getInstance().mshowDialog(this)
         }
+
     }
 
     override fun onHiddenLoading() {
-        if(1== currentPageNum){
-            ProgressDialogUtil.getInstance().mdismissDialog()
-        }
+        ProgressDialogUtil.getInstance().mdismissDialog()
     }
 
     override fun onFail(throwable: Throwable) {
-      ToastCustomUtil.showLongToast(throwable.message)
+        ToastCustomUtil.showLongToast(throwable.message)
     }
 
-    override fun onIngegralResult(loginBean:BaseResponse<IntegralListBean>) {
-        if(!loginBean.isOk){
-           ToastCustomUtil.showLongToast(loginBean.msg)
-        }else{
-            allPageNum =loginBean.data.total
-           if(isRefershRequest){
-               mDataList.clear()
-               mIntegralAdapter.notifyChangeData( loginBean.data.datas)
-               mSmartRefreshLayout.finishRefresh()
-           } else{
-               if(mDataList.size == 0){
-                   mDataList.addAll(loginBean.data.datas)
-               }else{
-                   mDataList.plusAssign((loginBean.data.datas.toMutableList()))
-                   mSmartRefreshLayout.finishLoadMore()
-               }
-               mIntegralAdapter.notifyChangeData(mDataList)
-           }
+    override fun onIngegralResult(loginBean: BaseResponse<IntegralListBean>) {
+        if (!loginBean.isOk) {
+            ToastCustomUtil.showLongToast(loginBean.msg)
+        } else {
+            allPageNum = if (loginBean.data.total % pageSize == 0) loginBean.data.total / pageSize else loginBean.data.total / pageSize + 1
+            mDataList.addAll(loginBean.data.datas)
+            mIntegralAdapter.notifyChangeData(mDataList)
 
-    }
+            if (isRefersh) {
+                isRefersh = false
+                mSmartRefreshLayout.finishRefresh()
+            } else if (isLoadMore) {
+                isLoadMore = false
+                mSmartRefreshLayout.finishLoadMore()
+            }
+
+        }
     }
 }
 

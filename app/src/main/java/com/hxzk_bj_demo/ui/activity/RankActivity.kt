@@ -1,6 +1,8 @@
 package com.hxzk_bj_demo.ui.activity
 
 import android.widget.TextView
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hxzk_bj_demo.R
 import com.hxzk_bj_demo.javabean.Data
@@ -11,12 +13,11 @@ import com.hxzk_bj_demo.mvp.presenter.RankPresenter
 import com.hxzk_bj_demo.network.BaseResponse
 import com.hxzk_bj_demo.network.HttpRequest
 import com.hxzk_bj_demo.ui.activity.base.BaseKtMvpActivity
+import com.hxzk_bj_demo.ui.adapter.RankAdapter
 import com.hxzk_bj_demo.utils.ProgressDialogUtil
 import com.hxzk_bj_demo.utils.activity.ActivityJump
 import com.hxzk_bj_demo.utils.toastutil.ToastCustomUtil
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
-import com.scwang.smartrefresh.layout.api.RefreshFooter
-import com.scwang.smartrefresh.layout.api.RefreshHeader
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import rx.Observable
@@ -58,7 +59,12 @@ class RankActivity : BaseKtMvpActivity<RankPresenter>() ,RankConstract.RankView 
      */
     var pageSize = 30
 
+
+    /**
+     * 数据源
+     */
     lateinit var  dataList : MutableList<Data>
+    val rankAdapter = RankAdapter()
 
     override fun setLayoutId(): Int {
         return R.layout.activity_rank
@@ -84,14 +90,17 @@ class RankActivity : BaseKtMvpActivity<RankPresenter>() ,RankConstract.RankView 
     }
 
     override fun initData() {
+        tvTitle.text = getString(R.string.integral_order)
         smartRefresh.let {
             //设置头部刷新样式
             it.setRefreshHeader(ClassicsHeader(this))
             //设置底部刷新样式
             it.setRefreshFooter(ClassicsFooter(this))
             it.setOnRefreshListener {
+                it.resetNoMoreData()
                 isRefreshing = true
                 currentPage = 1
+                dataList.clear()
                 observable = presenter!!.rankListP(pageNum = currentPage, mContext = this)
             }
 
@@ -100,8 +109,18 @@ class RankActivity : BaseKtMvpActivity<RankPresenter>() ,RankConstract.RankView 
                if(currentPage < allPageNum){
                    currentPage++
                    observable = presenter!!.rankListP(pageNum = currentPage, mContext = this)
+               }else{
+                   it.finishLoadMoreWithNoMoreData()
+                   ToastCustomUtil.showLongToast(getString(R.string.toast_nomoredata))
                }
             }
+
+
+        }
+        recyclerView.apply {
+            this.layoutManager =LinearLayoutManager(this@RankActivity)
+            this.adapter = rankAdapter
+            this.addItemDecoration(DividerItemDecoration(this@RankActivity, DividerItemDecoration.VERTICAL))
         }
 
 
@@ -112,7 +131,10 @@ class RankActivity : BaseKtMvpActivity<RankPresenter>() ,RankConstract.RankView 
     }
 
     override fun onShowLoading() {
-       ProgressDialogUtil.getInstance().mshowDialog(this)
+        if(!isLoadMore && !isRefreshing){
+            ProgressDialogUtil.getInstance().mshowDialog(this)
+        }
+
     }
 
     override fun onHiddenLoading() {
@@ -120,15 +142,27 @@ class RankActivity : BaseKtMvpActivity<RankPresenter>() ,RankConstract.RankView 
     }
 
     override fun onFail(throwable: Throwable?) {
+        if(isRefreshing || isLoadMore){
+            smartRefresh.finishRefresh()
+            smartRefresh.finishLoadMore()
+        }
         ToastCustomUtil.showLongToast(throwable?.message)
     }
 
     override fun rankSuccess(jsonBean: BaseResponse<PointRankBean>) {
         if(jsonBean.isOk){
-            allPageNum = if(jsonBean.data.total % pageSize  == 0) (jsonBean.data.total % pageSize ) else (jsonBean.data.total % pageSize + 1)
-            if(jsonBean.data.datas.size > 0){
+            allPageNum = if(jsonBean.data.total % pageSize  == 0) (jsonBean.data.total / pageSize ) else (jsonBean.data.total / pageSize + 1)
+            if(jsonBean.data.datas.isNotEmpty()){
                 dataList.addAll(jsonBean.data.datas)
-
+                rankAdapter.addData(dataList)
+            }
+            if (isLoadMore) {
+                smartRefresh.finishLoadMore()
+                isLoadMore = false
+            }
+            if (isRefreshing) {
+                smartRefresh.finishRefresh()
+                isRefreshing = false
             }
         }else{
             ToastCustomUtil.showLongToast(jsonBean.msg)

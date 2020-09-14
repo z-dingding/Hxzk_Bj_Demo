@@ -38,7 +38,7 @@ android {
 }
 
 dependencies {
-    implementation androidDependencies.appcompat
+    implementation androidDependencies.appcompat_x
 }
 
 //apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'

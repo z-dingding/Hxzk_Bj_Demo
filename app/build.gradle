@@ -79,12 +79,9 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    testImplementation 'junit:junit:4.12'
     implementation androidDependencies.design
-    implementation androidDependencies.appcompat
-    implementation androidDependencies.constraint
+    implementation androidDependencies.appcompat_x
+    implementation androidDependencies.constraint_x
 
     //Glide版本
     implementation androidDependencies.glide
