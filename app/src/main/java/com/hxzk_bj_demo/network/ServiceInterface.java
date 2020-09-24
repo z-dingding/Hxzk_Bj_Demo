@@ -12,6 +12,7 @@ import com.hxzk_bj_demo.javabean.LoginOutBean;
 import com.hxzk_bj_demo.javabean.PointRankBean;
 import com.hxzk_bj_demo.javabean.PublicListData;
 import com.hxzk_bj_demo.javabean.PublicNumBean;
+import com.hxzk_bj_demo.javabean.SquareDataBean;
 
 
 import java.util.List;
@@ -164,4 +165,7 @@ public interface ServiceInterface {
      */
     @GET("coin/rank/{pageNum}/json")
     Observable<BaseResponse<PointRankBean>> rankListApi(@Path("pageNum") int pageNum);
+
+
+
 }

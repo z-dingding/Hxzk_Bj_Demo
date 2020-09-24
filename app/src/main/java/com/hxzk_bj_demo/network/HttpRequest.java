@@ -39,6 +39,8 @@ public class HttpRequest {
 
     private static ServiceInterface sServiceInterface;
 
+    private  static  ApiService apiService;
+
 
 
 
@@ -50,6 +52,7 @@ public class HttpRequest {
      * class 无参构造
      */
     private HttpRequest() {
+        //Retrofit实例
         sRetrofit = new Retrofit.Builder()
                 .client(MainApplication.getOkHttpClientbBuild().build())
                 .addConverterFactory(GsonConverterFactory.create(new GsonBuilder()
@@ -60,6 +63,8 @@ public class HttpRequest {
                 .addCallAdapterFactory(rxJavaCallAdapterFactory)
                 .baseUrl(BASE_URL);
         sServiceInterface=sRetrofit.build().create(ServiceInterface.class);
+         //网络层访问服务
+        apiService=sRetrofit.build().create(ApiService.class);
     }
 
 
@@ -85,6 +90,9 @@ public class HttpRequest {
      */
     public ServiceInterface getServiceInterface() {
             return sServiceInterface;
+    }
+    public ApiService getApiService() {
+            return apiService;
     }
 
 

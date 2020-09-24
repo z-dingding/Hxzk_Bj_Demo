@@ -99,4 +99,6 @@
     <!--=====================================积分页面相关字符=============================-->
     <string name="integral_title">积分记录</string>
     <string name="integral_order">排行榜</string>
+    <!--=====================================广场数据页面相关字符=============================-->
+    <string name="squaredata_title">广场数据</string>
 </resources>

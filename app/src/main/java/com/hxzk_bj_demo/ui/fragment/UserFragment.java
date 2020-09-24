@@ -17,6 +17,7 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.hxzk_bj_demo.R;
 import com.hxzk_bj_demo.javabean.UserItemBean;
 import com.hxzk_bj_demo.ui.activity.PatternLockActivity;
+import com.hxzk_bj_demo.ui.activity.SquareDataActivity;
 import com.hxzk_bj_demo.ui.adapter.UserAdapter;
 import com.hxzk_bj_demo.ui.adapter.UserFunAdapter;
 import com.hxzk_bj_demo.ui.fragment.base.BaseFragment;
@@ -57,7 +58,11 @@ public class UserFragment extends BaseFragment {
     /**
      * 本地图片的数组
      */
-    public static int[] localPhoto = {R.drawable.author_artical, R.drawable.recommended_music, R.drawable.recommended_video, R.drawable.statistical, R.drawable.more};
+    public static int[] localPhoto = {R.drawable.author_artical,
+            R.drawable.recommended_music,
+            R.drawable.recommended_video,
+            R.drawable.statistical,
+            R.drawable.more};
     /**
      * 标题数组
      */
@@ -174,11 +179,11 @@ public class UserFragment extends BaseFragment {
                     case "清除缓存":
                         ClearCacheUtil.clearAllCache(mContext);
                         myViewHolder.tvPromptDetail.setText("");
-
                         ToastCustomUtil.showLongToast(getString(R.string.clearCacheSuccess));
-
                         break;
-
+                    case "广场数据":
+                        ActivityJump.NormalJump(mContext, SquareDataActivity.class);
+                        break;
                     default:
                         ToastCustomUtil.showLongToast(getString(R.string.inDevelopment));
                         break;

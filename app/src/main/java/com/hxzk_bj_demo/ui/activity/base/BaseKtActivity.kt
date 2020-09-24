@@ -1,5 +1,6 @@
 package com.hxzk_bj_demo.ui.activity.base
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.hxzk.bj.x5webview.statusbartextcolor.StatebusTextColorUtil
@@ -20,6 +21,8 @@ abstract class BaseKtActivity :AppCompatActivity() , ThemeChangeObserver {
         if (setLayoutId() != 0) {
             setContentView(setLayoutId())
         }
+        //竖屏
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         initView()
         initEvent()
         initData()

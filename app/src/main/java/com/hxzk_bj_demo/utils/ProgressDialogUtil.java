@@ -12,12 +12,12 @@ import com.hxzk_bj_demo.widget.XDialog;
 public class ProgressDialogUtil {
 
 
-    public static ProgressDialogUtil progressDialog;
+    public volatile static ProgressDialogUtil progressDialog;
     private  static XDialog loadingDialog;
 
 
     private ProgressDialogUtil() {
-    }
+  }
 
 
 
@@ -26,7 +26,6 @@ public class ProgressDialogUtil {
            synchronized (ProgressDialogUtil.class){
                if(progressDialog == null){
                    progressDialog =new ProgressDialogUtil();
-                   return progressDialog;
                }
            }
         }
